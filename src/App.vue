@@ -1,7 +1,7 @@
 <template>
   <div id="app">
 
-    <wsMenu></wsMenu>
+    <wsMenu :blop="thisBlop"></wsMenu>
     <wsList></wsList>
 
   </div>
@@ -12,7 +12,11 @@ import Menu from './components/Menu.vue'
 import List from './components/List.vue'
 
 export default {
-  name: 'App',
+  data: function () {
+    return {
+      thisBlop: 'Blop from above'
+    }
+  },
   components: {
     wsMenu: Menu,
     wsList: List
@@ -20,13 +24,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   border: 1px solid lightgray;
   width: 300px;
   height: 500px;
   text-align: center;
   color: #333333;
-  margin-top: 60px;
+  padding: 20px;
 }
 </style>
