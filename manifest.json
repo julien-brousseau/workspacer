@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Workspacer",
+  "version": "1.0.0",
+  "incognito": "not_allowed",
+  "description": "Allows to easily save and load tab sets as workspaces.",
+  "icons": { "48": "/icon.svg" },
+  
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "tabs",
+    "contextualIdentities",
+    "cookies"
+  ],
+
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "Workspacer",
+    "default_icon": { "48": "/icon.svg" },
+    "default_popup": "/index.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"]
+    }
+  ]
+
+}
