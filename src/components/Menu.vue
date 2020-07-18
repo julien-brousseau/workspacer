@@ -1,15 +1,18 @@
 <template>
   <div id="ws-menu">
 
-    <button>Menu button</button>
-    <button>{{blop}}</button>
+    <button @click="changeBlop">Menu button</button>
 
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
-  props: ['blop']
+  methods: {
+    ...mapActions(['changeBlop'])
+  }
 }
 </script>
 
