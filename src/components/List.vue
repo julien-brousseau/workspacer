@@ -1,12 +1,9 @@
 <template>
-  <div id="ws-list" class="ui main text container">
-
-    <p>{{ getAllWS }}</p>
-
-    <ul>
-      <ws-list-item></ws-list-item>
-    </ul>
-
+  <div class="ui relaxed divided items">
+    <ws-list-item v-for="ws in allWS"
+      :key="ws"
+      :ws="ws">
+    </ws-list-item>
   </div>
 </template>
 
@@ -19,13 +16,13 @@ export default {
     wsListItem: ListItem
   },
   computed: {
-    ...mapGetters(['getAllWS'])
+    ...mapGetters(['allWS'])
   }
 }
 </script>
 
 <style scoped>
-.container {
+/* .container {
   width: auto;
-}
+} */
 </style>

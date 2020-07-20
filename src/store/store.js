@@ -3,29 +3,37 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const browser = require('webextension-polyfill')
+
 export default new Vuex.Store({
   state: {
-    ws: {}
+    ws: []
   },
   mutations: {
-    'LOAD_WS' (state, data) {
-      state.ws = data
-      console.log('MUTATION WS', state.ws)
+    'LOAD_WS' (state, allWS) {
+      state.ws = allWS
+    },
+    'ADD_WS' (state, ws) {
+      state.ws = [...state.ws, ...ws]
     }
-    // 'ADD_WS' (state) {
-    //   state.ws.blop = { url: 'blop.com' }
-    // }
   },
   actions: {
+    addWS: ({ commit }, objWS) => {
+      const ws = JSON.stringify(objWS)
+      browser.storage.local.set({ ws }).then(() => { // result returns undefined
+        console.log('addWS/commit: ', ws)
+        commit('ADD_WS', ws)
+      })
+    },
     loadWS: ({ commit }) => {
-      console.log('ACTION: loadAllWS')
-      //   this.$browser.storage.local.get('ws').then(result => {
-      //     console.log('ACTION: result > ' + result)
-      commit('LOAD_WS', { Personnal: { url: 'blop.com' } })
-    //   })
+      browser.storage.local.get('ws').then(({ ws }) => {
+        const allWS = JSON.parse(ws)
+        console.log('loadWS/result: ', allWS)
+        commit('LOAD_WS', allWS)
+      })
     }
   },
   getters: {
-    getAllWS: state => state.ws
+    allWS: state => state.ws
   }
 })
