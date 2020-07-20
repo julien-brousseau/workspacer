@@ -1,7 +1,7 @@
 <template>
   <div id="ws-menu">
 
-    <button @click="changeBlop">Menu button</button>
+    <button @click="loadWS" class="ui primary large button">Menu button</button>
 
   </div>
 </template>
@@ -11,7 +11,7 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    ...mapActions(['changeBlop'])
+    ...mapActions(['loadWS'])
   }
 }
 </script>

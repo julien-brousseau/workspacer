@@ -1,8 +1,8 @@
 <template>
   <div id="app">
 
-    <wsMenu :blop="thisBlop"></wsMenu>
-    <wsList></wsList>
+    <ws-menu></ws-menu>
+    <ws-list></ws-list>
 
   </div>
 </template>
@@ -11,15 +11,19 @@
 import Menu from './components/Menu.vue'
 import List from './components/List.vue'
 
+// import { mapActions } from 'vuex'
+
 export default {
-  data: function () {
-    return {
-      thisBlop: 'Blop from above'
-    }
-  },
   components: {
     wsMenu: Menu,
     wsList: List
+  },
+  methods: {
+    // ...mapActions(['loadAllWS'])
+    // setBlop () {
+    // this.$browser.storage.local.get('value')
+    //   .then(result => { this.blop = result })
+    // }
   }
 }
 </script>

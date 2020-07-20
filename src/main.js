@@ -5,6 +5,8 @@ import App from './App.vue'
 
 import store from './store/store'
 
+// Vue.prototype.$browser = require('webextension-polyfill')
+
 Vue.use(Vuex)
 
 new Vue({

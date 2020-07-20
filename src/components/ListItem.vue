@@ -1,16 +1,13 @@
 <template>
-  <li id="ws-list-item">
-    {{ blop }}
+  <li>
+    Workspace 1
   </li>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
-  computed: {
-    ...mapGetters(['blop'])
-  }
+
 }
 </script>
 
