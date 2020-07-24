@@ -17,7 +17,6 @@ export default {
     wsList: List
   },
   created () {
-    console.log('LOADED')
     this.$store.dispatch('loadWS')
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="ui relaxed divided items">
-    <ws-list-item v-for="ws in allWS"
-      :key="ws"
+    <ws-list-item v-for="ws in blop"
+      :key="ws.name"
       :ws="ws">
     </ws-list-item>
   </div>
@@ -16,7 +16,13 @@ export default {
     wsListItem: ListItem
   },
   computed: {
-    ...mapGetters(['allWS'])
+    ...mapGetters(['allWS']),
+    blop () {
+      const ws = this.allWS
+      return Object.keys(ws).map(name => {
+        return { name, tabs: ws[name] }
+      })
+    }
   }
 }
 </script>

@@ -1,26 +1,41 @@
 <template>
   <div id="ws-menu">
 
-    <button @click="loadWS" class="ui primary large button">Load WS</button>
-    <button @click="addWS(ws)" class="ui warning large button">Add WS</button>
+    <div v-if="addingWS" class="ui form">
+      <input type="text" v-model="ws.name">
+      <button @click="createWS" class="ui primary button">Create Workspace</button>
+    </div>
+
+    <button v-else @click="clearWS" class="ui red button">Reset WS</button>
+
+    <button @click="toggleAddingWS" class="ui primary button">{{ addingWS ? "Cancel" : "New Workspace" }}</button>
 
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+const baseWS = { name: null }
 
 export default {
   data () {
     return {
-      ws: [
-        { 'Brousseau.tech': [{ url: 'codingisfun.comm', index: 1, pinned: true }, { url: 'blopblolp.comm', index: 0, pinned: false }] },
-        { Personal: [{ url: 'somepornsite.comm', index: 0 }] }
-      ]
+      ws: baseWS
+      // { 'Brousseau.tech': [{ url: 'codingisfun.comm', index: 1, pinned: true }, { url: 'blopblolp.comm', index: 0, pinned: false }] },
+      // { Personal: [{ url: 'somepornsite.comm', index: 0 }] }
+
     }
   },
+  computed: {
+    ...mapGetters(['addingWS'])
+  },
   methods: {
-    ...mapActions(['addWS', 'loadWS'])
+    ...mapActions(['addWS', 'loadWS', 'toggleAddingWS', 'clearWS']),
+    createWS () {
+      this.addWS(this.ws)
+      this.ws = baseWS
+    }
   }
 }
 </script>
