@@ -3,12 +3,13 @@
 
     <div v-if="addingWS" class="ui form">
       <input type="text" v-model="ws.name">
-      <button @click="createWS" class="ui primary button">Create Workspace</button>
+      <button @click="createWS" class="ui green button">Create</button>
+      <button @click="toggleAddingWS" class="ui button">Cancel</button>
     </div>
 
-    <button v-else @click="clearWS" class="ui red button">Reset WS</button>
+    <button v-else @click="toggleAddingWS" class="ui primary button">New Workspace</button>
 
-    <button @click="toggleAddingWS" class="ui primary button">{{ addingWS ? "Cancel" : "New Workspace" }}</button>
+    <button @click="clearWS" class="ui tiny red button">Reset</button>
 
   </div>
 </template>
@@ -31,8 +32,9 @@ export default {
     ...mapGetters(['addingWS'])
   },
   methods: {
-    ...mapActions(['addWS', 'loadWS', 'toggleAddingWS', 'clearWS']),
+    ...mapActions(['addWS', 'toggleAddingWS', 'clearWS']),
     createWS () {
+      this.toggleAddingWS()
       this.addWS(this.ws)
       this.ws = baseWS
     }

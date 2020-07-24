@@ -17,7 +17,7 @@ export default {
     wsList: List
   },
   created () {
-    this.$store.dispatch('loadWS')
+    this.$store.dispatch('initWS')
   }
 }
 </script>
@@ -25,7 +25,7 @@ export default {
 <style scoped>
 #app {
   border: 1px solid lightgray;
-  width: 300px;
+  width: 400px;
   height: auto;
   text-align: center;
   color: #333333;

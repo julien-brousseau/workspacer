@@ -35,6 +35,7 @@ export default new Vuex.Store({
 
     'UPDATE_ALL_WS' (state, ws) {
       state.ws = ws
+      console.log('STATE >> ', state.ws)
     },
 
     'TOGGLE_ADDING_WS' (state, visible) {
@@ -44,37 +45,53 @@ export default new Vuex.Store({
   },
   actions: {
 
-    loadWS: async ({ commit }) => {
-      browser.storage.local.get('ws')
-        .then(({ ws }) => commit('UPDATE_ALL_WS', ws))
-        .catch(e => console.log('e :>> ', e))
+    // Initially load storage WS
+    initWS: async ({ dispatch, commit }) => {
+      const ws = await dispatch('loadWS')
+      commit('UPDATE_ALL_WS', ws)
     },
 
-    addWS: async ({ commit, getters }, { name }) => {
+    // Create a new Workspace object
+    addWS: async ({ dispatch, getters }, { name }) => {
       const ws = { ...getters.allWS, [name]: [] }
-      browser.storage.local.set({ ws }).then(() => {
-        commit('UPDATE_ALL_WS', ws)
-        commit('TOGGLE_ADDING_WS', false)
-      })
+      dispatch('saveWS', ws)
     },
 
-    addTabToWS: async ({ commit, getters }, wsName) => {
-      console.log('ADD TAB :>> ', wsName)
-      const ws = [...getters.allWS[wsName], { url: 'blop.com', id: 1 }]
-      const blop = { ...getters.allWS, [wsName]: ws }
-      browser.storage.local.set({ blop }).then(() => {
-        commit('UPDATE_ALL_WS', blop)
-        console.log('getters.allWS :>> ', getters.allWS)
-      })
+    // Create a new tab in the selected Workspace
+    addTabToWS: async ({ dispatch, getters }, wsName) => {
+      const currentTab = await browser.tabs.query({ currentWindow: true, active: true })
+      const { id, url } = currentTab[0]
+      const ws = { ...getters.allWS }
+      const tab = { id, url }
+      ws[wsName].push(tab)
+      dispatch('saveWS', ws)
     },
 
-    clearWS: async ({ commit }) => {
-      await browser.storage.local.set({ ws: {} })
-      const res = await browser.storage.local.get('ws')
-      console.log('CLEARED, GET WS: ', res)
-      commit('UPDATE_ALL_WS', {})
+    // Save the stringyfied ws object to storage, and commit the returned storage to state
+    saveWS: async ({ dispatch, commit }, ws) => {
+      const jsonWS = JSON.stringify(ws)
+      await browser.storage.local.set({ ws: jsonWS })
+      const storedWS = await dispatch('loadWS')
+      commit('UPDATE_ALL_WS', storedWS)
     },
 
+    // Returns the JSON parsed content of local storage {ws} variable
+    loadWS: async () => {
+      return browser.storage.local.get('ws')
+        .then(({ ws }) => {
+          return JSON.parse(ws)
+        })
+        .catch(e => {
+          return { e }
+        })
+    },
+
+    // Reset the ws storage object
+    clearWS: async ({ dispatch }) => {
+      dispatch('saveWS', {})
+    },
+
+    //
     toggleAddingWS: ({ commit, state }) => {
       commit('TOGGLE_ADDING_WS', !state.addingWS)
     }

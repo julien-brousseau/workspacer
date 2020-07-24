@@ -3,8 +3,9 @@
     <div class="content">
      {{ ws.name }}
      <a @click="showTabs = !showTabs">({{ ws.tabs.length }} tabs)</a>
-     <button @click="addTabToWS(ws.name)" class="ui mini green button right floated">ADD CURRENT TAB</button>
-     <ul v-if="showTabs">
+     <button @click="addTabToWS(ws.name)" class="ui mini green button right floated">ADD</button>
+     <button @click="blop" class="ui mini primary button right floated">LOAD</button>
+     <ul v-if="showTabs" style="min-height: 0px;">
        <li v-for="tab in ws.tabs" :key="tab.id">{{ tab.url }}</li>
      </ul>
     </div>
@@ -22,15 +23,8 @@ export default {
   },
   props: ['ws'],
   methods: {
-    ...mapActions(['addTabToWS'])
-  },
-  computed: {
-    // ...mapGetters([''])
-    //   return Object.keys(this.ws)[0]
-    // },
-    // urls () {
-    //   return this.ws[this.name]
-    // }
+    ...mapActions(['addTabToWS']),
+    blop () { return false }
   }
 }
 </script>
