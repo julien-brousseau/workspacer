@@ -40,14 +40,6 @@ export default {
 </script>
 
 <style scoped>
-.item {
-  /* width: auto;
-  padding: 15px;
-  border-bottom: 1px solid lightgray; */
-}
-.content {
-  /* width:auto; */
-}
 h6 {
   margin-bottom: 0px;
 }

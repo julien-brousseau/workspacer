@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import ListItem from './ListItem'
+import WSListItem from './WSListItem'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    wsListItem: ListItem
+    wsListItem: WSListItem
   },
   computed: {
     ...mapGetters(['allWS']),

@@ -9,12 +9,12 @@
 
 <script>
 import Menu from './components/Menu.vue'
-import List from './components/List.vue'
+import WSList from './components/WSList.vue'
 
 export default {
   components: {
     wsMenu: Menu,
-    wsList: List
+    wsList: WSList
   },
   created () {
     this.$store.dispatch('initWS')
