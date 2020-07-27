@@ -9,6 +9,7 @@
 
     <button v-else @click="toggleAddingWS" class="ui primary button">New Workspace</button>
 
+    <button @click="false" class="ui tiny teal button">Save current window</button>
     <button @click="clearWS" class="ui tiny red button">Reset</button>
 
   </div>
@@ -34,9 +35,9 @@ export default {
   methods: {
     ...mapActions(['addWS', 'toggleAddingWS', 'clearWS']),
     createWS () {
-      this.toggleAddingWS()
       this.addWS(this.ws)
       this.ws = baseWS
+      this.toggleAddingWS() // working??
     }
   }
 }

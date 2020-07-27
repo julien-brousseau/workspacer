@@ -60,9 +60,9 @@ export default new Vuex.Store({
     // Create a new tab in the selected Workspace
     addTabToWS: async ({ dispatch, getters }, wsName) => {
       const currentTab = await browser.tabs.query({ currentWindow: true, active: true })
-      const { id, url } = currentTab[0]
+      const { id, title, url } = currentTab[0]
       const ws = { ...getters.allWS }
-      const tab = { id, url }
+      const tab = { id, title, url }
       ws[wsName].push(tab)
       dispatch('saveWS', ws)
     },
