@@ -30,7 +30,8 @@ const browser = {
 export default new Vuex.Store({
   state: {
     ws: {},
-    addingWS: false
+    addingWS: null,
+    showTabs: null
   },
   mutations: {
 
@@ -40,6 +41,10 @@ export default new Vuex.Store({
 
     'TOGGLE_ADDING_WS' (state, visible) {
       state.addingWS = visible
+    },
+
+    'TOGGLE_SHOW_TABS' (state, visible) {
+      state.showTabs = visible
     }
 
   },
@@ -95,12 +100,18 @@ export default new Vuex.Store({
     // Show/hide the New WS form
     toggleAddingWS: ({ commit, state }) => {
       commit('TOGGLE_ADDING_WS', !state.addingWS)
+    },
+
+    // Show/hide the tab list in create form (from current window)
+    toggleShowTabs: ({ commit, state }, value) => {
+      commit('TOGGLE_SHOW_TABS', typeof value === 'boolean' ? value : !state.showTabs)
     }
 
   },
   getters: {
     allWS: state => state.ws,
-    addingWS: state => state.addingWS
+    addingWS: state => state.addingWS,
+    showTabs: state => state.showTabs
   }
 })
 
