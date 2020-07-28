@@ -3,7 +3,29 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const browser = require('webextension-polyfill')
+// const browser = require('webextension-polyfill')
+const browser = {
+  storage: {
+    local: {
+      get: function (v) {
+        return new Promise((resolve, reject) => {
+          const ws = {
+            'Brousseau.tech': [
+              { id: 1, title: 'Domain.com', url: 'domain.com' },
+              { id: 2, title: 'Github', url: 'github.com' }
+            ],
+            Personal: [
+              { id: 3, title: 'Firefox', url: 'firefox.com' },
+              { id: 4, title: 'Desjardins', url: 'desjardins.ca' },
+              { id: 5, title: 'Amazon', url: 'amazon.ca' }
+            ]
+          }
+          resolve({ ws: JSON.stringify(ws) })
+        })
+      }
+    }
+  }
+}
 
 export default new Vuex.Store({
   state: {

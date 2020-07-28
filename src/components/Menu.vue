@@ -1,5 +1,5 @@
 <template>
-  <div id="ws-menu">
+  <div id="ws-menu" class="ui top attached segment">
 
     <div v-if="addingWS" class="ui form">
       <input type="text" v-model="ws.name">

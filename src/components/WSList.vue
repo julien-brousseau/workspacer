@@ -1,5 +1,5 @@
 <template>
-  <div class="ui relaxed divided items">
+  <div class="ui segments">
     <ws-list-item v-for="ws in wsAsArray"
       :key="ws.name"
       :ws="ws">

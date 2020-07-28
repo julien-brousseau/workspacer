@@ -1,24 +1,19 @@
 <template>
-  <div class="item">
-    <div class="content">
+  <div class="ui segment">
 
-     {{ ws.name }}
-     <a @click="showTabs = !showTabs">({{ ws.tabs.length }} tabs)</a>
+    {{ ws.name }}
+    <a @click="showTabs = !showTabs">({{ ws.tabs.length }} tabs)</a>
 
-     <button @click="addTabToWS(ws.name)" class="ui mini green button right floated">ADD</button>
-     <button @click="blop" class="ui mini primary button right floated">LOAD</button>
-     <button @click="blop" class="ui mini red button right floated">DEL</button>
+    <button @click="addTabToWS(ws.name)" class="ui mini green button right floated">ADD</button>
+    <button @click="blop" class="ui mini primary button right floated">LOAD</button>
+    <button @click="blop" class="ui mini red button right floated">DEL</button>
 
-     <div v-if="showTabs" class="ui items">
-       <div v-for="tab in ws.tabs" :key="tab.id" class="item">
-        <div class="content">
-          <h6>{{ tab.title }}</h6>
-          <small>{{ tab.url }}</small>
-        </div>
+     <div v-if="showTabs" class="ui segments">
+       <div v-for="tab in ws.tabs" :key="tab.id" class="ui segment">
+          <p>{{ tab.title }}<br><small>{{ tab.url | shortURL }}</small></p>
        </div>
      </div>
 
-    </div>
   </div>
 </template>
 
@@ -32,6 +27,9 @@ export default {
     }
   },
   props: ['ws'],
+  filters: {
+    shortURL (url) { return url.slice(0, 40) + '...' }
+  },
   methods: {
     ...mapActions(['addTabToWS']),
     blop () { return false }
@@ -40,12 +38,7 @@ export default {
 </script>
 
 <style scoped>
-h6 {
-  margin-bottom: 0px;
-}
 small {
-  margin-top: 0px;
-  padding-top: 0px;
   font-style: italic;
   color: #CCCCCC;
 }
