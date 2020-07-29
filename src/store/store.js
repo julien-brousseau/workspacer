@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // Un-comment this line to enable browser testing in regular Vue app
-// import Browser from '../db/browser'
-const Browser = null
+import Browser from '../db/browser'
+// const Browser = null
 
 Vue.use(Vuex)
 

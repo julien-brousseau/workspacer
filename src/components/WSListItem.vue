@@ -10,7 +10,7 @@
 
      <div v-if="showTabs" class="ui segments">
        <div v-for="tab in ws.tabs" :key="tab.id" class="ui segment">
-          <p>{{ tab.title }}<br><small>{{ tab.url | shortURL }}</small></p>
+          <p>{{ tab.title }}<br><small>{{ tab.url | shorten }}</small></p>
        </div>
      </div>
 
@@ -27,9 +27,6 @@ export default {
     }
   },
   props: ['ws'],
-  filters: {
-    shortURL (url) { return url.slice(0, 40) + '...' }
-  },
   methods: {
     ...mapActions(['addTabToWS']),
     blop () { return false }

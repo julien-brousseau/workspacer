@@ -22,11 +22,13 @@
 
             <div class="one wide column">
               <i class="file outline icon"></i></div>
-            <div class="four wide column">
-              {{ tab.title }}</div>
-            <div class="six wide column">
-              {{ tab.url }}</div>
-            <div class="four wide column right aligned">
+
+            <div class="twelve wide column ui item">
+              <h4>{{ tab.title }}</h4>
+              <p>{{ tab.url }}</p>
+            </div>
+
+            <div class="three wide column right aligned">
               <!-- <button
                 class="ui compact icon button"
                 @click="false"
@@ -99,3 +101,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.column {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+</style>

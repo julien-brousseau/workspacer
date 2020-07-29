@@ -9,6 +9,10 @@ import store from './store/store'
 
 Vue.use(Vuex)
 
+Vue.filter('shorten', function (str, width = 40) {
+  return str.slice(0, width) + ((str.length > width - 4) ? '...' : '')
+})
+
 new Vue({
   store,
   render: h => h(App)
