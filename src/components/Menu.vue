@@ -28,8 +28,9 @@ export default {
     ...mapGetters(['addingWS', 'showTabs'])
   },
   methods: {
-    ...mapActions(['toggleAddingWS', 'toggleShowTabs', 'clearWS']),
-    showForm (showTabs = false) {
+    ...mapActions(['toggleAddingWS', 'createTempWS', 'toggleShowTabs', 'clearWS']),
+    showForm: (showTabs = false) => {
+      this.createTempWS()
       this.toggleShowTabs(showTabs)
       this.toggleAddingWS()
     }

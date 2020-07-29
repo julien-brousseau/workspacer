@@ -1,9 +1,18 @@
 <template>
   <div id="app" class="ui">
 
-    <ws-menu></ws-menu>
-    <ws-new v-if="addingWS"></ws-new>
-    <ws-list v-else></ws-list>
+    <div v-if="loading" class="ui segment">
+      <div class="ui active inverted dimmer">
+        <div class="ui text loader">Loading</div>
+      </div>
+      <p></p>
+    </div>
+
+    <div v-else>
+      <ws-menu></ws-menu>
+      <ws-new v-if="addingWS"></ws-new>
+      <ws-list v-else></ws-list>
+    </div>
 
   </div>
 </template>
@@ -22,7 +31,8 @@ export default {
     wsNew: WSNew
   },
   computed: {
-    ...mapGetters(['addingWS'])
+    ...mapGetters(['addingWS', 'allWS']),
+    loading () { return this.allWS === null }
   },
   created () {
     this.$store.dispatch('initWS')

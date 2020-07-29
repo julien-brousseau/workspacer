@@ -3,8 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-// const browser = require('webextension-polyfill')
-const browser = {
+let mockBrowser = {
   storage: {
     local: {
       get: function (v) {
@@ -26,10 +25,14 @@ const browser = {
     }
   }
 }
+mockBrowser = null
+
+const browser = mockBrowser || require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {
-    ws: {},
+    ws: null, // {},
+    newWS: null, // {},
     addingWS: null,
     showTabs: null
   },
@@ -39,11 +42,11 @@ export default new Vuex.Store({
       state.ws = ws
     },
 
-    'TOGGLE_ADDING_WS' (state, visible) {
+    'UPDATE_ADDING_WS' (state, visible) {
       state.addingWS = visible
     },
 
-    'TOGGLE_SHOW_TABS' (state, visible) {
+    'UPDATE_SHOW_TABS' (state, visible) {
       state.showTabs = visible
     }
 
@@ -99,12 +102,21 @@ export default new Vuex.Store({
 
     // Show/hide the New WS form
     toggleAddingWS: ({ commit, state }) => {
-      commit('TOGGLE_ADDING_WS', !state.addingWS)
+      commit('UPDATE_ADDING_WS', !state.addingWS)
     },
 
     // Show/hide the tab list in create form (from current window)
     toggleShowTabs: ({ commit, state }, value) => {
-      commit('TOGGLE_SHOW_TABS', typeof value === 'boolean' ? value : !state.showTabs)
+      commit('UPDATE_SHOW_TABS', typeof value === 'boolean' ? value : !state.showTabs)
+    },
+
+    // ...
+    createTempWS: async ({ commit, state }) => {
+      return browser.tabs.query({ currentWindow: true })
+        .then(tabs => {
+          console.log('tabs :>> ', tabs)
+          return tabs
+        })
     }
 
   },
