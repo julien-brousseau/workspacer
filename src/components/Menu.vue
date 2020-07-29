@@ -11,7 +11,7 @@
       <div class="or"></div>
       <button
         class="ui button"
-        @click="showForm()">
+        @click="showForm(false)">
           Create new workspace</button>
     </div>
 
@@ -28,11 +28,9 @@ export default {
     ...mapGetters(['addingWS', 'showTabs'])
   },
   methods: {
-    ...mapActions(['toggleAddingWS', 'createTempWS', 'toggleShowTabs', 'clearWS']),
-    showForm: (showTabs = false) => {
-      this.createTempWS()
-      this.toggleShowTabs(showTabs)
-      this.toggleAddingWS()
+    ...mapActions(['createTempWS', 'clearWS']),
+    showForm (showTabs = false) {
+      this.createTempWS(showTabs)
     }
   }
 }

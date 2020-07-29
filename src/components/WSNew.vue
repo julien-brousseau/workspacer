@@ -1,63 +1,101 @@
 <template>
+  <div class="ui attached segment">
 
-  <div v-if="addingWS" class="ui attached segment form">
-
-    <div class="field">
-      <input type="text" v-model="ws.name"></div>
-
-    <div class="field ui grid" v-if="showTabs">
-
-      <div class="one wide column">
-        <i class="file outline icon"></i></div>
-      <div class="four wide column">
-        Firefox</div>
-      <div class="six wide column">
-        http://www.blop.com</div>
-      <div class="two wide column">
-        <div class="ui toggle checkbox" v-if="showTabs">
-          <input type="checkbox" v-model="showTabs" />
-          <label></label></div></div>
-      <div class="two wide column">
-        <button class="ui compact icon red button">
-          <i class="trash icon"></i></button></div>
-
+    <div v-if="loading" class="ui segment">
+      <div class="ui active inverted dimmer">
+        <div class="ui text loader">Loading</div>
+      </div>
+      <p></p>
     </div>
 
-    <button
-      class="ui large primary button"
-      @click="createWS">
-        Create</button>
-    <button
-      class="ui button"
-      @click="toggleAddingWS">
-        Cancel</button>
-  </div>
+    <form v-else @submit.prevent class="ui form">
 
+      <div class="field">
+        <label>Workspace name</label>
+        <input type="text" v-model="workspace.name"></div>
+
+      <div class="field" v-if="showTabs">
+        <label>Included tabs</label>
+        <div class="ui grid segment segments">
+
+          <div v-for="tab in workspace.tabs" class="row segment" :key="tab.id">
+
+            <div class="one wide column">
+              <i class="file outline icon"></i></div>
+            <div class="four wide column">
+              {{ tab.title }}</div>
+            <div class="six wide column">
+              {{ tab.url }}</div>
+            <div class="four wide column right aligned">
+              <!-- <button
+                class="ui compact icon button"
+                @click="false"
+                :class="{ green: tab.pinned }">
+                  <i class="pin icon"></i></button> -->
+              <button
+                class="ui compact icon red button"
+                @click="deleteTab(tab.id)">
+                  <i class="trash icon"></i></button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <button
+        class="ui large primary button"
+        @click="submit">
+          Create</button>
+      <button
+        class="ui button"
+        @click="toggleAddingWS">
+          Cancel</button>
+    </form>
+
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-const baseWS = { name: 'Workspace 1' }
-
 export default {
   data () {
     return {
-      ws: baseWS
+      workspace: null,
+      loading: null
     }
   },
   computed: {
-    ...mapGetters(['addingWS', 'showTabs'])
+    ...mapGetters(['addingWS', 'showTabs', 'newWS'])
   },
   methods: {
-    ...mapActions(['addWS', 'toggleAddingWS', 'toggleShowTabs']),
-    init () {},
-    createWS () {
-      // this.addWS(this.ws)
-      this.ws = baseWS
-      this.toggleShowTabs()
-      this.toggleAddingWS()
+    ...mapActions(['toggleAddingWS', 'getAllTabsFromWindow']),
+    async init () {
+      this.loading = true
+      this.workspace = { name: 'Workspace 1', tabs: [] }
+      if (this.showTabs) this.workspace.tabs = await this.getAllTabsFromWindow()
+      this.loading = false
+    },
+    submit (e) { console.log('e :>> ', e) },
+    deleteTab (id) {
+      this.workspace.tabs = this.workspace.tabs.filter(t => t.id !== id)
     }
+
+    // @ Next
+    // pinTab (id) {
+    //   const pos = this.workspace.tabs.map((t, i) => { if (t.id === id) return i })
+    //   console.log('pos :>> ', pos)
+    // },
+
+    // Will be useful someday
+    // refreshTabsOrder () {
+
+    // }
+
+  },
+  created () {
+    this.init()
   }
 }
 </script>

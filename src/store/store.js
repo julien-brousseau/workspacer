@@ -1,33 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// Un-comment this line to enable browser testing in regular Vue app
+// import Browser from '../db/browser'
+const Browser = null
+
 Vue.use(Vuex)
 
-let mockBrowser = {
-  storage: {
-    local: {
-      get: function (v) {
-        return new Promise((resolve, reject) => {
-          const ws = {
-            'Brousseau.tech': [
-              { id: 1, title: 'Domain.com', url: 'domain.com' },
-              { id: 2, title: 'Github', url: 'github.com' }
-            ],
-            Personal: [
-              { id: 3, title: 'Firefox', url: 'firefox.com' },
-              { id: 4, title: 'Desjardins', url: 'desjardins.ca' },
-              { id: 5, title: 'Amazon', url: 'amazon.ca' }
-            ]
-          }
-          resolve({ ws: JSON.stringify(ws) })
-        })
-      }
-    }
-  }
-}
-mockBrowser = null
-
-const browser = mockBrowser || require('webextension-polyfill')
+const browser = Browser || require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {
@@ -40,6 +20,10 @@ export default new Vuex.Store({
 
     'UPDATE_ALL_WS' (state, ws) {
       state.ws = ws
+    },
+
+    'UPDATE_NEW_WS' (state, ws) {
+      state.newWS = ws
     },
 
     'UPDATE_ADDING_WS' (state, visible) {
@@ -101,27 +85,37 @@ export default new Vuex.Store({
     },
 
     // Show/hide the New WS form
-    toggleAddingWS: ({ commit, state }) => {
-      commit('UPDATE_ADDING_WS', !state.addingWS)
+    toggleAddingWS: ({ commit, state }, addingWS) => {
+      commit('UPDATE_ADDING_WS', typeof addingWS === 'boolean' ? addingWS : !state.addingWS)
     },
 
     // Show/hide the tab list in create form (from current window)
-    toggleShowTabs: ({ commit, state }, value) => {
-      commit('UPDATE_SHOW_TABS', typeof value === 'boolean' ? value : !state.showTabs)
+    toggleShowTabs: ({ commit, state }, showTabs) => {
+      commit('UPDATE_SHOW_TABS', typeof showTabs === 'boolean' ? showTabs : !state.showTabs)
+    },
+
+    //
+    getAllTabsFromWindow: async () => {
+      const ws = await browser.tabs.query({ currentWindow: true })
+      return ws
     },
 
     // ...
-    createTempWS: async ({ commit, state }) => {
-      return browser.tabs.query({ currentWindow: true })
-        .then(tabs => {
-          console.log('tabs :>> ', tabs)
-          return tabs
-        })
+    createTempWS: async ({ dispatch, commit, state }, showTabs) => {
+    //   let ws = {}
+    //   if (showTabs) {
+    //     ws = await browser.tabs.query({ currentWindow: true })
+    //     commit('UPDATE_NEW_WS', { ws })
+    //   }
+      dispatch('toggleShowTabs', showTabs)
+      dispatch('toggleAddingWS', true)
+    //   return ws
     }
 
   },
   getters: {
     allWS: state => state.ws,
+    newWS: state => state.newWS,
     addingWS: state => state.addingWS,
     showTabs: state => state.showTabs
   }
