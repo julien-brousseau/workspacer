@@ -45,9 +45,10 @@ export default new Vuex.Store({
     },
 
     // Create a new Workspace object
-    addWS: ({ dispatch, getters }, { name }) => {
-      const ws = { ...getters.allWS, [name]: [] }
+    createWS: ({ dispatch, commit, getters }, { name, tabs }) => {
+      const ws = { ...getters.allWS, [name]: tabs }
       dispatch('saveWS', ws)
+      commit('UPDATE_ADDING_WS', false)
     },
 
     // Create a new tab in the selected Workspace
@@ -96,20 +97,8 @@ export default new Vuex.Store({
 
     //
     getAllTabsFromWindow: async () => {
-      const ws = await browser.tabs.query({ currentWindow: true })
-      return ws
-    },
-
-    // ...
-    createTempWS: async ({ dispatch, commit, state }, showTabs) => {
-    //   let ws = {}
-    //   if (showTabs) {
-    //     ws = await browser.tabs.query({ currentWindow: true })
-    //     commit('UPDATE_NEW_WS', { ws })
-    //   }
-      dispatch('toggleShowTabs', showTabs)
-      dispatch('toggleAddingWS', true)
-    //   return ws
+      const tabs = await browser.tabs.query({ currentWindow: true })
+      return tabs
     }
 
   },

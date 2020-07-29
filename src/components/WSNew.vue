@@ -72,14 +72,16 @@ export default {
     ...mapGetters(['addingWS', 'showTabs', 'newWS'])
   },
   methods: {
-    ...mapActions(['toggleAddingWS', 'getAllTabsFromWindow']),
+    ...mapActions(['toggleAddingWS', 'getAllTabsFromWindow', 'createWS']),
     async init () {
       this.loading = true
       this.workspace = { name: 'Workspace 1', tabs: [] }
       if (this.showTabs) this.workspace.tabs = await this.getAllTabsFromWindow()
       this.loading = false
     },
-    submit (e) { console.log('e :>> ', e) },
+    submit (e) {
+      this.createWS(this.workspace)
+    },
     deleteTab (id) {
       this.workspace.tabs = this.workspace.tabs.filter(t => t.id !== id)
     }

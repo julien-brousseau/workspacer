@@ -15,8 +15,6 @@
           Create new workspace</button>
     </div>
 
-    <!-- <button @click="clearWS" class="ui tiny red button">Reset</button> -->
-
   </div>
 </template>
 
@@ -25,12 +23,14 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['addingWS', 'showTabs'])
+    // TODO: Useless?
+    ...mapGetters(['addingWS'])
   },
   methods: {
-    ...mapActions(['createTempWS', 'clearWS']),
+    ...mapActions(['toggleShowTabs', 'toggleAddingWS']),
     showForm (showTabs = false) {
-      this.createTempWS(showTabs)
+      this.toggleShowTabs(showTabs)
+      this.toggleAddingWS(true)
     }
   }
 }

@@ -16,9 +16,15 @@ export default {
           }
           resolve({ ws: JSON.stringify(ws) })
         })
+      },
+      set: function (v) {
+        return new Promise((resolve, reject) => {
+          resolve()
+        })
       }
     }
   },
+  // Currently opened tabs
   tabs: {
     query (q) {
       return new Promise((resolve, reject) => {

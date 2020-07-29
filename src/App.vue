@@ -12,6 +12,7 @@
       <ws-menu></ws-menu>
       <ws-new v-if="addingWS"></ws-new>
       <ws-list v-else></ws-list>
+      <button @click="clearWS" class="ui tiny red button">Reset</button>
     </div>
 
   </div>
@@ -22,7 +23,7 @@ import Menu from './components/Menu.vue'
 import WSList from './components/WSList.vue'
 import WSNew from './components/WSNew.vue'
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -33,6 +34,9 @@ export default {
   computed: {
     ...mapGetters(['addingWS', 'allWS']),
     loading () { return this.allWS === null }
+  },
+  methods: {
+    ...mapActions(['clearWS'])
   },
   created () {
     this.$store.dispatch('initWS')
