@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// import { initJSS } from '../db/jss_db'
+import { WorkspaceService } from '../db/workspace_service'
+
 // Un-comment this line to enable browser testing in regular Vue app
-import Browser from '../db/browser'
-// const Browser = null
+// import Browser from '../db/browser'
+const Browser = null
 
 Vue.use(Vuex)
 
@@ -37,7 +40,6 @@ export default new Vuex.Store({
 
     'UPDATE_SELECTED_WS' (state, selected) {
       state.selectedWS = selected
-      console.log('state.selectedWS :>> ', state.selectedWS)
     }
 
   },
@@ -45,6 +47,26 @@ export default new Vuex.Store({
 
     // Initially load storage WS
     initWS: async ({ dispatch, commit }) => {
+      try {
+        const isDbCreated = await initJsStore()
+        if (isDbCreated) {
+          console.log('db created')
+          // prefill database
+        } else {
+          console.log('db opened')
+        }
+      } catch (ex) {
+        console.error(ex)
+        alert(ex.message)
+        // Global.isIndexedDbSupported = false
+      }
+      // Add
+      await new WorkspaceService().addWS({ title: 'Blop' })
+
+      // Fetch
+      const blop = await new WorkspaceService().getWS()
+      console.log('blop :>> ', blop)
+
       dispatch('loadWS')
         .then(ws => commit('UPDATE_ALL_WS', ws))
         .catch(e => console.log('Error: :>> ', e))

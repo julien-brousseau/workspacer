@@ -44,7 +44,8 @@ export default {
 #app {
   border: 1px solid lightgray;
   width: 600px;
-  height: 100%;
+  height: auto;
+  max-height: 100%;
   color: #333333;
   padding: 20px;
 }
