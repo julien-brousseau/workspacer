@@ -13,6 +13,7 @@ export default new Vuex.Store({
   state: {
     ws: null, // {},
     newWS: null, // {},
+    selectedWS: null,
     addingWS: null,
     showTabs: null
   },
@@ -32,6 +33,11 @@ export default new Vuex.Store({
 
     'UPDATE_SHOW_TABS' (state, visible) {
       state.showTabs = visible
+    },
+
+    'UPDATE_SELECTED_WS' (state, selected) {
+      state.selectedWS = selected
+      console.log('state.selectedWS :>> ', state.selectedWS)
     }
 
   },
@@ -46,7 +52,7 @@ export default new Vuex.Store({
 
     // Create a new Workspace object
     createWS: ({ dispatch, commit, getters }, { name, tabs }) => {
-      const ws = { ...getters.allWS, [name]: tabs }
+      const ws = { ...getters.allWS, [name]: sortTabs(tabs) }
       dispatch('saveWS', ws)
       commit('UPDATE_ADDING_WS', false)
     },
@@ -95,6 +101,11 @@ export default new Vuex.Store({
       commit('UPDATE_SHOW_TABS', typeof showTabs === 'boolean' ? showTabs : !state.showTabs)
     },
 
+    // Set selected WS id
+    toggleSelectedWS: ({ commit, state }, id = null) => {
+      commit('UPDATE_SELECTED_WS', (!id || id === state.selectedWS) ? null : id)
+    },
+
     //
     getAllTabsFromWindow: async () => {
       const tabs = await browser.tabs.query({ currentWindow: true })
@@ -106,9 +117,16 @@ export default new Vuex.Store({
     allWS: state => state.ws,
     newWS: state => state.newWS,
     addingWS: state => state.addingWS,
-    showTabs: state => state.showTabs
+    showTabs: state => state.showTabs,
+    selectedWS: state => state.selectedWS
   }
 })
+
+function sortTabs (tabs) {
+  return tabs.sort((tab1, tab2) => {
+    return tab1.index === tab2.index ? 0 : tab1.index > tab2.index ? 1 : -1
+  })
+}
 
 function printObj (msg, o) {
   console.log('PRINTING >> ', msg)

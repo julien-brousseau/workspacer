@@ -24,7 +24,7 @@
               <i class="file outline icon"></i></div>
 
             <div class="twelve wide column ui item">
-              <h4>{{ tab.title }}</h4>
+              <h5>{{ tab.title }}</h5>
               <p>{{ tab.url }}</p>
             </div>
 

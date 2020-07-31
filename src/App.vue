@@ -12,7 +12,6 @@
       <ws-menu></ws-menu>
       <ws-new v-if="addingWS"></ws-new>
       <ws-list v-else></ws-list>
-      <button @click="clearWS" class="ui tiny red button">Reset</button>
     </div>
 
   </div>
@@ -35,9 +34,6 @@ export default {
     ...mapGetters(['addingWS', 'allWS']),
     loading () { return this.allWS === null }
   },
-  methods: {
-    ...mapActions(['clearWS'])
-  },
   created () {
     this.$store.dispatch('initWS')
   }
@@ -48,7 +44,7 @@ export default {
 #app {
   border: 1px solid lightgray;
   width: 600px;
-  height: auto;
+  height: 100%;
   color: #333333;
   padding: 20px;
 }

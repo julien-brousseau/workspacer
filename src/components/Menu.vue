@@ -1,7 +1,7 @@
 <template>
   <div id="ws-menu" class="ui top attached segment">
 
-    <h1>Workspacer</h1>
+    <h1 style="text-align: center">Workspacer</h1>
 
     <div v-if="!addingWS" class="ui buttons">
       <button
@@ -12,7 +12,7 @@
       <button
         class="ui button"
         @click="showForm(false)">
-          Create new workspace</button>
+          Create empty workspace</button>
     </div>
 
   </div>
@@ -37,5 +37,8 @@ export default {
 </script>
 
 <style scoped>
-
+.top {
+  text-align: center;
+  padding-bottom: 40px;
+}
 </style>
