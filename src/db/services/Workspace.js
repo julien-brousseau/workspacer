@@ -11,11 +11,15 @@ export class WorkspaceService {
     })
   }
 
-  addWS (ws) {
+  createWS (ws) {
     return connection.insert({
       into: this.tableName,
       values: [ws],
       return: true
     })
+  }
+
+  clearWS () {
+    return connection.clear(this.tableName)
   }
 }

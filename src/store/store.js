@@ -14,6 +14,7 @@ const browser = Browser || require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {
+    WS: new WorkspaceService(),
     ws: null, // {},
     newWS: null, // {},
     selectedWS: null,
@@ -22,7 +23,10 @@ export default new Vuex.Store({
   },
   mutations: {
 
-    'UPDATE_WS' (state, ws) {
+    'INIT_WS' (state, ws) {
+      state.ws = ws
+    },
+    'ADD_WS' (state, ws) {
       state.ws = ws
     },
 
@@ -49,50 +53,55 @@ export default new Vuex.Store({
     initWS: async ({ dispatch, commit }) => {
       return initJSS()
         .then(() => dispatch('loadWS'))
-        .then(ws => { console.log('ws :>> ', ws); return ws }) // temp
-        .then(ws => commit('UPDATE_WS', ws))
-        .catch(e => console.log('Error: :>> ', e)) // Global.isIndexedDbSupported = false
+        .then(ws => { commit('INIT_WS', ws); return ws })
+        .then(ws => console.log('Loaded ws :>> ', ws)) // temp
+        .catch(e => console.log('Error > initWS :>> ', e)) // Global.isIndexedDbSupported = false
     },
 
     // Create a new Workspace object
-    createWS: ({ dispatch, commit, getters }, { name, tabs }) => {
-      const ws = { ...getters.allWS, [name]: sortTabs(tabs) }
-      dispatch('saveWS', ws)
-      commit('UPDATE_ADDING_WS', false)
+    createWS: ({ dispatch, commit, state }, ws) => {
+      state.WS.createWS(ws)
+        // .then(storedWS => commit('UPDATE_ALL_WS', storedWS))
+        .then(ws => console.log('Saved >> ', ws)) // commit('UPDATE_ALL_WS', storedWS))
+        .catch(e => console.log('Error > saveWS :>> ', e))
+      // const ws = { ...getters.allWS, [name]: sortTabs(tabs) }
+      // dispatch('saveWS', ws)
+      // commit('UPDATE_ADDING_WS', false)
+    },
+
+    //
+    getAllTabsFromWindow: async () => {
+      console.log('Getting tabs from current window')
+      return await browser.tabs.query({ currentWindow: true })
     },
 
     // Create a new tab in the selected Workspace
     addTabToWS: async ({ dispatch, getters }, wsName) => {
       browser.tabs.query({ currentWindow: true, active: true })
-        .then(currentTab => currentTab[0])
-        .then(({ id, title, url }) => {
-          const ws = { ...getters.allWS }
-          const tab = { id, title, url }
-          ws[wsName].push(tab)
-          dispatch('saveWS', ws)
-        })
-        .catch(e => console.log('Error: :>> ', e))
+        .then(currentTab => currentTab[0]) // TODO: Optimize?
+        .then(ws => console.log('Current tab :>> ', ws))
+      //    const ws = { ...getters.allWS }
+      //    const tab = { id, title, url }
+      //    ws[wsName].push(tab)
+      //    dispatch('saveWS', ws)
+        .catch(e => console.log('Error > addTabToWS :>> ', e))
     },
 
     // Save the stringyfied ws object to storage, and commit the returned storage to state
-    saveWS: async ({ dispatch, commit }, ws) => {
-      const jsonWS = JSON.stringify(ws)
-      await browser.storage.local.set({ ws: jsonWS })
-      dispatch('loadWS')
-        .then(storedWS => commit('UPDATE_ALL_WS', storedWS))
-        .catch(e => console.log('Error: :>> ', e))
+    saveWS: async ({ dispatch, commit, state }, ws) => {
     },
 
     // Returns the JSON parsed content of local storage {ws} variable
-    loadWS: async ({ commit }) => {
-      return new WorkspaceService().getWS()
+    loadWS: async ({ state }) => {
+      return state.WS.getWS()
         .then(ws => ws)
         .catch(e => console.log('Error: :>> ', e))
     },
 
     // Reset the ws storage with empty object
-    clearWS: ({ dispatch }) => {
-      dispatch('saveWS', {})
+    clearWS: async ({ state, commit }) => {
+      await state.WS.clearWS()
+      commit('UPDATE_WS', null)
     },
 
     // Show/hide the New WS form
@@ -108,12 +117,6 @@ export default new Vuex.Store({
     // Set selected WS id
     toggleSelectedWS: ({ commit, state }, id = null) => {
       commit('UPDATE_SELECTED_WS', (!id || id === state.selectedWS) ? null : id)
-    },
-
-    //
-    getAllTabsFromWindow: async () => {
-      const tabs = await browser.tabs.query({ currentWindow: true })
-      return tabs
     }
 
   },

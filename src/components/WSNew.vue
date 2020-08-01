@@ -12,7 +12,7 @@
 
       <div class="field">
         <label>Workspace name</label>
-        <input type="text" v-model="workspace.name"></div>
+        <input type="text" v-model="workspace.title"></div>
 
       <div class="field" v-if="showTabs">
         <label>Included tabs</label>
@@ -75,7 +75,7 @@ export default {
     ...mapActions(['toggleAddingWS', 'getAllTabsFromWindow', 'createWS']),
     async init () {
       this.loading = true
-      this.workspace = { name: 'Workspace 1', tabs: [] }
+      this.workspace = { title: 'Workspace 1', tabs: [] }
       if (this.showTabs) this.workspace.tabs = await this.getAllTabsFromWindow()
       this.loading = false
     },

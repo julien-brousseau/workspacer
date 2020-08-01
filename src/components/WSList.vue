@@ -1,14 +1,23 @@
 <template>
-<div class="ui attached segment" style="padding-top: 40px">
-  <button @click="clearWS" class="ui tiny red button right floated" style="margin-top: 26px">Reset</button>
-  <h2 @click="selected = null">All Workspaces</h2>
-  <div class="ui segments">
-    <ws-list-item v-for="ws in wsAsArray"
-      :key="ws.name"
-      :ws="ws">
-    </ws-list-item>
+  <div class="ui attached segment" style="padding-top: 40px">
+
+    <button class="ui tiny red button right floated reset"
+      @click="clearWS">
+        Reset</button>
+
+    <h2 @click="selected = null">
+      All Workspaces</h2>
+
+    <div v-if="!allWS" class="ui segment">You have no workspaces.</div>
+
+    <div v-else class="ui segments">
+      <ws-list-item v-for="ws in allWS"
+        :key="ws.id"
+        :ws="ws">
+      </ws-list-item>
+    </div>
+
   </div>
-</div>
 </template>
 
 <script>
@@ -20,13 +29,7 @@ export default {
     wsListItem: WSListItem
   },
   computed: {
-    ...mapGetters(['allWS']),
-    wsAsArray () {
-      const ws = this.allWS
-      return Object.keys(ws).map(name => {
-        return { name, tabs: ws[name] }
-      })
-    }
+    ...mapGetters(['allWS'])
   },
   methods: {
     ...mapActions(['clearWS'])
@@ -35,4 +38,7 @@ export default {
 </script>
 
 <style scoped>
+.reset {
+  margin-top: 26px;
+}
 </style>
