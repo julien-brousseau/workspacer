@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import { initJSS } from '../db/jss_db'
-import { WorkspaceService } from '../db/workspace_service'
+import { initJSS } from '../db/jss_db'
+import { WorkspaceService } from '../db/services/Workspace'
 
 // Un-comment this line to enable browser testing in regular Vue app
 // import Browser from '../db/browser'
@@ -22,7 +22,7 @@ export default new Vuex.Store({
   },
   mutations: {
 
-    'UPDATE_ALL_WS' (state, ws) {
+    'UPDATE_WS' (state, ws) {
       state.ws = ws
     },
 
@@ -45,31 +45,13 @@ export default new Vuex.Store({
   },
   actions: {
 
-    // Initially load storage WS
+    // Init indexDB and load workspaces
     initWS: async ({ dispatch, commit }) => {
-      try {
-        const isDbCreated = await initJsStore()
-        if (isDbCreated) {
-          console.log('db created')
-          // prefill database
-        } else {
-          console.log('db opened')
-        }
-      } catch (ex) {
-        console.error(ex)
-        alert(ex.message)
-        // Global.isIndexedDbSupported = false
-      }
-      // Add
-      await new WorkspaceService().addWS({ title: 'Blop' })
-
-      // Fetch
-      const blop = await new WorkspaceService().getWS()
-      console.log('blop :>> ', blop)
-
-      dispatch('loadWS')
-        .then(ws => commit('UPDATE_ALL_WS', ws))
-        .catch(e => console.log('Error: :>> ', e))
+      return initJSS()
+        .then(() => dispatch('loadWS'))
+        .then(ws => { console.log('ws :>> ', ws); return ws }) // temp
+        .then(ws => commit('UPDATE_WS', ws))
+        .catch(e => console.log('Error: :>> ', e)) // Global.isIndexedDbSupported = false
     },
 
     // Create a new Workspace object
@@ -102,9 +84,9 @@ export default new Vuex.Store({
     },
 
     // Returns the JSON parsed content of local storage {ws} variable
-    loadWS: async () => {
-      return browser.storage.local.get('ws')
-        .then(({ ws }) => JSON.parse(ws))
+    loadWS: async ({ commit }) => {
+      return new WorkspaceService().getWS()
+        .then(ws => ws)
         .catch(e => console.log('Error: :>> ', e))
     },
 

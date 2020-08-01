@@ -13,9 +13,13 @@ const getDatabase = () => {
         dataType: DATA_TYPE.String,
         notNull: true
       },
-      url: {
+      description: {
         dataType: DATA_TYPE.String
         // notNull: true
+      },
+      tabs: {
+        dataType: DATA_TYPE.Array,
+        default: []
       }
     }
   }
