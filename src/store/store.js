@@ -14,7 +14,6 @@ const browser = Browser || require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {
-    WS: new WorkspaceService(),
     ws: null, // {},
     newWS: null, // {},
     selectedWS: null,
@@ -27,7 +26,7 @@ export default new Vuex.Store({
       state.ws = ws
     },
     'ADD_WS' (state, ws) {
-      state.ws = ws
+      state.ws.unshift(ws)
     },
 
     'UPDATE_NEW_WS' (state, ws) {
@@ -53,20 +52,24 @@ export default new Vuex.Store({
     initWS: async ({ dispatch, commit }) => {
       return initJSS()
         .then(() => dispatch('loadWS'))
-        .then(ws => { commit('INIT_WS', ws); return ws })
-        .then(ws => console.log('Loaded ws :>> ', ws)) // temp
+        .then(ws => commit('INIT_WS', ws))
         .catch(e => console.log('Error > initWS :>> ', e)) // Global.isIndexedDbSupported = false
     },
 
     // Create a new Workspace object
-    createWS: ({ dispatch, commit, state }, ws) => {
-      state.WS.createWS(ws)
-        // .then(storedWS => commit('UPDATE_ALL_WS', storedWS))
-        .then(ws => console.log('Saved >> ', ws)) // commit('UPDATE_ALL_WS', storedWS))
+    createWS: async ({ state, commit, dispatch }, ws) => {
+      new WorkspaceService().createWS(ws)
+        .then(ws => {
+          console.log('CREATED - RAW: ', ws[0])
+          commit('ADD_WS', ws[0])
+          commit('UPDATE_ADDING_WS', false)
+        })
+        .then(() => dispatch('loadWS'))
+        .then(ws => {
+          console.log('CREATED - DB: ', ws)
+          console.log('CREATED - STATE: ', state.ws)
+        })
         .catch(e => console.log('Error > saveWS :>> ', e))
-      // const ws = { ...getters.allWS, [name]: sortTabs(tabs) }
-      // dispatch('saveWS', ws)
-      // commit('UPDATE_ADDING_WS', false)
     },
 
     //
@@ -93,15 +96,15 @@ export default new Vuex.Store({
 
     // Returns the JSON parsed content of local storage {ws} variable
     loadWS: async ({ state }) => {
-      return state.WS.getWS()
+      return new WorkspaceService().getWS()
         .then(ws => ws)
         .catch(e => console.log('Error: :>> ', e))
     },
 
     // Reset the ws storage with empty object
     clearWS: async ({ state, commit }) => {
-      await state.WS.clearWS()
-      commit('UPDATE_WS', null)
+      await new WorkspaceService().clearWS()
+      commit('INIT_WS', null)
     },
 
     // Show/hide the New WS form

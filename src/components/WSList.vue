@@ -8,7 +8,7 @@
     <h2 @click="selected = null">
       All Workspaces</h2>
 
-    <div v-if="!allWS" class="ui segment">You have no workspaces.</div>
+    <div v-if="!allWS.length" class="ui segment">You have no workspaces.</div>
 
     <div v-else class="ui segments">
       <ws-list-item v-for="ws in allWS"

@@ -3,11 +3,11 @@
 
     <button
       class="ui mini green icon button right floated"
-      @click="addTabToWS(ws.name)">
+      @click="addTabToWS(ws.id)">
         <i class="plus icon"></i></button>
 
     <a @click="selectWS(ws)" style="cursor: pointer;">
-      <h3>{{ ws.name }} ({{ ws.tabs.length }} tabs)</h3></a>
+      <h3>{{ ws.title }} ({{ ws.tabs.length }} tabs)</h3></a>
 
     <div v-if="selected" class="tab-list">
       <div v-for="tab in ws.tabs" :key="tab.id" class="tab">
