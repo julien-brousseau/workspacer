@@ -75,9 +75,9 @@ export default {
     ...mapActions(['toggleAddingWS', 'getAllTabsFromWindow', 'createWS']),
     async init () {
       this.loading = true
-      this.workspace = { title: 'Workspace 1', tabs: [] }
+      const rnd = Math.round(Math.random() * 99)
+      this.workspace = { title: 'Workspace #' + rnd, tabs: [] }
       if (this.showTabs) this.workspace.tabs = await this.getAllTabsFromWindow()
-      console.log('UPDATED WITH TABS: ', this.workspace)
       this.loading = false
     },
     submit (e) {

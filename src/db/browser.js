@@ -1,29 +1,29 @@
 export default {
-  storage: {
-    local: {
-      get: function (v) {
-        return new Promise((resolve, reject) => {
-          const ws = {
-            'Workspace 1': [
-              { id: 1, title: 'Domain.com', url: 'domain.com' },
-              { id: 2, title: 'Github', url: 'github.com' }
-            ],
-            'Workspace 2': [
-              { id: 3, title: 'Firefox', url: 'firefox.com', pinned: true },
-              { id: 4, title: 'Desjardins', url: 'desjardins.ca' },
-              { id: 5, title: 'Amazon', url: 'amazon.ca' }
-            ]
-          }
-          resolve({ ws: JSON.stringify(ws) })
-        })
-      },
-      set: function (v) {
-        return new Promise((resolve, reject) => {
-          resolve()
-        })
-      }
-    }
-  },
+  // storage: {
+  //   local: {
+  //     get: function (v) {
+  //       return new Promise((resolve, reject) => {
+  //         const ws = {
+  //           'Workspace 1': [
+  //             { id: 1, title: 'Domain.com', url: 'domain.com' },
+  //             { id: 2, title: 'Github', url: 'github.com' }
+  //           ],
+  //           'Workspace 2': [
+  //             { id: 3, title: 'Firefox', url: 'firefox.com', pinned: true },
+  //             { id: 4, title: 'Desjardins', url: 'desjardins.ca' },
+  //             { id: 5, title: 'Amazon', url: 'amazon.ca' }
+  //           ]
+  //         }
+  //         resolve({ ws: JSON.stringify(ws) })
+  //       })
+  //     },
+  //     set: function (v) {
+  //       return new Promise((resolve, reject) => {
+  //         resolve()
+  //       })
+  //     }
+  //   }
+  // },
   // Currently opened tabs
   tabs: {
     query (q) {

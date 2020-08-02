@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { initJSS } from '../db/jss_db'
-import { WorkspaceService } from '../db/services/Workspace'
+import { Workspace } from '../db/services/Workspace'
 
 // Un-comment this line to enable browser testing in regular Vue app
 // import Browser from '../db/browser'
@@ -60,7 +60,7 @@ export default new Vuex.Store({
 
     // Create a new Workspace object
     createWS: async ({ commit, dispatch }, ws) => {
-      new WorkspaceService().createWS(ws)
+      new Workspace().createWS(ws)
         .then(ws => {
           commit('ADD_WS', ws[0])
           commit('UPDATE_ADDING_WS', false)
@@ -87,24 +87,24 @@ export default new Vuex.Store({
       const newWS = { ...ws, tabs: [...ws.tabs, { id, title, url }] }
 
       // Update DB
-      new WorkspaceService().updateWS(newWS)
+      new Workspace().updateWS(newWS)
         .then(rowsUpdated => {
-          if (rowsUpdated) commit('UPDATE_WS_TABS', newWS)
-          else console.log('No rows were updated')
+          if (rowsUpdated === 1) commit('UPDATE_WS_TABS', newWS)
+          else console.log(rowsUpdated + ' rows were updated')
         })
         .catch(e => console.log('Error > addTabToWS :>> ', e))
     },
 
     // Fetch the indexDB-stored workspace database
     loadWS: async () => {
-      return new WorkspaceService().getWS()
-        .then(ws => { console.log('Loaded: ', ws); return ws })
-        .catch(e => console.log('Error: :>> ', e))
+      return new Workspace().getWS()
+        .then(ws => ws)
+        .catch(e => console.log('Error > loadWS :>> ', e))
     },
 
     // Clear the workspace database
     clearWS: async ({ commit }) => {
-      await new WorkspaceService().clearWS()
+      await new Workspace().clearWS()
       commit('INIT_WS', [])
     },
 

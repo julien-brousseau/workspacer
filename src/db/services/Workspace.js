@@ -1,6 +1,6 @@
 import { connection } from '../jss_connexion'
 
-export class WorkspaceService {
+export class Workspace {
   constructor () {
     this.tableName = 'Workspaces'
   }
