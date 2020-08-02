@@ -1,12 +1,7 @@
 <template>
   <div id="app" class="ui">
 
-    <div v-if="loading" class="ui segment">
-      <div class="ui active inverted dimmer">
-        <div class="ui text loader">Loading</div>
-      </div>
-      <p></p>
-    </div>
+    <ws-loading v-if="loading"></ws-loading>
 
     <div v-else>
       <ws-menu></ws-menu>
@@ -21,6 +16,7 @@
 import Menu from './components/Menu.vue'
 import WSList from './components/WSList.vue'
 import WSNew from './components/WSNew.vue'
+import Loading from './components/items/Loading.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -28,13 +24,14 @@ export default {
   components: {
     wsMenu: Menu,
     wsList: WSList,
-    wsNew: WSNew
+    wsNew: WSNew,
+    wsLoading: Loading
   },
   computed: {
     ...mapGetters(['addingWS', 'allWS']),
-    loading () { return !this.allWS }
+    loading () { return this.allWS === null }
   },
-  created () {
+  mounted () {
     this.$store.dispatch('initWS')
   }
 }
