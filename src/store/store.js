@@ -14,23 +14,25 @@ const browser = Browser || require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {
-    ws: null, // {},
-    newWS: null, // {},
+    ws: null,
+    newWS: null,
     selectedWS: null,
     addingWS: null,
     showTabs: null
   },
   mutations: {
 
-    'INIT_WS' (state, ws) {
-      state.ws = ws
-    },
-    'ADD_WS' (state, ws) {
-      state.ws.unshift(ws)
+    'INIT_WS' (state, initialWSData) {
+      state.ws = initialWSData
     },
 
-    'UPDATE_NEW_WS' (state, ws) {
-      state.newWS = ws
+    'ADD_WS' (state, newWSData) {
+      state.ws.unshift(newWSData)
+    },
+
+    'UPDATE_WS_TABS' (state, updatedWSData) {
+      const ws = state.ws.find(w => w.id === updatedWSData.id)
+      ws.tabs = updatedWSData.tabs
     },
 
     'UPDATE_ADDING_WS' (state, visible) {
@@ -53,58 +55,57 @@ export default new Vuex.Store({
       return initJSS()
         .then(() => dispatch('loadWS'))
         .then(ws => commit('INIT_WS', ws))
-        .catch(e => console.log('Error > initWS :>> ', e)) // Global.isIndexedDbSupported = false
+        .catch(e => console.log('Error > initWS :>> ', e))
     },
 
     // Create a new Workspace object
-    createWS: async ({ state, commit, dispatch }, ws) => {
+    createWS: async ({ commit, dispatch }, ws) => {
       new WorkspaceService().createWS(ws)
         .then(ws => {
-          console.log('CREATED - RAW: ', ws[0])
           commit('ADD_WS', ws[0])
           commit('UPDATE_ADDING_WS', false)
         })
         .then(() => dispatch('loadWS'))
-        .then(ws => {
-          console.log('CREATED - DB: ', ws)
-          console.log('CREATED - STATE: ', state.ws)
-        })
-        .catch(e => console.log('Error > saveWS :>> ', e))
+        .catch(e => console.log('Error > createWS :>> ', e))
     },
 
-    //
+    // Query browser to get all current window's tabs
     getAllTabsFromWindow: async () => {
-      console.log('Getting tabs from current window')
-      return await browser.tabs.query({ currentWindow: true })
+      return browser.tabs.query({ currentWindow: true })
+        .then(tabs => tabs.map(({ id, title, url }) => { return { id, title, url } }))
+        .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e))
     },
 
-    // Create a new tab in the selected Workspace
-    addTabToWS: async ({ dispatch, getters }, wsName) => {
-      browser.tabs.query({ currentWindow: true, active: true })
-        .then(currentTab => currentTab[0]) // TODO: Optimize?
-        .then(ws => console.log('Current tab :>> ', ws))
-      //    const ws = { ...getters.allWS }
-      //    const tab = { id, title, url }
-      //    ws[wsName].push(tab)
-      //    dispatch('saveWS', ws)
+    // Save the current tab into the selected Workspace
+    addTabToWS: async ({ getters, commit }, wsId) => {
+      // Fetch current tab filtered properties
+      const tab = await browser.tabs.query({ currentWindow: true, active: true })
+      const { id, title, url } = tab[0]
+
+      // Push current tab to the workspace tab list
+      const ws = getters.allWS.find(ws => ws.id === wsId)
+      const newWS = { ...ws, tabs: [...ws.tabs, { id, title, url }] }
+
+      // Update DB
+      new WorkspaceService().updateWS(newWS)
+        .then(rowsUpdated => {
+          if (rowsUpdated) commit('UPDATE_WS_TABS', newWS)
+          else console.log('No rows were updated')
+        })
         .catch(e => console.log('Error > addTabToWS :>> ', e))
     },
 
-    // Save the stringyfied ws object to storage, and commit the returned storage to state
-    saveWS: async ({ dispatch, commit, state }, ws) => {
-    },
-
-    // Returns the JSON parsed content of local storage {ws} variable
-    loadWS: async ({ state }) => {
+    // Fetch the indexDB-stored workspace database
+    loadWS: async () => {
       return new WorkspaceService().getWS()
-        .then(ws => ws)
+        .then(ws => { console.log('Loaded: ', ws); return ws })
         .catch(e => console.log('Error: :>> ', e))
     },
 
-    // Reset the ws storage with empty object
-    clearWS: async ({ state, commit }) => {
+    // Clear the workspace database
+    clearWS: async ({ commit }) => {
       await new WorkspaceService().clearWS()
-      commit('INIT_WS', null)
+      commit('INIT_WS', [])
     },
 
     // Show/hide the New WS form

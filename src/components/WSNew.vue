@@ -77,6 +77,7 @@ export default {
       this.loading = true
       this.workspace = { title: 'Workspace 1', tabs: [] }
       if (this.showTabs) this.workspace.tabs = await this.getAllTabsFromWindow()
+      console.log('UPDATED WITH TABS: ', this.workspace)
       this.loading = false
     },
     submit (e) {

@@ -19,6 +19,14 @@ export class WorkspaceService {
     })
   }
 
+  updateWS ({ id, title, tabs }) {
+    return connection.update({
+      in: this.tableName,
+      set: { title, tabs },
+      where: { id }
+    })
+  }
+
   clearWS () {
     return connection.clear(this.tableName)
   }

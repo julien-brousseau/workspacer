@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     ...mapGetters(['addingWS', 'allWS']),
-    loading () { return this.allWS === null }
+    loading () { return !this.allWS }// || !this.allWS.length }
   },
   created () {
     this.$store.dispatch('initWS')

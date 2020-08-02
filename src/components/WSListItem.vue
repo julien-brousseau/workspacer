@@ -2,27 +2,32 @@
   <div class="ui segment" :class="{selected: selected}">
 
     <button
+      class="ui icon primary button right floated"
+      @click="false">
+        Open</button>
+
+    <button
       class="ui mini green icon button right floated"
       @click="addTabToWS(ws.id)">
         <i class="plus icon"></i></button>
 
     <a @click="selectWS(ws)" style="cursor: pointer;">
-      <h3>{{ ws.title }} ({{ ws.tabs.length }} tabs)</h3></a>
+      <h3>{{ ws.title }} <small>({{ ws.tabs.length }} tabs)</small></h3></a>
 
     <div v-if="selected" class="tab-list">
       <div v-for="tab in ws.tabs" :key="tab.id" class="tab">
 
         <div class="ui buttons right floated">
           <button
-            class="ui mini basic orange icon button"
-            @click="false">
+            class="ui mini basic icon button"
+            @click="pinTab(tab.id)">
               <i class="pin icon"></i></button>
           <button
-            class="ui mini basic primary icon button"
-            @click="false">
+            class="ui mini basic icon button"
+            @click="editTab(tab.id)">
               <i class="pencil icon"></i></button>
           <button
-            class="ui mini basic red icon button"
+            class="ui mini basic icon button"
             @click="deleteTab(tab.id)">
               <i class="trash icon"></i></button></div>
 
@@ -53,10 +58,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addTabToWS', 'toggleSelectedWS']),
-    selectWS (ws) { this.toggleSelectedWS(ws) },
+    ...mapActions(['addTabToWS', 'removeTabFromWS', 'toggleSelectedWS']),
+    selectWS (ws) {
+      this.toggleSelectedWS(ws)
+    },
     deleteTab (id) {
-      this.ws.tabs = this.ws.tabs.filter(t => t.id !== id)
+      this.removeTabFromWS(id)
+    },
+    pinTab (id) {
+    },
+    editTab (id) {
     }
   }
 }
