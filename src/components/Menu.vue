@@ -1,7 +1,7 @@
 <template>
   <div id="ws-menu" class="ui top attached segment">
 
-    <h1 style="text-align: center">Workspacer</h1>
+    <h1>Workspacer</h1>
 
     <div v-if="!addingWS" class="ui buttons">
       <button
@@ -37,8 +37,11 @@ export default {
 </script>
 
 <style scoped>
-.top {
+#ws-menu {
   text-align: center;
-  padding-bottom: 40px;
+  padding-bottom: 25px !important;
+}
+h1 {
+  text-align: inherit;
 }
 </style>

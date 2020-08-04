@@ -5,12 +5,12 @@ import { initJSS } from '../db/jss_db'
 import { Workspace } from '../db/services/Workspace'
 
 // Un-comment this line to enable browser testing in regular Vue app
-// import Browser from '../db/browser'
-const Browser = null
+// import { Browser, Workspace } from '../db/browser'
+// const browser = Browser
 
 Vue.use(Vuex)
 
-const browser = Browser || require('webextension-polyfill')
+const browser = require('webextension-polyfill')
 
 export default new Vuex.Store({
   state: {

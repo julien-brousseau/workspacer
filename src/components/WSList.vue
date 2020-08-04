@@ -1,16 +1,12 @@
 <template>
-  <div class="ui attached segment" style="padding-top: 40px">
+  <div id="ws-list" class="ui attached segment">
 
-    <button class="ui tiny red button right floated reset"
-      @click="clearWS">
-        Reset</button>
-
-    <h2 @click="selected = null">
-      All Workspaces</h2>
+    <button class="ui right floated mini basic red icon button reset" @click="clearWS"><i class="trash icon"></i>Reset</button>
+    <h2 @click="selected = null">My Workspaces</h2>
 
     <div v-if="!allWS.length" class="ui segment">You have no workspaces.</div>
 
-    <div v-else class="ui segments">
+    <div v-else class="ui items unstackable">
       <ws-list-item v-for="ws in allWS"
         :key="ws.id"
         :ws="ws">
@@ -38,7 +34,14 @@ export default {
 </script>
 
 <style scoped>
+#ws-list {
+  padding: 10px 0px 0px 0px;
+}
+h2 {
+  margin-left: 10px !important;
+  margin-bottom: 40px !important;
+}
 .reset {
-  margin-top: 26px;
+  margin: 26px 20px 0px 0px !important;
 }
 </style>

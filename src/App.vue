@@ -5,6 +5,7 @@
 
     <div v-else>
       <ws-menu></ws-menu>
+
       <ws-new v-if="addingWS"></ws-new>
       <ws-list v-else></ws-list>
     </div>
@@ -39,10 +40,10 @@ export default {
 
 <style scoped>
 #app {
-  border: 1px solid lightgray;
-  width: 600px;
-  height: 100%;
-  max-height: 100%;
+  /* border: 1px solid lightgray; */
+  width: 800px;
+  /* height: 100%; */
+  /* max-height: 100%; */
   color: #333333;
   padding: 20px;
 }

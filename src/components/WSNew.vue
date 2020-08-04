@@ -1,18 +1,28 @@
 <template>
   <div class="ui attached segment">
 
-    <div v-if="loading" class="ui segment">
-      <div class="ui active inverted dimmer">
-        <div class="ui text loader">Loading</div>
-      </div>
-      <p></p>
-    </div>
+    <ws-loading v-if="loading"></ws-loading>
 
     <form v-else @submit.prevent class="ui form">
 
-      <div class="field">
-        <label>Workspace name</label>
-        <input type="text" v-model="workspace.title"></div>
+      <div class="fields">
+
+        <div class="field">
+          <label>Workspace name</label>
+          <input type="text" v-model="workspace.title"></div>
+
+        <div class="field">
+          <label></label>
+          <button
+            class="ui large primary button"
+            @click="submit">
+              Create</button>
+          <button
+            class="ui button"
+            @click="toggleAddingWS">
+              Cancel</button>
+        </div>
+      </div>
 
       <div class="field" v-if="showTabs">
         <label>Included tabs</label>
@@ -46,13 +56,10 @@
       </div>
 
       <button
-        class="ui large primary button"
-        @click="submit">
-          Create</button>
-      <button
-        class="ui button"
-        @click="toggleAddingWS">
-          Cancel</button>
+        class="ui primary button"
+        @click="false">
+          Add tab</button>
+
     </form>
 
   </div>
@@ -60,12 +67,16 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Loading from './items/Loading.vue'
 
 export default {
+  components: {
+    wsLoading: Loading
+  },
   data () {
     return {
       workspace: null,
-      loading: null
+      loading: true
     }
   },
   computed: {

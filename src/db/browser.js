@@ -1,4 +1,4 @@
-export default {
+const Browser = {
   // storage: {
   //   local: {
   //     get: function (v) {
@@ -40,3 +40,52 @@ export default {
     }
   }
 }
+
+class Workspace {
+  getWS () {
+    return new Promise((resolve) => {
+      resolve([
+        {
+          id: 1,
+          title: 'Workspace #225',
+          tabs: [
+            { id: 121, title: 'Google', url: 'about:debugging#/runtime/this-firefox' },
+            { id: 123, title: 'Firefox', url: 'about:devtools-toolbon&id=97n' },
+            { id: 128, title: 'Debugging - Runtime / this-firefox', url: 'about:debugging#/runtime/this-firefox' }
+          ]
+        },
+        {
+          id: 2,
+          title: 'Workspace #25',
+          tabs: [
+            { id: 125, title: 'Debugging - Runtime / this-firefox', url: 'about:debugging#/runtime/this-firefox' },
+            { id: 126, title: 'Toolbox - Extension / Workspacer', url: 'about:devtools-toolbox?type=extension&id=97n' },
+            { id: 127, title: 'Debugging - Runtime / this-firefox', url: 'about:debugging#/runtime/this-firefox' }
+          ]
+        }
+      ])
+    })
+  }
+
+  createWS (ws) {
+    // return connection.insert({
+    //   into: this.tableName,
+    //   values: [ws],
+    //   return: true
+    // })
+  }
+
+  updateWS ({ id, title, tabs }) {
+    // return connection.update({
+    //   in: this.tableName,
+    //   set: { title, tabs },
+    //   where: { id }
+    // })
+  }
+
+  clearWS () {
+    // return connection.clear(this.tableName)
+  }
+}
+
+export { Browser, Workspace }
