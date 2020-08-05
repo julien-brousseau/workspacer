@@ -17,8 +17,7 @@ export default new Vuex.Store({
     ws: null,
     newWS: null,
     selectedWS: null,
-    addingWS: null,
-    showTabs: null
+    addingWS: null
   },
   mutations: {
 
@@ -37,10 +36,6 @@ export default new Vuex.Store({
 
     'UPDATE_ADDING_WS' (state, visible) {
       state.addingWS = visible
-    },
-
-    'UPDATE_SHOW_TABS' (state, visible) {
-      state.showTabs = visible
     },
 
     'UPDATE_SELECTED_WS' (state, selected) {
@@ -113,11 +108,6 @@ export default new Vuex.Store({
       commit('UPDATE_ADDING_WS', typeof addingWS === 'boolean' ? addingWS : !state.addingWS)
     },
 
-    // Show/hide the tab list in create form (from current window)
-    toggleShowTabs: ({ commit, state }, showTabs) => {
-      commit('UPDATE_SHOW_TABS', typeof showTabs === 'boolean' ? showTabs : !state.showTabs)
-    },
-
     // Set selected WS id
     toggleSelectedWS: ({ commit, state }, id = null) => {
       commit('UPDATE_SELECTED_WS', (!id || id === state.selectedWS) ? null : id)
@@ -128,7 +118,6 @@ export default new Vuex.Store({
     allWS: state => state.ws,
     newWS: state => state.newWS,
     addingWS: state => state.addingWS,
-    showTabs: state => state.showTabs,
     selectedWS: state => state.selectedWS
   }
 })
