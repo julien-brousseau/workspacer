@@ -15,9 +15,9 @@ const browser = require('webextension-polyfill')
 export default new Vuex.Store({
   state: {
     ws: null,
-    newWS: null,
-    selectedWS: null,
-    addingWS: null
+    addingWS: null,
+    selectedId: null,
+    editingWS: null
   },
   mutations: {
 
@@ -25,23 +25,26 @@ export default new Vuex.Store({
       state.ws = initialWSData
     },
 
-    'ADD_WS' (state, newWSData) {
+    'CREATE_WS' (state, newWSData) {
       state.ws.unshift(newWSData)
     },
 
-    'UPDATE_WS_TABS' (state, updatedWSData) {
+    'SET_WS_TABS' (state, updatedWSData) {
       const ws = state.ws.find(w => w.id === updatedWSData.id)
       ws.tabs = updatedWSData.tabs
     },
 
-    'UPDATE_ADDING_WS' (state, visible) {
-      state.addingWS = visible
+    'SET_ADDING_WS' (state, isVisible) {
+      state.addingWS = isVisible
     },
 
-    'UPDATE_SELECTED_WS' (state, selected) {
-      state.selectedWS = selected
-    }
+    'SET_SELECTED_WS' (state, wsId) {
+      state.selectedId = wsId
+    },
 
+    'SET_EDITING_WS' (state, isEditing) {
+      state.editingWS = isEditing
+    }
   },
   actions: {
 
@@ -57,8 +60,8 @@ export default new Vuex.Store({
     createWS: async ({ commit, dispatch }, ws) => {
       new Workspace().createWS(ws)
         .then(ws => {
-          commit('ADD_WS', ws[0])
-          commit('UPDATE_ADDING_WS', false)
+          commit('CREATE_WS', ws[0])
+          commit('SET_ADDING_WS', false)
         })
         .then(() => dispatch('loadWS'))
         .catch(e => console.log('Error > createWS :>> ', e))
@@ -84,7 +87,7 @@ export default new Vuex.Store({
       // Update DB
       new Workspace().updateWS(newWS)
         .then(rowsUpdated => {
-          if (rowsUpdated === 1) commit('UPDATE_WS_TABS', newWS)
+          if (rowsUpdated === 1) commit('SET_WS_TABS', newWS)
           else console.log(rowsUpdated + ' rows were updated')
         })
         .catch(e => console.log('Error > addTabToWS :>> ', e))
@@ -104,21 +107,29 @@ export default new Vuex.Store({
     },
 
     // Show/hide the New WS form
-    toggleAddingWS: ({ commit, state }, addingWS) => {
-      commit('UPDATE_ADDING_WS', typeof addingWS === 'boolean' ? addingWS : !state.addingWS)
+    toggleAddingWS: ({ commit, state }, addingWS = null) => {
+      commit('SET_SELECTED_WS', null)
+      commit('SET_EDITING_WS', null)
+      commit('SET_ADDING_WS', addingWS === null ? !state.addingWS : addingWS)
+    },
+
+    // Show/hide the Edit WS form
+    toggleEditingWS: ({ commit, state }, editingWS = null) => {
+      commit('SET_EDITING_WS', editingWS === null ? !state.editingWS : editingWS)
     },
 
     // Set selected WS id
     toggleSelectedWS: ({ commit, state }, id = null) => {
-      commit('UPDATE_SELECTED_WS', (!id || id === state.selectedWS) ? null : id)
+      commit('SET_SELECTED_WS', (!id || id === state.selectedId) ? null : id)
     }
 
   },
   getters: {
     allWS: state => state.ws,
-    newWS: state => state.newWS,
     addingWS: state => state.addingWS,
-    selectedWS: state => state.selectedWS
+    selectedWS: state => state.selectedId,
+    selectedWSData: state => state.ws.find(ws => ws.id === state.selectedId),
+    editingWS: state => state.editingWS
   }
 })
 

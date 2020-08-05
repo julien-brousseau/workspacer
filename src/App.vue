@@ -6,7 +6,7 @@
     <div v-else>
       <ws-menu></ws-menu>
 
-      <ws-new v-if="addingWS"></ws-new>
+      <ws-details v-if="addingWS || editingWS"></ws-details>
       <ws-list v-else></ws-list>
     </div>
 
@@ -14,9 +14,9 @@
 </template>
 
 <script>
-import Menu from './components/Menu.vue'
+import Menu from './components/items/Menu.vue'
 import WSList from './components/WSList.vue'
-import WSNew from './components/WSNew.vue'
+import WSDetails from './components/WSDetails.vue'
 import Loading from './components/items/Loading.vue'
 
 import { mapGetters, mapActions } from 'vuex'
@@ -25,11 +25,11 @@ export default {
   components: {
     wsMenu: Menu,
     wsList: WSList,
-    wsNew: WSNew,
+    wsDetails: WSDetails,
     wsLoading: Loading
   },
   computed: {
-    ...mapGetters(['addingWS', 'allWS']),
+    ...mapGetters(['addingWS', 'editingWS', 'allWS']),
     loading () { return this.allWS === null }
   },
   mounted () {
@@ -52,7 +52,8 @@ h1 {
 }
 h2 {
   margin-left: 10px !important;
-  margin-bottom: 40px !important;
+  margin-bottom: 30px !important;
+  margin-top: 15px !important;
 }
 h4 {
   margin: 0px !important;
