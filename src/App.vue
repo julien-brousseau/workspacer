@@ -38,7 +38,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #app {
   /* border: 1px solid lightgray; */
   width: 800px;
@@ -46,5 +46,15 @@ export default {
   /* max-height: 100%; */
   color: #333333;
   padding: 20px;
+}
+h1 {
+  text-align: inherit;
+}
+h2 {
+  margin-left: 10px !important;
+  margin-bottom: 40px !important;
+}
+h4 {
+  margin: 0px !important;
 }
 </style>

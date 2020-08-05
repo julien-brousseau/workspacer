@@ -3,14 +3,18 @@
 
     <h1>Workspacer</h1>
 
-    <div v-if="!addingWS" class="ui buttons">
+    <div class="ui buttons">
       <button
-        class="ui primary button"
+        class="ui large primary button"
+        :class="{ disabled }"
         @click="showForm(true)">
-          Save current window</button>
+          Save current window as workspace</button>
+
       <div class="or"></div>
+
       <button
-        class="ui button"
+        class="ui large button"
+        :class="{ disabled }"
         @click="showForm(false)">
           Create empty workspace</button>
     </div>
@@ -24,7 +28,10 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   computed: {
     // TODO: Useless?
-    ...mapGetters(['addingWS'])
+    ...mapGetters(['addingWS']),
+    disabled () {
+      return this.addingWS
+    }
   },
   methods: {
     ...mapActions(['toggleShowTabs', 'toggleAddingWS']),
@@ -40,8 +47,5 @@ export default {
 #ws-menu {
   text-align: center;
   padding-bottom: 25px !important;
-}
-h1 {
-  text-align: inherit;
 }
 </style>

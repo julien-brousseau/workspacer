@@ -15,7 +15,7 @@
       <div class="ui buttons" :class="[cls.buttons]">
         <button class="ui button icon" :class="[cls.buttonOpen]">
           <i class="icon sticky note"></i>{{ selected ? 'Open workspace' : '' }}</button>
-        <button class="ui button icon" :class="[cls.buttonAdd]">
+        <button class="ui button icon" :class="[cls.buttonAdd]" @click="addTabToWS(ws.id)">
           <i class="icon plus"></i>{{ selected ? 'Add current tab' : '' }}</button>
         <button class="ui button icon" :class="[cls.buttonEdit]">
           <i class="icon pencil"></i>{{ selected ? 'Edit workspace' : '' }}</button>
@@ -23,31 +23,6 @@
     </div>
 
   </div>
-
-<!--
-    <div v-if="selected" class="tab-list">
-      <div v-for="tab in ws.tabs" :key="tab.id" class="tab">
-
-        <div class="ui buttons right floated">
-          <button
-            class="ui mini basic icon button"
-            @click="pinTab(tab.id)">
-              <i class="pin icon"></i></button>
-          <button
-            class="ui mini basic icon button"
-            @click="editTab(tab.id)">
-              <i class="pencil icon"></i></button>
-          <button
-            class="ui mini basic icon button"
-            @click="deleteTab(tab.id)">
-              <i class="trash icon"></i></button></div>
-
-        <div class="content left floated">
-          <h5>{{ tab.title }}</h5>
-          <p><small>{{ tab.url }}</small></p></div>
-
-      </div>
-    </div> -->
 
 </template>
 
@@ -73,20 +48,10 @@ export default {
         buttonEdit: this.selected ? 'small labeled grey' : 'basic large'
       }
     }
-    // selectedButton () { return this.selected ? 'ui small grey button' : 'basic large icon' }
   },
   methods: {
     ...mapActions(['addTabToWS', 'removeTabFromWS', 'toggleSelectedWS']),
-    selectWS (ws) {
-      this.toggleSelectedWS(ws)
-    },
-    deleteTab (id) {
-      this.removeTabFromWS(id)
-    },
-    pinTab (id) {
-    },
-    editTab (id) {
-    }
+    selectWS (ws) { this.toggleSelectedWS(ws) }
   }
 }
 </script>
