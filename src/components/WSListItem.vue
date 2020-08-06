@@ -24,6 +24,8 @@
         <i class="icon plus"></i></button>
       <button class="ui button icon" :class="[cls.buttonEdit]" @click="editWS">
         <i class="icon pencil"></i></button>
+      <!-- <button v-if="selected" class="ui button large icon" @click="cancel">
+        <i class="icon close"></i></button> -->
     </div>
 
   </div>
@@ -63,6 +65,10 @@ export default {
     },
     addCurrentTab () {
       this.addTabToWS(this.ws.id)
+    },
+    cancel () {
+      this.toggleSelectedWS(null)
+      this.toggleEditingWS(false)
     }
   }
 }

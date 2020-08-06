@@ -32,7 +32,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Loading from './items/Loading.vue'
-import TabList from './items/TabList.vue'
+import TabList from './TabList.vue'
 
 export default {
   components: {

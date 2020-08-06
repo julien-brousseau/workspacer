@@ -46,6 +46,7 @@ export default {
   /* max-height: 100%; */
   color: #333333;
   padding: 20px;
+  padding-bottom: 50px;
 }
 h1 {
   text-align: inherit;

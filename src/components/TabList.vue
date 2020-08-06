@@ -5,18 +5,7 @@
       <!-- <button v-if="!tabSelected(tab.id)" class="ui button icon basic">
         <i class="icon pin"></i></button> -->
 
-      <div v-if="!tabSelected(tab.id)" class="ui vertical buttons" style="margin-right: 10px;">
-        <button
-          class="ui mini button icon basic"
-          style="margin:0px;padding:2px;">
-            <i class="icon caret up"></i>
-        </button>
-        <button
-          class="ui mini button icon basic"
-          style="margin:0px;padding:2px;">
-            <i class="icon caret down"></i>
-        </button>
-      </div>
+      <tab-controls v-if="!tabSelected(tab.id)"></tab-controls>
 
       <div v-if="tab.id === selectedTab" class="content ui relaxed grid">
           <input class="six wide column" type="text" placeholder="Name" v-model="tab.title">
@@ -47,7 +36,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import TabControls from './TabControls.vue'
+
 export default {
+  components: {
+    tabControls: TabControls
+  },
   props: ['tabs'],
   data () {
     return {
