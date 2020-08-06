@@ -15,9 +15,10 @@ const browser = require('webextension-polyfill')
 export default new Vuex.Store({
   state: {
     ws: null,
-    addingWS: null,
+    addingWS: false,
     selectedId: null,
-    editingWS: null
+    editingWS: false
+    // editingTab: null
   },
   mutations: {
 
@@ -78,11 +79,13 @@ export default new Vuex.Store({
     addTabToWS: async ({ getters, commit }, wsId) => {
       // Fetch current tab filtered properties
       const tab = await browser.tabs.query({ currentWindow: true, active: true })
-      const { id, title, url } = tab[0]
+      const { title, url } = tab[0]
+      const id = Date.now()
 
       // Push current tab to the workspace tab list
       const ws = getters.allWS.find(ws => ws.id === wsId)
-      const newWS = { ...ws, tabs: [...ws.tabs, { id, title, url }] }
+      const tabs = [...ws.tabs, { id, title, url }]
+      const newWS = { ...ws, tabs }
 
       // Update DB
       new Workspace().updateWS(newWS)
@@ -106,6 +109,7 @@ export default new Vuex.Store({
       commit('INIT_WS', [])
     },
 
+    // TODO: divide between show and global home button
     // Show/hide the New WS form
     toggleAddingWS: ({ commit, state }, addingWS = null) => {
       commit('SET_SELECTED_WS', null)
@@ -114,13 +118,20 @@ export default new Vuex.Store({
     },
 
     // Show/hide the Edit WS form
-    toggleEditingWS: ({ commit, state }, editingWS = null) => {
-      commit('SET_EDITING_WS', editingWS === null ? !state.editingWS : editingWS)
-    },
+    // toggleEditingTab: ({ commit, state }, tabId = null) => {
+    //   commit('SET_EDITING_TAB', tabId === null ? !state.editingTab : tabId)
+    // },
 
     // Set selected WS id
     toggleSelectedWS: ({ commit, state }, id = null) => {
-      commit('SET_SELECTED_WS', (!id || id === state.selectedId) ? null : id)
+      commit('SET_SELECTED_WS', id)
+    },
+
+    // Show/hide the Edit WS form
+    toggleEditingWS: ({ commit, state }, editingWS = null) => {
+      const e = editingWS === null ? !state.editingWS : editingWS
+      console.log('Editing :>> ', e)
+      commit('SET_EDITING_WS', e)
     }
 
   },
@@ -130,6 +141,7 @@ export default new Vuex.Store({
     selectedWS: state => state.selectedId,
     selectedWSData: state => state.ws.find(ws => ws.id === state.selectedId),
     editingWS: state => state.editingWS
+    // editingTab: state => state.editingTab
   }
 })
 
@@ -143,3 +155,12 @@ function printObj (msg, o) {
   console.log('PRINTING >> ', msg)
   Object.keys(o).map(ws => console.log(ws))
 }
+
+// Temporary fix until tabs are managed by a separate jsStore table
+// function fixTabIds (tabs) {
+//   return tabs.map(t => {
+//     if (!t.id) t.id = Date.now()
+//     console.log('t :>> ', t)
+//     return t
+//   })
+// }

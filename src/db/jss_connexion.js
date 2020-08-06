@@ -1,3 +1,4 @@
+/* eslint-disable import/no-webpack-loader-syntax */
 import * as JsStore from 'jsstore'
 
 const getWorkerPath = () => {
@@ -12,4 +13,4 @@ const getWorkerPath = () => {
 
 const workerPath = getWorkerPath()
 export const connection = new JsStore.Connection(new Worker(workerPath))
-connection.setLogStatus(true)
+connection.setLogStatus(false)

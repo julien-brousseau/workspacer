@@ -1,7 +1,7 @@
 <template>
   <div id="ws-view" class="ui attached segment">
 
-    <h2>My workspaces > Create new workspace/Name</h2>
+    <h2>My workspaces > {{ editing ? workspace.title : 'New workspace' }}</h2>
 
     <ws-loading v-if="!workspace"></ws-loading>
 
@@ -12,49 +12,19 @@
         <input type="text" v-model="workspace.title">
       </div>
 
-      <div class="ui field items">
+      <div class="field">
         <label>Included tabs</label>
-
-        <div v-for="tab in workspace.tabs" :key="tab.id" class="item tab">
-          <button class="ui button icon basic"><i class="icon pin"></i></button>
-          <div class="ui vertical buttons" style="margin-right: 10px;">
-            <button class="ui mini button icon basic"
-                    style="margin:0px;padding:2px;">
-              <i class="icon caret up"></i></button>
-            <button class="ui mini button icon basic"
-                    style="margin:0px;padding:2px;">
-              <i class="icon caret down"></i></button>
-          </div>
-
-          <!-- <div class="content ui relaxed grid">
-              <input class="six wide column" type="text" placeholder="Name" v-model="tab.title">
-              <input class="nine wide column" type="text" placeholder="URL" v-model="tab.url">
-          </div> -->
-
-          <div class="content">
-            <h4>{{ tab.title }}</h4>
-            <p>{{ tab.url }}</p>
-          </div>
-
-          <div class="actions right floated">
-            <div class="ui buttons">
-              <button class="ui button icon basic large" @click="editTab(tab.id)">
-                <i class="icon pencil"></i></button>
-              <button class="ui button icon basic large" @click="deleteTab(tab.id)">
-                <i class="icon trash"></i></button>
-            </div>
-          </div>
-        </div>
-
+        <ws-tab-list :tabs="workspace.tabs"></ws-tab-list>
         <div class="actions" style="margin-top:20px;">
           <button class="ui button" @click="addTab">Add tab</button>
           <button class="ui primary button" @click="addAllTabs">Add all tabs</button>
         </div>
+      </div>
+
+      <button class="ui large button right floated" @click="cancel">Cancel</button>
+      <button class="ui large green button right floated" @click="submit">{{ editing ? 'Save' : 'Create' }}</button>
 
     </div>
-
-    <button class="ui large button right floated" @click="cancel">Cancel</button>
-    <button class="ui large green button right floated" @click="submit">Create/save</button>
 
   </div>
 </template>
@@ -62,10 +32,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Loading from './items/Loading.vue'
+import TabList from './items/TabList.vue'
 
 export default {
   components: {
-    wsLoading: Loading
+    wsLoading: Loading,
+    wsTabList: TabList
   },
   data () {
     return {
@@ -78,7 +50,9 @@ export default {
   },
   methods: {
     ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'getAllTabsFromWindow', 'createWS', 'updateWS']),
-    async init () {
+
+    init () {
+      this.editingTab = null
       if (this.selectedWS) {
         this.workspace = this.selectedWSData
       } else {
@@ -86,21 +60,20 @@ export default {
         this.workspace = { title: 'Workspace #' + rnd, tabs: [] }
       }
     },
+
     addTab () {
       //
     },
     async addAllTabs () {
       // this.workspace.tabs = await this.getAllTabsFromWindow()
     },
-    deleteTab (id) {
-      this.workspace.tabs = this.workspace.tabs.filter(t => t.id !== id)
-    },
+
     submit (e) {
-      if (this.selectedWS) this.updateWS(this.workspace)
+      if (this.selectedWS) console.log('submit workspace :>> ', this.workspace) // this.updateWS(this.workspace)
       else this.createWS(this.workspace)
     },
     cancel () {
-      this.toggleSelectedWS(null)
+      this.toggleSelectedWS()
       this.toggleEditingWS(false)
       this.toggleAddingWS(false)
     }

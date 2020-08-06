@@ -54,10 +54,12 @@ export default {
       this.toggleSelectedWS(this.ws.id)
     },
     openWS () {
+      // Open new window with the selected ws
       return false
     },
     editWS () {
-      this.toggleEditingWS(this.ws.id)
+      this.toggleSelectedWS(this.ws.id)
+      this.toggleEditingWS(true)
     },
     addCurrentTab () {
       this.addTabToWS(this.ws.id)
