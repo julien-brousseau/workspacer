@@ -7,21 +7,22 @@
 
       <tab-controls v-if="!tabSelected(tab.id)"></tab-controls>
 
-      <div v-if="tab.id === selectedTab" class="content ui grid">
+      <div class="content ui grid">
+      <!-- <div v-if="tab.id === selectedTab" class="content ui grid"> -->
           <input class="six wide column" type="text" placeholder="Title" v-model="tab.title">
           <input class="nine wide column right aligned" type="text" placeholder="URL" v-model="tab.url">
       </div>
 
-      <div v-else class="content">
+      <!-- <div v-else class="content">
         <h4>{{ tab.title }}</h4>
         <p>{{ tab.url }}</p>
-      </div>
+      </div> -->
 
       <div class="actions right floated">
         <div class="ui buttons">
 
           <button class="ui button icon basic large"
-            @click="tabSelected(tab.id) ? saveTab(tab.id) : editTab(tab.id)">
+            @click="tabSelected(tab.id) ? saveTab(tab.id) : editTab(tab)">
               <i class="icon" :class="tabSelected(tab.id) ? 'save' : 'pencil'"></i></button>
           <button class="ui button icon basic large"
             @click="tabSelected(tab.id) ? cancel() : deleteTab(tab.id)">
@@ -47,7 +48,8 @@ export default {
   props: ['tabs'],
   data () {
     return {
-      selectedTab: null
+      selectedTab: null,
+      previousValue: null
     }
   },
   computed: {
@@ -55,8 +57,9 @@ export default {
   },
   methods: {
     tabSelected (id) { return this.selectedTab === id },
-    editTab (id) {
-      this.selectedTab = id
+    editTab (tab) {
+      this.selectedTab = tab.id
+      this.previousValue = tab
     },
     saveTab (id) {
       // Save tab code...
@@ -65,8 +68,8 @@ export default {
     cancel () {
       this.selectedTab = null
     },
-    deleteTab (id) {
-      // this.workspace.tabs = this.workspace.tabs.filter(t => t.id !== id)
+    deleteTab (deleteId) {
+      this.tabs = this.tabs.filter(t => t.id !== deleteId)
     }
     // moveTab (id, direction) {
     //

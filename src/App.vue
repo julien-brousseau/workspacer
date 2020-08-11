@@ -4,7 +4,7 @@
     <ws-loading v-if="loading"></ws-loading>
 
     <div v-else>
-      <ws-menu></ws-menu>
+      <!-- <ws-menu></ws-menu> -->
 
       <ws-details v-if="addingWS || editingWS"></ws-details>
       <ws-list v-else></ws-list>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Menu from './components/items/Menu.vue'
+// import Menu from './components/items/Menu.vue'
 import WSList from './components/WSList.vue'
 import WSDetails from './components/WSDetails.vue'
 import Loading from './components/items/Loading.vue'
@@ -23,7 +23,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
-    wsMenu: Menu,
+    // wsMenu: Menu,
     wsList: WSList,
     wsDetails: WSDetails,
     wsLoading: Loading
