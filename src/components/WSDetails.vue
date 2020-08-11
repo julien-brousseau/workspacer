@@ -5,11 +5,11 @@
 
     <ws-loading v-if="!workspace"></ws-loading>
 
-    <div v-else @submit.prevent class="ui large form">
+    <div v-else @submit.prevent="submit" class="ui large form">
 
       <div class="field">
         <label>Workspace name</label>
-        <input type="text" v-model="workspace.title">
+        <input type="text" v-model="workspace.title" required>
       </div>
 
       <div class="field">
@@ -42,7 +42,8 @@ export default {
   data () {
     return {
       workspace: null,
-      tabs: null
+      tabs: null,
+      newTab: null
     }
   },
   computed: {
@@ -50,11 +51,12 @@ export default {
     editing () { return this.editingWS }
   },
   methods: {
-    ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'getAllTabsFromWindow', 'createWS', 'updateWS']),
+    ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'getAllTabsFromWindow', 'createOrUpdateWS', 'updateWS', 'getCurrentTab']),
 
     init () {
+      this.newTab = null
       if (this.selectedWS) {
-        this.workspace = this.selectedWSData
+        this.workspace = { ...this.selectedWSData }
         this.tabs = this.allTabs.filter(t => t.wsId === this.workspace.id)
       } else {
         const rnd = Math.round(Math.random() * 99)
@@ -63,18 +65,29 @@ export default {
       }
     },
 
-    addTab () {
-      //
+    // Add an empty tab
+    async addTab () {
+      const id = Math.round(Math.random() * 99) + 1000
+      const { title, url } = await this.getCurrentTab()
+      this.tabs.push({ id, title, url, tempId: true }) // The tempId flag indicates which ids must be removed upon saving to generate new ones
     },
 
+    // Add all current window's tabs
     async addAllTabs () {
-      // this.workspace.tabs = await this.getAllTabsFromWindow()
+      const windowTabs = await this.getAllTabsFromWindow()
+      this.tabs = [...this.tabs, ...windowTabs.map(t => { return { ...t, tempId: true } })]
     },
 
-    submit (e) {
-      if (this.selectedWS) this.updateWS(this.workspace, this.tabs)
-      else this.createWS({ ws: this.workspace, tabs: this.tabs })
-      this.cancel()
+    //
+    async submit (e) {
+      const tabs = this.tabs.map(t => {
+        const { id, tempId, title, url } = t
+        if (t.tempId) delete t.id
+        delete t.tempId
+        return t
+      })
+      const error = await this.createOrUpdateWS({ ws: this.workspace, tabs })
+      if (!error) this.cancel()
     },
 
     cancel () {

@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: Remove the whole menu component and move buttons to title floated right -->
   <div id="ws-menu" class="ui top attached segment">
 
     <h1>Workspacer</h1>

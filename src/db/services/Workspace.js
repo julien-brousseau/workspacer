@@ -11,10 +11,11 @@ export class Workspace {
     })
   }
 
-  createWS (ws) {
+  createOrUpdateWS (ws) {
     return connection.insert({
       into: this.tableName,
       values: [ws],
+      upsert: true,
       return: true
     })
   }

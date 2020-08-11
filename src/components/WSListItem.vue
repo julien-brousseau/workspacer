@@ -1,22 +1,27 @@
 <template>
   <div class="item" :class="{selected: selected}">
 
+    <!-- Label -->
     <div class="image" style="width:auto;">
       <div class="ui basic grey label">{{ tabs.length }}</div>
     </div>
 
     <div class="content">
+
+      <!-- Tab info and expand link -->
       <h3 @click="selectWS">
         <i class="ui caret icon" :class="[selectedCaret]"></i>
         {{ ws.title }}
       </h3>
 
+      <!-- List of static tabs -->
       <ul v-if="selected" class="tabs">
         <li class="tab header">Included tabs</li>
         <li class="tab" v-for="tab in tabs" :key="tab.id" >{{ tab.title }}</li>
       </ul>
     </div>
 
+    <!-- WS controls -->
     <div class="actions right floated">
       <button class="ui button icon" :class="[cls.buttonOpen]" @click="openWS">
         <i class="icon sticky note"></i></button>
@@ -24,8 +29,6 @@
         <i class="icon plus"></i></button>
       <button class="ui button icon" :class="[cls.buttonEdit]" @click="editWS">
         <i class="icon pencil"></i></button>
-      <!-- <button v-if="selected" class="ui button large icon" @click="cancel">
-        <i class="icon close"></i></button> -->
     </div>
 
   </div>
@@ -39,8 +42,11 @@ export default {
   props: ['ws'],
   computed: {
     ...mapGetters(['selectedWS', 'allTabs']),
+
     tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
     selected () { return this.selectedWS === this.ws.id },
+
+    // Dynamic class control
     selectedCaret () { return this.selected ? 'down' : 'right' },
     cls () {
       return {
@@ -50,9 +56,10 @@ export default {
         buttonEdit: this.selected ? 'huge orange' : 'basic small'
       }
     }
+
   },
   methods: {
-    ...mapActions(['createTab', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
     selectWS () {
       this.toggleSelectedWS(this.ws.id)
     },
@@ -63,8 +70,9 @@ export default {
       this.toggleSelectedWS(this.ws.id)
       this.toggleEditingWS(true)
     },
-    addCurrentTab () {
-      this.createTab(this.ws.id)
+    async addCurrentTab () {
+      const tab = await this.getCurrentTab()
+      this.createTabs([{ ...tab, wsId: this.ws.id }])
     },
     cancel () {
       this.toggleSelectedWS(null)

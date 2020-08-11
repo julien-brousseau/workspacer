@@ -23,12 +23,13 @@ export default new Vuex.Store({
   },
   mutations: {
 
-    'INIT_WS' (state, initialWSData) {
-      state.ws = initialWSData
+    'SET_WS' (state, wsData) {
+      state.ws = wsData
+      console.log('wsData :>> ', wsData)
     },
 
-    'INIT_TABS' (state, initialTabsData) {
-      state.tabs = initialTabsData
+    'SET_TABS' (state, tabsData) {
+      state.tabs = tabsData
     },
 
     'CREATE_WS' (state, newWSData) {
@@ -56,57 +57,77 @@ export default new Vuex.Store({
     // Init indexDB and load workspaces/tabs
     initWS: async ({ dispatch, commit }) => {
       return initJSS()
-        .then(() => dispatch('loadWS'))
-        .then(ws => commit('INIT_WS', ws))
-        .then(() => dispatch('loadTabs'))
-        .then(tabs => commit('INIT_TABS', tabs))
+
+        // Fetch all WS
+        .then(() => dispatch('getAllWS'))
+        .then(ws => commit('SET_WS', ws))
+
+        // Fetch all tbas
+        .then(() => dispatch('getAllTabs'))
+        .then(tabs => commit('SET_TABS', tabs))
+
         .catch(e => console.log('Error > initWS :>> ', e))
-    },
-
-    // Fetch the indexDB-stored workspace database
-    loadWS: async () => {
-      return new Workspace().getWS()
-        .then(ws => ws)
-        .catch(e => console.log('Error > loadWS :>> ', e))
-    },
-
-    // Fetch the indexDB-stored workspace database
-    loadTabs: async () => {
-      return new Tab().getAllTabs()
-        .then(tabs => tabs)
-        .catch(e => console.log('Error > loadTabs :>> ', e))
     },
 
     // Clear the workspace database
     clearWS: async ({ commit }) => {
       await new Workspace().clearWS()
       await new Tab().clearTabs()
-      commit('INIT_WS', [])
+      commit('SET_WS', [])
+      commit('SET_TABS', [])
     },
 
     // Create a new Workspace object
-    createWS: async ({ commit, dispatch }, { ws, tabs }) => {
-      new Workspace().createWS(ws)
-        .then(ws => commit('CREATE_WS', ws[0]))
-        .then(() => dispatch('loadWS'))
-        .catch(e => console.log('Error > createWS :>> ', e))
+    createOrUpdateWS: async ({ commit, dispatch }, { ws, tabs }) => {
+      return new Workspace()
+        .createOrUpdateWS(ws)
+        .then(([ws]) => dispatch('createTabs', tabs.map(t => { return { ...t, wsId: ws.id } })))
+        .then(() => dispatch('getAllWS'))
+        .then(ws => commit('SET_WS', ws))
+        .then(() => null)
+        .catch(e => { console.log('Error > createOrUpdateWS :>> ', e); return e })
     },
 
     // Save the current tab into the selected Workspace
-    createTab: async ({ commit }, wsId) => {
+    createTabs: async ({ dispatch, commit }, tabs) => {
+      new Tab().createOrUpdateTab(tabs)
+        .then(tab => tab)
+        .then(() => dispatch('getAllTabs'))
+        .then(tabs => commit('SET_TABS', tabs))
+        .catch(e => console.log('Error > createTabs :>> ', e))
+    },
+
+    // GETTERS
+
+    // Fetch the indexDB-stored workspace database
+    getAllWS: async () => {
+      return new Workspace().getWS()
+        .then(ws => ws)
+        .catch(e => console.log('Error > getAllWS :>> ', e))
+    },
+
+    // Fetch the indexDB-stored workspace database
+    getAllTabs: async () => {
+      return new Tab().getAllTabs()
+        .then(tabs => tabs)
+        .catch(e => console.log('Error > getAllTabs :>> ', e))
+    },
+
+    // Get the current tab
+    getCurrentTab: async () => {
       const tab = await browser.tabs.query({ currentWindow: true, active: true })
       const { title, url } = tab[0]
-      new Tab().createTab({ wsId, title, url })
-        .then(tab => commit('CREATE_TAB', tab[0]))
-        .catch(e => console.log('Error > addTabToWS :>> ', e))
+      return { title, url }
     },
 
     // Query browser to get all current window's tabs
     getAllTabsFromWindow: async () => {
       return browser.tabs.query({ currentWindow: true })
-        .then(tabs => tabs.map(({ id, title, url }) => { return { id, title, url } }))
+        .then(tabs => tabs.map(({ title, url }) => { return { title, url } }))
         .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e))
     },
+
+    // TOGGLERS
 
     // TODO: divide between show and global home button
     // Show/hide the New WS form
@@ -115,11 +136,6 @@ export default new Vuex.Store({
       commit('SET_EDITING_WS', null)
       commit('SET_ADDING_WS', addingWS === null ? !state.addingWS : addingWS)
     },
-
-    // Show/hide the Edit WS form
-    // toggleEditingTab: ({ commit, state }, tabId = null) => {
-    //   commit('SET_EDITING_TAB', tabId === null ? !state.editingTab : tabId)
-    // },
 
     // Set selected WS id
     toggleSelectedWS: ({ commit }, id = null) => {
