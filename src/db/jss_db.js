@@ -2,7 +2,7 @@ import { connection } from './jss_connexion'
 import { DATA_TYPE } from 'jsstore'
 
 const getDatabase = () => {
-  const table = {
+  const wsTable = {
     name: 'Workspaces',
     columns: {
       id: {
@@ -16,14 +16,37 @@ const getDatabase = () => {
       description: {
         dataType: DATA_TYPE.String
         // notNull: true
+      }
+      // tabs: {
+      //   dataType: DATA_TYPE.Array,
+      //   default: []
+      // }
+    }
+  }
+
+  const tabTable = {
+    name: 'Tabs',
+    columns: {
+      id: {
+        primaryKey: true,
+        autoIncrement: true
       },
-      tabs: {
-        dataType: DATA_TYPE.Array,
-        default: []
+      wsId: {
+        dataType: DATA_TYPE.Integer,
+        notNull: true
+      },
+      title: {
+        dataType: DATA_TYPE.String,
+        notNull: true
+      },
+      url: {
+        dataType: DATA_TYPE.String,
+        notNull: true
       }
     }
   }
-  return { name: 'Workspaces database', tables: [table] }
+
+  return { name: 'Workspaces database', tables: [wsTable, tabTable] }
 }
 
 export const initJSS = async () => {

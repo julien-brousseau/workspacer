@@ -2,7 +2,7 @@
   <div class="item" :class="{selected: selected}">
 
     <div class="image" style="width:auto;">
-      <div class="ui basic grey label">{{ ws.tabs.length }}</div>
+      <div class="ui basic grey label">{{ tabs.length }}</div>
     </div>
 
     <div class="content">
@@ -13,7 +13,7 @@
 
       <ul v-if="selected" class="tabs">
         <li class="tab header">Included tabs</li>
-        <li class="tab" v-for="tab in ws.tabs" :key="tab.id" >{{ tab.title }}</li>
+        <li class="tab" v-for="tab in tabs" :key="tab.id" >{{ tab.title }}</li>
       </ul>
     </div>
 
@@ -38,7 +38,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   props: ['ws'],
   computed: {
-    ...mapGetters(['selectedWS']),
+    ...mapGetters(['selectedWS', 'allTabs']),
+    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
     selected () { return this.selectedWS === this.ws.id },
     selectedCaret () { return this.selected ? 'down' : 'right' },
     cls () {
@@ -51,12 +52,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addTabToWS', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['createTab', 'toggleEditingWS', 'toggleSelectedWS']),
     selectWS () {
       this.toggleSelectedWS(this.ws.id)
     },
     openWS () {
-      // Open new window with the selected ws
       return false
     },
     editWS () {
@@ -64,7 +64,7 @@ export default {
       this.toggleEditingWS(true)
     },
     addCurrentTab () {
-      this.addTabToWS(this.ws.id)
+      this.createTab(this.ws.id)
     },
     cancel () {
       this.toggleSelectedWS(null)

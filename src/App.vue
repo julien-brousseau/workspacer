@@ -29,8 +29,8 @@ export default {
     wsLoading: Loading
   },
   computed: {
-    ...mapGetters(['addingWS', 'editingWS', 'allWS']),
-    loading () { return this.allWS === null }
+    ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
+    loading () { return this.allWS === null || this.allTabs === null }
   },
   mounted () {
     this.$store.dispatch('initWS')

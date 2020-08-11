@@ -14,7 +14,7 @@
 
       <div class="field">
         <label>Included tabs</label>
-        <ws-tab-list :tabs="workspace.tabs"></ws-tab-list>
+        <ws-tab-list :tabs="tabs"></ws-tab-list>
         <div class="actions" style="margin-top:20px;">
           <button class="ui button" @click="addTab">Add tab</button>
           <button class="ui primary button" @click="addAllTabs">Add all tabs</button>
@@ -32,67 +32,62 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Loading from './items/Loading.vue'
-import TabList from './TabList.vue'
+import WSDetailsTabList from './WSDetailsTabList.vue'
 
 export default {
   components: {
     wsLoading: Loading,
-    wsTabList: TabList
+    wsTabList: WSDetailsTabList
   },
   data () {
     return {
-      workspace: null
+      workspace: null,
+      tabs: null
     }
   },
   computed: {
-    ...mapGetters(['addingWS', 'selectedWS', 'editingWS', 'showTabs', 'newWS', 'selectedWSData']),
+    ...mapGetters(['addingWS', 'selectedWS', 'editingWS', 'showTabs', 'newWS', 'selectedWSData', 'allTabs']),
     editing () { return this.editingWS }
   },
   methods: {
     ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'getAllTabsFromWindow', 'createWS', 'updateWS']),
 
     init () {
-      this.editingTab = null
       if (this.selectedWS) {
         this.workspace = this.selectedWSData
+        this.tabs = this.allTabs.filter(t => t.wsId === this.workspace.id)
       } else {
         const rnd = Math.round(Math.random() * 99)
-        this.workspace = { title: 'Workspace #' + rnd, tabs: [] }
+        this.workspace = { title: 'Workspace #' + rnd }
+        this.tabs = []
       }
     },
 
     addTab () {
       //
     },
+
     async addAllTabs () {
       // this.workspace.tabs = await this.getAllTabsFromWindow()
     },
 
     submit (e) {
-      if (this.selectedWS) console.log('submit workspace :>> ', this.workspace) // this.updateWS(this.workspace)
-      else this.createWS(this.workspace)
+      if (this.selectedWS) this.updateWS(this.workspace, this.tabs)
+      else this.createWS({ ws: this.workspace, tabs: this.tabs })
+      this.cancel()
     },
+
     cancel () {
       this.toggleSelectedWS()
       this.toggleEditingWS(false)
       this.toggleAddingWS(false)
     }
-
-    // @ Next
-    // pinTab (id) {
-    //   const pos = this.workspace.tabs.map((t, i) => { if (t.id === id) return i })
-    //   console.log('pos :>> ', pos)
-    // },
-
-    // Will be useful someday
-    // refreshTabsOrder () {
-
-    // }
-
   },
+
   created () {
     this.init()
   }
+
 }
 </script>
 

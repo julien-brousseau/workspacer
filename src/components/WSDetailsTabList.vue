@@ -7,9 +7,9 @@
 
       <tab-controls v-if="!tabSelected(tab.id)"></tab-controls>
 
-      <div v-if="tab.id === selectedTab" class="content ui relaxed grid">
-          <input class="six wide column" type="text" placeholder="Name" v-model="tab.title">
-          <input class="nine wide column" type="text" placeholder="URL" v-model="tab.url">
+      <div v-if="tab.id === selectedTab" class="content ui grid">
+          <input class="six wide column" type="text" placeholder="Title" v-model="tab.title">
+          <input class="nine wide column right aligned" type="text" placeholder="URL" v-model="tab.url">
       </div>
 
       <div v-else class="content">
@@ -36,11 +36,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import TabControls from './TabControls.vue'
+import TabControls from './items/TabControls.vue'
+// import TabContent from './items/TabContent.vue'
 
 export default {
   components: {
     tabControls: TabControls
+    // tabContent: TabContent
   },
   props: ['tabs'],
   data () {
