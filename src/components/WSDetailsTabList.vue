@@ -35,7 +35,7 @@
     </div>
 
     <div class="actions" style="margin-top:20px;">
-      <button class="ui orange button" @click="addTab">Add tab</button>
+      <button class="ui orange button" @click="createNewTab">Add tab</button>
       <button class="ui button" @click="addAllTabs">Add all tabs</button>
     </div>
 
@@ -52,28 +52,43 @@ export default {
     tabControls: TabControls
     // tabContent: TabContent
   },
+
   data () {
     return {
       editing: null
     }
   },
-  computed: {
-    ...mapGetters(['selectedWS', 'allTabs']),
-    ws () { return this.selectedWS },
-    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) }
-  },
-  methods: {
-    ...mapActions(['getCurrentTab', 'getAllTabsFromWindow', 'createTabs']),
 
-    // Add current tab
-    async addTab () {
+  computed: {
+    ...mapGetters(['selectedWS', 'allTabs', 'selectedWSTabs']),
+    ws () { return this.selectedWS },
+    tabs: {
+      get () {
+        const t = this.selectedWSTabs
+        console.log('get :>> ', t)
+        return t
+      },
+      set (tabs) {
+        console.log('set :>> ', tabs)
+        this.createOrUpdateTabs(tabs)
+      }
+    }
+  },
+
+  methods: {
+    ...mapActions(['getCurrentTab', 'getAllTabsFromWindow', 'createOrUpdateTabs']),
+
+    // Add a tab to the list containing the current tab info
+    async createNewTab () {
       const { title, url } = await this.getCurrentTab()
-      this.createTabs([{ title, url: url.slice(0, 30), wsId: this.ws.id }])
-        .then(tab => {
-          this.editing = tab
-        })
-        .catch(e => console.log('Error > addTab :>> ', e))
+      const fURL = url.slice(0, 30)
+      return await this.createOrUpdateTabs([{ title, url: fURL, wsId: this.ws.id }])
     },
+
+    //
+    // updateTab (tab) {
+    //   this.createOrUpdateTabs(tab)
+    // },
 
     // Add all current window's tabs
     async addAllTabs () {
@@ -81,9 +96,6 @@ export default {
       // this.tabs = [...this.tabs, ...windowTabs.map(t => { return { ...t, tempId: true } })]
     },
 
-    // tabSelected (id) {
-    // return this.selectedTab === id
-    // },
     toggleEditTab (tab) {
       this.editing = this.editing === tab ? null : tab
     },
@@ -98,12 +110,6 @@ export default {
       console.log('deleteTab :>> ', tab)
       // this.tabs = this.tabs.filter(t => t.id !== deleteId)
     }
-    // moveTab (id, direction) {
-    //
-    // }
-    // pinTab (id) {
-    //
-    // }
   }
 }
 </script>

@@ -41,8 +41,8 @@ export default new Vuex.Store({
       if (MUTATIONS_LOG) console.log('CREATE_WS :>> ', newWSData)
     },
 
-    'CREATE_TAB' (state, createdTabs) {
-      state.tabs = [...state.tabs, ...createdTabs]
+    'CREATE_TAB' (state, tabsArray) {
+      state.tabs = [...state.tabs, ...tabsArray]
       if (MUTATIONS_LOG) console.log('CREATE_TAB :>> ', state.tabs)
     },
 
@@ -86,7 +86,7 @@ export default new Vuex.Store({
       commit('SET_TABS', [])
     },
 
-    // Create a new Workspace object
+    // Create a new Workspace object and return its id
     createOrUpdateWS: async ({ commit, dispatch }, ws) => {
       const [{ id }] = await new Workspace().createOrUpdateWS(ws)
       const refreshWS = await dispatch('getAllWS')
@@ -94,15 +94,12 @@ export default new Vuex.Store({
       return id
     },
 
-    //
-    createTabs: async ({ commit }, tabsArray) => {
-      return new Tab()
-        .createTabs(tabsArray)
-        .then(tabs => {
-          commit('CREATE_TAB', tabs)
-          return tabs.length === 1 ? tabs[0] : tabs
-        })
-        .catch(e => console.log('Error > createTabs :>> ', e))
+    // Create tabs from an array of objects
+    createOrUpdateTabs: async ({ commit, dispatch }, tabsArray) => {
+      const [{ id }] = await new Tab().createOrUpdateTabs(tabsArray)
+      const refreshTabs = await dispatch('getAllTabs')
+      commit('SET_TABS', refreshTabs)
+      return id
     },
 
     // GETTERS
@@ -162,6 +159,7 @@ export default new Vuex.Store({
     allTabs: state => state.tabs,
     addingWS: state => state.addingWS,
     selectedWS: state => state.ws.find(ws => ws.id === state.selectedId),
+    selectedWSTabs: state => state.tabs.filter(tab => tab.wsId === state.selectedId),
     editingWS: state => state.editingWS
   }
 })

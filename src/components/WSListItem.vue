@@ -42,10 +42,10 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   props: ['ws'],
   computed: {
-    ...mapGetters(['selectedWS', 'allTabs']),
+    ...mapGetters(['selectedWS', 'allTabs', 'selectedWSTabs']),
 
     // Getters
-    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
+    tabs () { return this.selectedWSTabs },
     selected () { return this.selectedWS && this.selectedWS.id === this.ws.id },
 
     // Dynamic class control
@@ -61,7 +61,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['createOrUpdateTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
 
     // Setup/clear the global selected ws
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
@@ -78,7 +78,7 @@ export default {
     // Add active tab to the ws tab list
     async addCurrentTab () {
       const currentTab = await this.getCurrentTab()
-      this.createTabs([{ ...currentTab, wsId: this.ws.id }])
+      this.createOrUpdateTabs([{ ...currentTab, wsId: this.ws.id }])
     },
 
     // Turn off the global selected/editing
