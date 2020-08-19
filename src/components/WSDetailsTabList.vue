@@ -1,14 +1,10 @@
 <template>
   <div class="ui form">
 
-    <div class="field">
-      <label>Tabs</label>
-    </div>
-
     <div class="ui items">
       <div v-for="tab in tabs" :key="tab.id" class="item" :class="{ selected: editing && editing.id === tab.id }">
 
-        <!-- <tab-controls></tab-controls> -->
+        <tab-controls></tab-controls>
 
         <div v-if="editing && editing.id === tab.id" class="content edit">
           <div class="fields">
@@ -42,8 +38,8 @@
     </div>
 
     <div class="actions" style="margin-top:20px;">
-      <button class="ui button" @click="addTab">Add tab</button>
-      <button class="ui primary button" @click="addAllTabs">Add all tabs</button>
+      <button class="ui orange button" @click="addTab">Add tab</button>
+      <button class="ui button" @click="addAllTabs">Add all tabs</button>
     </div>
 
   </div>
@@ -51,12 +47,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-// import TabControls from './items/TabControls.vue'
+import TabControls from './items/TabControls.vue'
 // import TabContent from './items/TabContent.vue'
 
 export default {
   components: {
-    // tabControls: TabControls
+    tabControls: TabControls
     // tabContent: TabContent
   },
   data () {
@@ -117,7 +113,7 @@ export default {
 <style scoped>
 .item {
   border-top: 1px solid #EEEEEE !important;
-  padding: 5px !important;
+  padding: 5px 5px 10px 5px !important;
   margin: 0px !important;
 }
 .edit {
@@ -127,14 +123,13 @@ export default {
   margin-top: 6px;
 }
 .item:hover {
-  border-left: 7px solid rgb(33, 133, 208) !important;
-  border-right: 2px solid rgb(33, 133, 208) !important;
+  color: orange !important;
+  /* background-color: orange; */
+  border-top: 1px solid orange !important;
+  border-bottom: 1px solid orange !important;
 }
 .selected {
-  border-left: 7px solid rgb(33, 133, 208) !important;
-  border-right: 2px solid rgb(33, 133, 208) !important;
-}
-h4 {
-  margin-top: 10px !important;
+  /* border-top: 4px solid orange !important;
+  border-bottom: 4px solid orange !important; */
 }
 </style>

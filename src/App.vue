@@ -51,18 +51,28 @@ export default {
 /* .content {
   padding-left:20px
 } */
+
+/* Section title / nav */
 h1 {
-  text-align: inherit;
-}
-h2 {
   border-bottom: 1px solid #CCCCCC;
-  padding-bottom: 10px;
-  /* margin: 15px 10px 10px 30px !important; */
+  padding-bottom: 20px;
+  margin-bottom: 0px !important;
 }
-h2 .button {
+h1 .button {
   margin-right: 12px !important;
 }
+
+/* 1st level item / ws title */
+h2 {
+  font-size: 150%;
+  /* border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 20px;
+  margin-bottom: 0px !important; */
+  /* margin: 15px 10px 10px 30px !important; */
+}
+
+/* Tablist item */
 h4 {
-  margin: 0px !important;
+  margin: 10px 0px 0px 0px !important;
 }
 </style>

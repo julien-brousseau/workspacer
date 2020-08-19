@@ -2,29 +2,28 @@
   <div id="ws-view">
 
     <!-- Section title and main controls -->
-    <h1>
+    <h2>
       <button class="ui huge basic icon button" @click="cancel"><i class="caret left icon"></i></button>
       {{ editing ? workspace.title : 'Create new workspace' }}
-    </h1>
+    </h2>
 
     <!-- Loading screen until workspace available -->
     <ws-loading v-if="!workspace"></ws-loading>
-
-    <div v-else class="ui ws">
+    <div v-else class="ui items">
 
       <!-- Workspace create/edit form -->
-      <label>Workspace name</label>
-      <div class="ui large input" style="width: 100%; margin-bottom: 15px;">
-        <input type="text" v-model="workspace.title" style="width:80%">
-        <button class="ui large orange button" @click="submit" style="margin-left: 10px; width: 90px;">
-          {{ editing ? 'Save' : 'Create' }}
-        </button>
+      <div class="ui large form section">
+        <label>Workspace name</label>
+        <div class="inline field">
+          <input type="text" v-model="workspace.title" style="width:80%">
+          <button class="ui large green button" @click="submit" style="width:16%">
+            {{ editing ? 'Save' : 'Create' }}
+          </button>
+        </div>
       </div>
 
-      <!-- Tab list -->
-      <label>Workspace included tabs</label>
-      <ws-tab-list></ws-tab-list>
-
+    <!-- Tab list -->
+    <ws-tab-list class="section"></ws-tab-list>
     </div>
 
   </div>
@@ -88,17 +87,20 @@ export default {
 </script>
 
 <style scoped>
-.ws {
+.items {
   margin: 0px;
-  padding: 20px;
-  border-left: 7px solid orange !important;
-  border-top: 5px solid orange !important;
-  border-right: 2px solid orange !important;
-  border-bottom: 2px solid orange !important;
+  padding: 20px 0px;
+  border-left: 7px solid rgb(33, 133, 208) !important;
+  border-top: 5px solid rgb(33, 133, 208) !important;
+  border-right: 2px solid rgb(33, 133, 208) !important;
+  border-bottom: 2px solid rgb(33, 133, 208) !important;
+}
+.section {
+  border-bottom: 1px solid #EEEEEE !important;
+  padding: 25px 5px 15px 10px !important;
+  margin: 0px !important;
 }
 label {
-  display: block;
-  margin: 5px 0px !important;
   font-weight: bold;
 }
 </style>

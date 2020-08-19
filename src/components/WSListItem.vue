@@ -9,10 +9,10 @@
     <div class="content">
 
       <!-- Tab info and expand link -->
-      <h3 @click="selectWS">
+      <h2 @click="selectWS">
         <i class="caret icon" :class="[selectedCaret]"></i>
         {{ ws.title }}
-      </h3>
+      </h2>
 
       <!-- List of static tabs -->
       <ul v-if="selected" class="tabs">
@@ -92,9 +92,9 @@ export default {
 
 <style scoped>
 .item {
-  border-top: 1px solid #EEEEEE;
-  padding: 15px 5px 15px 10px !important;
-  /* margin: 0px !important; */
+  border-bottom: 1px solid #EEEEEE !important;
+  padding: 25px 5px 15px 10px !important;
+  margin: 0px !important;
 }
 .item:hover {
   border-left: 7px solid rgb(33, 133, 208) !important;
@@ -109,15 +109,15 @@ export default {
 }
 .actions{
   text-align: right;
-  margin-bottom: 0px;
+  margin-right: 7px;
 }
 .selected .actions {
   padding-left: 30px;
 }
 
-h3 {
-  margin-top: 2px !important;
-  margin-bottom: 0px !important;
+h2 {
+  /* margin-top: 2px !important;
+  margin-bottom: 0px !important; */
   cursor: pointer;
 }
 .tabs {
@@ -138,6 +138,6 @@ h3 {
   text-align: center;
 }
 .image {
-  width: 10px !important;
+  width: 30px !important;
 }
 </style>

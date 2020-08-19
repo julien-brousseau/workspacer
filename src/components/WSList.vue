@@ -2,19 +2,18 @@
   <div id="ws-list">
 
     <!-- Section title and main controls -->
-    <h2 class="ui teal">
+    <h1>
       <button class="ui huge basic icon primary button" @click="toggleNewWS"><i class="plus icon"></i></button>
       My Workspaces
-    </h2>
+    </h1>
 
-    <!-- Empty ws library -->
-    <div v-if="!allWS.length" class="ui segment">
-      You have no workspaces
-    </div>
+    <!-- TODO: Add loading? -->
 
     <!-- Workspace list -->
-    <div v-else class="ui items unstackable">
-      <ws-list-item v-for="ws in allWS"
+    <div class="ui items unstackable">
+      <div v-if="!allWS.length" class="item empty">
+        You have no workspaces</div>
+      <ws-list-item v-else v-for="ws in allWS"
         :key="ws.id"
         :ws="ws">
       </ws-list-item>
@@ -50,4 +49,11 @@ export default {
 </script>
 
 <style scoped>
+.items {
+  margin: 0px;
+}
+.empty {
+  padding: 25px 5px 15px 10px !important;
+  margin: 0px !important;
+}
 </style>
