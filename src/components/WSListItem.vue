@@ -46,7 +46,7 @@ export default {
 
     // Getters
     tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
-    selected () { return this.selectedWS === this.ws.id },
+    selected () { return this.selectedWS && this.selectedWS.id === this.ws.id },
 
     // Dynamic class control
     selectedCaret () { return this.selected ? 'down' : 'right' },
@@ -64,7 +64,7 @@ export default {
     ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
 
     // Setup/clear the global selected ws
-    selectWS () { this.toggleSelectedWS(this.selectedWS === this.ws.id ? null : this.ws.id) },
+    selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
 
     // TODO: Open all ws tabs in new window
     openWS () { return false },

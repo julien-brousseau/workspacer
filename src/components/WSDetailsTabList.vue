@@ -58,8 +58,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['selectedWSData', 'allTabs']),
-    ws () { return this.selectedWSData },
+    ...mapGetters(['selectedWS', 'allTabs']),
+    ws () { return this.selectedWS },
     tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) }
   },
   methods: {

@@ -161,9 +161,7 @@ export default new Vuex.Store({
     allWS: state => state.ws,
     allTabs: state => state.tabs,
     addingWS: state => state.addingWS,
-    // TODO: Merge the 2 following so selectedWS returns the whole WS object??
-    selectedWS: state => state.selectedId,
-    selectedWSData: state => state.ws.find(ws => ws.id === state.selectedId),
+    selectedWS: state => state.ws.find(ws => ws.id === state.selectedId),
     editingWS: state => state.editingWS
   }
 })

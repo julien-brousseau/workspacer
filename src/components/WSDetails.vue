@@ -50,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['selectedWS', 'selectedWSData', 'editingWS']),
+    ...mapGetters(['selectedWS', 'editingWS']),
     editing () { return this.editingWS }
   },
 
@@ -60,7 +60,7 @@ export default {
     // Assign the selected/new WS data
     init () {
       if (this.selectedWS) {
-        this.workspace = { ...this.selectedWSData }
+        this.workspace = { ...this.selectedWS }
       } else {
         const rnd = Math.round(Math.random() * 99)
         this.workspace = { title: 'Workspace #' + rnd }
