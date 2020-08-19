@@ -41,8 +41,8 @@ export default {
 <style>
 #app {
   /* border: 1px solid lightgray; */
-  width: 800px;
-  /* height: 100%; */
+  width: 800px !important;
+  height: 800px !important;
   /* max-height: 100%; */
   color: #333333;
   padding: 20px;

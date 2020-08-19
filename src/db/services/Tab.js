@@ -18,11 +18,10 @@ export class Tab {
     })
   }
 
-  createOrUpdateTab (tabArray) {
+  createTabs (tabsArray) {
     return connection.insert({
       into: this.tableName,
-      values: tabArray,
-      upsert: true,
+      values: tabsArray,
       return: true
     })
   }

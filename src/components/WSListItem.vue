@@ -43,6 +43,7 @@ export default {
   computed: {
     ...mapGetters(['selectedWS', 'allTabs']),
 
+    // Getters
     tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
     selected () { return this.selectedWS === this.ws.id },
 
@@ -60,20 +61,26 @@ export default {
   },
   methods: {
     ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
-    selectWS () {
-      this.toggleSelectedWS(this.ws.id)
-    },
-    openWS () {
-      return false
-    },
+
+    // Set the global selected ws
+    selectWS () { this.toggleSelectedWS(this.ws.id) },
+
+    // TODO: Open all ws tabs in new window
+    openWS () { return false },
+
+    // Set the ws as globally editing
     editWS () {
       this.toggleSelectedWS(this.ws.id)
       this.toggleEditingWS(true)
     },
+
+    // Add active tab to the ws tab list
     async addCurrentTab () {
       const tab = await this.getCurrentTab()
       this.createTabs([{ ...tab, wsId: this.ws.id }])
     },
+
+    // Turn off the global selected/editing
     cancel () {
       this.toggleSelectedWS(null)
       this.toggleEditingWS(false)
@@ -97,14 +104,15 @@ export default {
   border-top: 5px solid rgb(33, 133, 208) !important;
   border-right: 2px solid rgb(33, 133, 208) !important;
   border-bottom: 2px solid rgb(33, 133, 208) !important;
-  padding-top: 30px !important;
+  /* padding-top: 30px !important; */
 }
 .actions{
   text-align: right;
+  margin-bottom: 5px;
 }
 .selected .actions {
-  padding: 0px 20px 0px 30px;
-  margin-bottom: 40px;
+  padding: 0px 10px 0px 30px;
+  /* margin-bottom: 40px; */
 }
 
 h3 {

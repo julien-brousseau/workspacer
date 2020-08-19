@@ -1,5 +1,5 @@
 <template>
-  <div class="ui vertical buttons" style="margin-right: 10px;">
+  <div class="ui mini vertical buttons" style="margin-right: 10px;">
 
     <button class="ui mini button icon basic">
       <i class="icon caret up"></i>
@@ -16,5 +16,10 @@
   button {
     margin: 0px;
     padding: 2px;
+  }
+  .buttons {
+    margin: 0px;
+    padding: 0px;
+    height: auto;
   }
 </style>
