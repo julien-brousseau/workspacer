@@ -2,7 +2,7 @@
   <div class="ui form">
 
     <div class="field">
-      <label>Included tabs</label>
+      <label>Tabs</label>
     </div>
 
     <div class="ui items">

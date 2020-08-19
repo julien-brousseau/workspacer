@@ -1,7 +1,10 @@
 <template>
   <div id="ws-view" class="ui attached segment">
 
-    <h2>My workspaces > {{ editing ? workspace.title : 'New workspace' }}</h2>
+    <h2>
+      <button class="ui huge basic button" @click="cancel"><i class="caret left icon"></i>Back</button>
+      {{ editing ? workspace.title : 'Create new workspace' }}
+    </h2>
 
     <ws-loading v-if="!workspace"></ws-loading>
 
@@ -15,7 +18,7 @@
       </div>
     </div>
 
-    <ws-tab-list class="section"></ws-tab-list>
+    <!-- <ws-tab-list class="section"></ws-tab-list> -->
 
   </div>
 </template>

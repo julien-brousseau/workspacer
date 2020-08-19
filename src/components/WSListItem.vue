@@ -16,7 +16,8 @@
 
       <!-- List of static tabs -->
       <ul v-if="selected" class="tabs">
-        <li class="tab header">Included tabs</li>
+        <li class="tab" v-if="!tabs.length">This workspace contains no tabs</li>
+        <!-- <li class="tab header">{{ tabs.length ? "Included tabs" : "This workspace contains no tabs" }}</li> -->
         <li class="tab" v-for="tab in tabs" :key="tab.id" >{{ tab.title }}</li>
       </ul>
     </div>

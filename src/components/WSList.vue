@@ -3,8 +3,7 @@
 
     <h2>
       My Workspaces
-      <button class="ui large green button right floated" style="margin:-10px 20px 0px 0px;" @click="toggleNewWS">Create new workspace</button>
-      <button class="ui small basic red icon button btn-reset right floated" @click="clearWS"><i class="trash icon"></i>Reset</button>
+      <button class="ui huge green button" style="margin-left: 20px;" @click="toggleNewWS">Add workspace</button>
     </h2>
 
     <div v-if="!allWS.length" class="ui segment">
@@ -22,6 +21,7 @@
 
     </div>
 
+      <button class="ui small basic red icon button btn-reset right floated" @click="clearWS"><i class="trash icon"></i>Reset</button>
   </div>
 </template>
 

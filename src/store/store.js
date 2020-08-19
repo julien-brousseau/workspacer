@@ -7,10 +7,10 @@ import { Workspace } from '../db/services/Workspace'
 import { Tab } from '../db/services/Tab'
 
 // Un-comment this line to enable browser testing in regular Vue app
-// import { Browser } from '../db/browser'
-// const browser = Browser
+import { Browser } from '../db/browser'
+const browser = Browser
 
-const browser = require('webextension-polyfill')
+// const browser = require('webextension-polyfill')
 
 const MUTATIONS_LOG = true
 
