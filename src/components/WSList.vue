@@ -3,7 +3,7 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <button class="ui huge basic icon primary button" @click="toggleNewWS"><i class="plus icon"></i></button>
+      <button class="ui huge basic icon green button" @click="toggleNewWS"><i class="plus icon"></i></button>
       My Workspaces
     </h1>
 
@@ -11,19 +11,19 @@
 
     <!-- Workspace list -->
     <div class="ui items unstackable">
+
       <div v-if="!allWS.length" class="item empty">
         You have no workspaces</div>
+
       <ws-list-item v-else v-for="ws in allWS"
         :key="ws.id"
         :ws="ws">
       </ws-list-item>
+
     </div>
 
     <!-- Temporary clear database button -->
-    <button class="ui small basic red icon button btn-reset right floated" @click="clearWS">
-      <i class="trash icon"></i>
-      Reset
-    </button>
+    <button class="ui small basic red icon button btn-reset right floated" @click="clearWS"><i class="trash icon"></i>Reset</button>
 
   </div>
 </template>

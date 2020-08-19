@@ -10,13 +10,13 @@
     <!-- Loading screen until workspace available -->
     <ws-loading v-if="!workspace"></ws-loading>
 
-    <div v-else class="ui ws">
+    <div v-else class="ui ws" :class="{ editing }">
 
       <!-- Workspace create/edit form -->
       <label>Workspace name</label>
       <div class="ui large input" style="width: 100%; margin-bottom: 15px;">
         <input type="text" v-model="workspace.title" style="width:80%">
-        <button class="ui large orange button" @click="submit" style="margin-left: 10px; width: 90px;">
+        <button class="ui large button green" :class="{ orange: editing }" @click="submit" style="margin-left: 10px; width: 90px;">
           {{ editing ? 'Save' : 'Create' }}
         </button>
       </div>
@@ -92,14 +92,18 @@ export default {
 .ws {
   margin: 0px;
   padding: 20px;
-  border-left: 7px solid orange !important;
-  border-top: 5px solid orange !important;
-  border-right: 2px solid orange !important;
-  border-bottom: 2px solid orange !important;
+  border-color: green !important;
+  border-left: 7px solid;
+  border-top: 5px solid;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
 }
 label {
   display: block;
   margin: 5px 0px !important;
   font-weight: bold;
+}
+.editing {
+  border-color: orange !important;
 }
 </style>
