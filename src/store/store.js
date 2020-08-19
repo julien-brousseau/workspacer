@@ -166,8 +166,8 @@ export default new Vuex.Store({
 
     // Set selected WS id
     toggleSelectedWS: ({ state, commit }, id = null) => {
-      const blop = state.selectedId === id ? null : id
-      commit('SET_SELECTED_WS', blop)
+      // const blop = state.selectedId === id ? null : id
+      commit('SET_SELECTED_WS', id)
     },
 
     // Show/hide the Edit WS form

@@ -63,8 +63,8 @@ export default {
   methods: {
     ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
 
-    // Set the global selected ws
-    selectWS () { this.toggleSelectedWS(this.ws.id) },
+    // Setup/clear the global selected ws
+    selectWS () { this.toggleSelectedWS(this.selectedWS === this.ws.id ? null : this.ws.id) },
 
     // TODO: Open all ws tabs in new window
     openWS () { return false },
@@ -77,8 +77,8 @@ export default {
 
     // Add active tab to the ws tab list
     async addCurrentTab () {
-      const tab = await this.getCurrentTab()
-      this.createTabs([{ ...tab, wsId: this.ws.id }])
+      const currentTab = await this.getCurrentTab()
+      this.createTabs([{ ...currentTab, wsId: this.ws.id }])
     },
 
     // Turn off the global selected/editing
@@ -138,6 +138,6 @@ h3 {
   text-align: center;
 }
 .image {
-  width: 40px !important;
+  width: 10px !important;
 }
 </style>
