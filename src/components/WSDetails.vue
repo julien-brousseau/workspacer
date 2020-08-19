@@ -1,23 +1,27 @@
 <template>
-  <div id="ws-view" class="ui attached segment">
+  <div id="ws-view">
 
+    <!-- Section title and main controls -->
     <h2>
-      <button class="ui huge basic button" @click="cancel"><i class="caret left icon"></i>Back</button>
+      <button class="ui huge basic icon button" @click="cancel"><i class="caret left icon"></i></button>
       {{ editing ? workspace.title : 'Create new workspace' }}
     </h2>
 
+    <!-- Loading screen until workspace available -->
     <ws-loading v-if="!workspace"></ws-loading>
 
+    <!-- Workspace create/edit form -->
     <div v-else @submit.prevent="submit" class="ui large form section">
       <label>Workspace name</label>
       <div class="inline field">
         <input type="text" v-model="workspace.title" style="width:80%">
-        <button class="ui large green button"
-          @click="submit">
-            {{ editing ? 'Save' : 'Create' }}</button>
+        <button class="ui large green button" @click="submit">
+          {{ editing ? 'Save' : 'Create' }}
+        </button>
       </div>
     </div>
 
+    <!-- Tab list -->
     <!-- <ws-tab-list class="section"></ws-tab-list> -->
 
   </div>
@@ -81,9 +85,6 @@ export default {
 </script>
 
 <style scoped>
-#ws-view {
-  padding: 10px 0px 0px 0px;
-}
 .section {
   padding: 20px;
 }

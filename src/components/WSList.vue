@@ -1,27 +1,31 @@
 <template>
-  <div id="ws-list" class="ui attached segment">
+  <div id="ws-list">
 
-    <h2>
+    <!-- Section title and main controls -->
+    <h2 class="ui teal">
+      <button class="ui huge basic icon primary button" @click="toggleNewWS"><i class="plus icon"></i></button>
       My Workspaces
-      <button class="ui huge green button" style="margin-left: 20px;" @click="toggleNewWS">Add workspace</button>
     </h2>
 
+    <!-- Empty ws library -->
     <div v-if="!allWS.length" class="ui segment">
-      You have no workspaces.</div>
+      You have no workspaces
+    </div>
 
+    <!-- Workspace list -->
     <div v-else class="ui items unstackable">
-
-      <div v-if="!allWS.length" class="ui segment">
-        This workspace contains no tabs</div>
-
-      <ws-list-item v-else v-for="ws in allWS"
+      <ws-list-item v-for="ws in allWS"
         :key="ws.id"
         :ws="ws">
       </ws-list-item>
-
     </div>
 
-      <button class="ui small basic red icon button btn-reset right floated" @click="clearWS"><i class="trash icon"></i>Reset</button>
+    <!-- Temporary clear database button -->
+    <button class="ui small basic red icon button btn-reset right floated" @click="clearWS">
+      <i class="trash icon"></i>
+      Reset
+    </button>
+
   </div>
 </template>
 
@@ -46,7 +50,4 @@ export default {
 </script>
 
 <style scoped>
-#ws-list {
-  padding: 10px 0px 0px 0px;
-}
 </style>

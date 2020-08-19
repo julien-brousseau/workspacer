@@ -3,9 +3,8 @@
 
     <ws-loading v-if="loading"></ws-loading>
 
-    <div v-else>
+    <div v-else class="content">
       <!-- <ws-menu></ws-menu> -->
-
       <ws-details v-if="addingWS || editingWS"></ws-details>
       <ws-list v-else></ws-list>
     </div>
@@ -41,20 +40,27 @@ export default {
 <style>
 #app {
   /* border: 1px solid lightgray; */
-  width: 800px !important;
+  min-width: 800px !important;
   height: 800px !important;
   /* max-height: 100%; */
   color: #333333;
-  padding: 20px;
-  padding-bottom: 50px;
+  padding: 30px;
+  margin: 0px;
+  /* padding-bottom: 50px; */
 }
+/* .content {
+  padding-left:20px
+} */
 h1 {
   text-align: inherit;
 }
 h2 {
-  margin-left: 10px !important;
-  margin-bottom: 30px !important;
-  margin-top: 15px !important;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 10px;
+  /* margin: 15px 10px 10px 30px !important; */
+}
+h2 .button {
+  margin-right: 12px !important;
 }
 h4 {
   margin: 0px !important;

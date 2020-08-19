@@ -2,7 +2,7 @@
   <div class="item" :class="{selected: selected}">
 
     <!-- Label -->
-    <div class="image" style="width:auto;">
+    <div class="image">
       <div class="ui basic grey label">{{ tabs.length }}</div>
     </div>
 
@@ -10,25 +10,25 @@
 
       <!-- Tab info and expand link -->
       <h3 @click="selectWS">
-        <i class="ui caret icon" :class="[selectedCaret]"></i>
+        <i class="caret icon" :class="[selectedCaret]"></i>
         {{ ws.title }}
       </h3>
 
       <!-- List of static tabs -->
       <ul v-if="selected" class="tabs">
-        <li class="tab" v-if="!tabs.length">This workspace contains no tabs</li>
+        <li v-if="!tabs.length" class="tab">This workspace contains no tabs</li>
         <!-- <li class="tab header">{{ tabs.length ? "Included tabs" : "This workspace contains no tabs" }}</li> -->
-        <li class="tab" v-for="tab in tabs" :key="tab.id" >{{ tab.title }}</li>
+        <li class="tab" v-for="tab in tabs" :key="tab.id">{{ tab.title }}</li>
       </ul>
     </div>
 
     <!-- WS controls -->
     <div class="actions right floated">
-      <button class="ui button icon" :class="[cls.buttonOpen]" @click="openWS">
+      <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="openWS">
         <i class="icon sticky note"></i></button>
-      <button class="ui button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
+      <button class="ui basic button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
         <i class="icon plus"></i></button>
-      <button class="ui button icon" :class="[cls.buttonEdit]" @click="editWS">
+      <button class="ui basic button icon" :class="[cls.buttonEdit]" @click="editWS">
         <i class="icon pencil"></i></button>
     </div>
 
@@ -53,9 +53,9 @@ export default {
     cls () {
       return {
         buttons: this.selected ? 'vertical labeled icon' : '',
-        buttonOpen: this.selected ? 'huge green' : 'basic small',
-        buttonAdd: this.selected ? 'huge primary' : 'basic small',
-        buttonEdit: this.selected ? 'huge orange' : 'basic small'
+        buttonOpen: this.selected ? 'large green' : 'basic small',
+        buttonAdd: this.selected ? 'large primary' : 'basic small',
+        buttonEdit: this.selected ? 'large orange' : 'basic small'
       }
     }
 
@@ -93,8 +93,8 @@ export default {
 <style scoped>
 .item {
   border-top: 1px solid #EEEEEE;
-  padding: 20px 5px 5px 10px !important;
-  margin: 0px !important;
+  padding: 15px 5px 15px 10px !important;
+  /* margin: 0px !important; */
 }
 .item:hover {
   border-left: 7px solid rgb(33, 133, 208) !important;
@@ -109,11 +109,10 @@ export default {
 }
 .actions{
   text-align: right;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 .selected .actions {
-  padding: 0px 10px 0px 30px;
-  /* margin-bottom: 40px; */
+  padding-left: 30px;
 }
 
 h3 {
@@ -122,7 +121,7 @@ h3 {
   cursor: pointer;
 }
 .tabs {
-  padding: 0px 0px 30px 0px !important;
+  padding: 0px 0px 10px 0px !important;
   border-top: 1px solid rgb(33, 133, 208);
   list-style-type: none;
 }
