@@ -22,8 +22,10 @@
       </div>
 
       <!-- Tab list -->
-      <label>Workspace included tabs</label>
-      <ws-tab-list></ws-tab-list>
+      <div v-if="editing">
+        <label>Workspace included tabs</label>
+        <ws-tab-list></ws-tab-list>
+      </div>
 
     </div>
 
@@ -40,18 +42,22 @@ export default {
     wsLoading: Loading,
     wsTabList: WSDetailsTabList
   },
+
   data () {
     return {
       workspace: null
     }
   },
+
   computed: {
     ...mapGetters(['selectedWS', 'selectedWSData', 'editingWS']),
     editing () { return this.editingWS }
   },
+
   methods: {
     ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'createOrUpdateWS']),
 
+    // Assign the selected/new WS data
     init () {
       if (this.selectedWS) {
         this.workspace = { ...this.selectedWSData }
@@ -61,18 +67,13 @@ export default {
       }
     },
 
-    //
+    // Create/edit the current WS data
     async submit (e) {
-      // const tabs = this.tabs.map(t => {
-      //   const { id, tempId, title, url } = t
-      //   if (t.tempId) delete t.id
-      //   delete t.tempId
-      //   return t
-      // })
-      const error = await this.createOrUpdateWS(this.workspace)
-      if (!error) this.cancel() // TODO: Show error
+      const id = await this.createOrUpdateWS(this.workspace)
+      this.cancel()
     },
 
+    // Clear the form display variables
     cancel () {
       this.toggleSelectedWS(null)
       this.toggleEditingWS(false)

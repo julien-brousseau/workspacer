@@ -88,19 +88,10 @@ export default new Vuex.Store({
 
     // Create a new Workspace object
     createOrUpdateWS: async ({ commit, dispatch }, ws) => {
-      return new Workspace()
-
-        .createOrUpdateWS(ws)
-        // .then(([ws]) => dispatch('createTabss', tabs.map(t => {
-        //   if (!t.wsId) t = { ...t, wsId: ws.id }
-        //   return t
-        // })))
-
-        .then(() => dispatch('getAllWS'))
-        .then(ws => commit('SET_WS', ws))
-
-        .then(() => null)
-        .catch(e => { console.log('Error > createOrUpdateWS :>> ', e); return e })
+      const [{ id }] = await new Workspace().createOrUpdateWS(ws)
+      const refreshWS = await dispatch('getAllWS')
+      commit('SET_WS', refreshWS)
+      return id
     },
 
     //

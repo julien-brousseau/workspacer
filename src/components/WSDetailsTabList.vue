@@ -1,37 +1,37 @@
 <template>
-  <div class="ui form">
+  <div class="ui items">
 
-    <div class="ui items">
-      <div v-for="tab in tabs" :key="tab.id" class="item" :class="{ selected: editing && editing.id === tab.id }">
+    <div v-for="tab in tabs" :key="tab.id" class="item" :class="{ selected: editing && editing.id === tab.id }">
 
-        <tab-controls></tab-controls>
+      <!-- Index buttons -->
+      <tab-controls></tab-controls>
 
-        <div v-if="editing && editing.id === tab.id" class="content edit">
-          <div class="fields">
-            <div class="six wide field">
-              <input type="text" placeholder="Title" v-model="tab.title">
-            </div>
-            <div class="ten wide field">
-              <input type="text" placeholder="URL" v-model="tab.url">
-            </div>
-          </div>
+      <!-- Editing fields -->
+      <div v-if="editing && editing.id === tab.id" class="content edit">
+        <div class="ui input" style="width:40%">
+          <input type="text" placeholder="Title" v-model="tab.title">
         </div>
-
-        <div v-else class="content">
-          <h4>{{ tab.title }}</h4>
-          <p>{{ tab.url }}</p>
+        <div class="ui input" style="width:59%;margin-left:5px;">
+          <input type="text" placeholder="URL" v-model="tab.url">
         </div>
-
-        <div class="actions right floated">
-          <div class="ui buttons">
-            <button class="ui button icon basic large"
-              @click="toggleEditTab(tab)"><i class="icon pencil"></i></button>
-            <button class="ui button icon basic large"
-              @click="deleteTab(tab)"><i class="icon trash"></i></button>
-          </div>
-        </div>
-
       </div>
+
+      <!-- Static fields -->
+      <div v-else class="content">
+        <h4>{{ tab.title }}</h4>
+        <p>{{ tab.url }}</p>
+      </div>
+
+      <!-- Field controls -->
+      <div class="actions right floated">
+        <div class="ui buttons">
+          <button class="ui button icon basic large"
+            @click="toggleEditTab(tab)"><i class="icon pencil"></i></button>
+          <button class="ui button icon basic large"
+            @click="deleteTab(tab)"><i class="icon trash"></i></button>
+        </div>
+      </div>
+
     </div>
 
     <div class="actions" style="margin-top:20px;">
@@ -122,12 +122,13 @@ export default {
 }
 .item:hover {
   color: orange !important;
-  /* background-color: orange; */
+  background-color: rgb(255, 253, 249);
   border-top: 1px solid orange !important;
   border-bottom: 1px solid orange !important;
 }
 .selected {
-  /* border-top: 4px solid orange !important;
-  border-bottom: 4px solid orange !important; */
+  background-color: rgb(255, 253, 249);
+  border-top: 1px solid orange !important;
+  border-bottom: 1px solid orange !important;
 }
 </style>
