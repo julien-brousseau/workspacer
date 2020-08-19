@@ -25,12 +25,9 @@
         <div class="actions right floated">
           <div class="ui buttons">
             <button class="ui button icon basic large"
-              v-if="!editing || editing.id !== tab.id"
-              @click="editTab(tab)">
-                <i class="icon pencil"></i></button>
+              @click="toggleEditTab(tab)"><i class="icon pencil"></i></button>
             <button class="ui button icon basic large"
-              @click="deleteTab(tab)">
-                <i class="icon trash"></i></button>
+              @click="deleteTab(tab)"><i class="icon trash"></i></button>
           </div>
         </div>
 
@@ -87,8 +84,8 @@ export default {
     // tabSelected (id) {
     // return this.selectedTab === id
     // },
-    editTab (tab) {
-      this.editing = tab
+    toggleEditTab (tab) {
+      this.editing = this.editing === tab ? null : tab
     },
     // saveTab (id) {
     //   // Save tab code...
@@ -97,7 +94,8 @@ export default {
     // cancel () {
     //   this.selectedTab = null
     // },
-    deleteTab (deleteId) {
+    deleteTab (tab) {
+      console.log('deleteTab :>> ', tab)
       // this.tabs = this.tabs.filter(t => t.id !== deleteId)
     }
     // moveTab (id, direction) {

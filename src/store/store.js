@@ -103,23 +103,13 @@ export default new Vuex.Store({
         .catch(e => { console.log('Error > createOrUpdateWS :>> ', e); return e })
     },
 
-    // Save the current tab into the selected Workspace
-    // createTabss: async ({ dispatch, commit }, tabs) => {
-    //   new Tab()
-    //     .createOrUpdateTab(tabs)
-    //     .then(tab => tab)
-    //     .then(() => dispatch('getAllTabs'))
-    //     .then(tabs => commit('SET_TABS', tabs))
-    //     .catch(e => console.log('Error > createTabss :>> ', e))
-    // },
-
     //
     createTabs: async ({ commit }, tabsArray) => {
       return new Tab()
         .createTabs(tabsArray)
         .then(tabs => {
           commit('CREATE_TAB', tabs)
-          return tabs[0]
+          return tabs.length === 1 ? tabs[0] : tabs
         })
         .catch(e => console.log('Error > createTabs :>> ', e))
     },
