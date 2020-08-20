@@ -23,7 +23,7 @@
     </div>
 
     <!-- Temporary clear database button -->
-    <button class="ui small basic red icon button btn-reset right floated" @click="clearWS"><i class="trash icon"></i>Reset</button>
+    <button class="ui small basic red icon button btn-reset right floated" style="margin-top: 40px" @click="clearWS"><i class="trash icon"></i>Reset</button>
 
   </div>
 </template>

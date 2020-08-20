@@ -108,6 +108,14 @@ export default new Vuex.Store({
       return id
     },
 
+    deleteTab: async ({ commit, dispatch }, tabId) => {
+      // console.log('blop :>> ', tabId)
+      const blop = await new Tab().deleteTab(tabId)
+      console.log('blop :>> ', blop)
+      const refreshTabs = await dispatch('getAllTabs')
+      commit('SET_TABS', refreshTabs)
+    },
+
     // GETTERS
 
     // Fetch the indexDB-stored workspace database

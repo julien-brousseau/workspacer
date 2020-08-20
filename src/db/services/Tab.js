@@ -35,6 +35,13 @@ export class Tab {
   //   })
   // }
 
+  deleteTab (id) {
+    return connection.remove({
+      from: this.tableName,
+      where: { id }
+    })
+  }
+
   clearTabs () {
     return connection.clear(this.tableName)
   }

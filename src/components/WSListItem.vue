@@ -79,13 +79,8 @@ export default {
     async addCurrentTab () {
       const currentTab = await this.getCurrentTab()
       this.createOrUpdateTabs([{ ...currentTab, wsId: this.ws.id }])
-    },
-
-    // Turn off the global selected/editing
-    cancel () {
-      this.toggleSelectedWS(null)
-      this.toggleEditingWS(false)
     }
+
   }
 }
 </script>

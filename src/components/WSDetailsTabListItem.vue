@@ -28,7 +28,7 @@
             <i class="icon" :class="editing ? 'save' : 'pencil'"></i>
         </button>
         <button class="ui button icon basic large"
-          @click="editing ? cancel() : deleteTab()">
+          @click="editing ? cancel() : removeTab()">
             <i class="icon" :class="editing ? 'cancel' : 'trash'"></i>
         </button>
       </div>
@@ -55,7 +55,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setEditingTab', 'createOrUpdateTabs']),
+    ...mapActions(['setEditingTab', 'createOrUpdateTabs', 'deleteTab']),
     init () {
       this.tabForm = { ...this.tab }
       this.setEditingTab()
@@ -69,9 +69,8 @@ export default {
         this.init()
       }
     },
-    deleteTab () {
-      console.log('deleteTab :>> ')
-      // this.tabs = this.tabs.filter(t => t.id !== deleteId)
+    removeTab () {
+      this.deleteTab(this.tab.id)
     },
     cancel () {
       this.init()
