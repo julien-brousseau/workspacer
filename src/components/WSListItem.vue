@@ -42,10 +42,10 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   props: ['ws'],
   computed: {
-    ...mapGetters(['selectedWS', 'allTabs', 'selectedWSTabs']),
+    ...mapGetters(['selectedWS', 'allTabs']),
 
     // Getters
-    tabs () { return this.selectedWSTabs },
+    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
     selected () { return this.selectedWS && this.selectedWS.id === this.ws.id },
 
     // Dynamic class control

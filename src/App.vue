@@ -58,6 +58,11 @@ h2 {
   font-size: 150%;
 }
 
+/* Label */
+h3 {
+  font-size: 110%;
+}
+
 /* Tablist item */
 h4 {
   margin: 10px 0px 0px 0px !important;

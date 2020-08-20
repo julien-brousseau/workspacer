@@ -22,7 +22,8 @@ export default new Vuex.Store({
     tabs: null,
     addingWS: false,
     selectedId: null,
-    editingWS: false
+    editingWS: false,
+    editingTab: null
   },
   mutations: {
 
@@ -59,6 +60,11 @@ export default new Vuex.Store({
     'SET_EDITING_WS' (state, isEditing) {
       state.editingWS = isEditing
       if (MUTATIONS_LOG) console.log('SET_EDITING_WS :>> ', state.editingWS)
+    },
+
+    'SET_EDITING_TAB' (state, tabId) {
+      state.editingTab = tabId
+      if (MUTATIONS_LOG) console.log('SET_EDITING_TAB :>> ', state.editingTab)
     }
   },
   actions: {
@@ -143,14 +149,18 @@ export default new Vuex.Store({
     },
 
     // Set selected WS id
-    toggleSelectedWS: ({ state, commit }, id = null) => {
-      // const blop = state.selectedId === id ? null : id
-      commit('SET_SELECTED_WS', id)
+    toggleSelectedWS: ({ commit }, wsId = null) => {
+      commit('SET_SELECTED_WS', wsId)
     },
 
     // Show/hide the Edit WS form
     toggleEditingWS: ({ commit, state }, editingWS = null) => {
       commit('SET_EDITING_WS', editingWS === null ? !state.editingWS : editingWS)
+    },
+
+    // Set currently edited Tab id
+    setEditingTab: ({ commit }, tabId = null) => {
+      commit('SET_EDITING_TAB', tabId)
     }
 
   },
@@ -160,7 +170,8 @@ export default new Vuex.Store({
     addingWS: state => state.addingWS,
     selectedWS: state => state.ws.find(ws => ws.id === state.selectedId),
     selectedWSTabs: state => state.tabs.filter(tab => tab.wsId === state.selectedId),
-    editingWS: state => state.editingWS
+    editingWS: state => state.editingWS,
+    editingTab: state => state.editingTab
   }
 })
 

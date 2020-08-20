@@ -13,8 +13,8 @@
     <div v-else class="ui ws" :class="{ editing }">
 
       <!-- Workspace create/edit form -->
-      <label>Workspace name</label>
-      <div class="ui large input" style="width: 100%; margin-bottom: 15px;">
+      <h3>Workspace name</h3>
+      <div class="ui big input" style="width: 100%; margin-bottom: 35px;">
         <input type="text" v-model="workspace.title" style="width:80%">
         <button class="ui large button green" :class="{ orange: editing }" @click="submit" style="margin-left: 10px; width: 90px;">
           {{ editing ? 'Save' : 'Create' }}
@@ -23,7 +23,7 @@
 
       <!-- Tab list -->
       <div v-if="editing">
-        <label>Workspace included tabs</label>
+        <h3>Workspace included tabs</h3>
         <ws-tab-list></ws-tab-list>
       </div>
 
