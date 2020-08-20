@@ -6,8 +6,8 @@
 
     <!-- Static fields -->
     <div v-if="!editing" class="content">
-      <h4>{{ tab.title }}</h4>
-      <p>{{ tab.url }}</p>
+      <h4>{{ tab.title | shorten }}</h4>
+      <p>{{ tab.url | shorten }}</p>
     </div>
 
     <!-- Editing fields -->

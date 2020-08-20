@@ -5,11 +5,9 @@ import App from './App.vue'
 
 import store from './store/store'
 
-// Vue.prototype.$browser = require('webextension-polyfill')
-
 Vue.use(Vuex)
 
-Vue.filter('shorten', function (str, width = 40) {
+Vue.filter('shorten', function (str, width = 80) {
   return str.slice(0, width) + ((str.length > width - 4) ? '...' : '')
 })
 

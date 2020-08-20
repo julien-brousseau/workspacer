@@ -23,7 +23,7 @@
 
       <!-- Tab list -->
       <div v-if="editing">
-        <h3>Workspace included tabs</h3>
+        <h3>{{ selectedWSTabs.length ? 'Workspace included tabs' : 'This workspace contains no tabs' }}</h3>
         <ws-tab-list></ws-tab-list>
       </div>
 
@@ -50,7 +50,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['selectedWS', 'editingWS']),
+    ...mapGetters(['selectedWS', 'editingWS', 'selectedWSTabs']),
     editing () { return this.editingWS }
   },
 

@@ -41,14 +41,13 @@ export default {
     // Add a tab to the list containing the current tab info
     async createNewTab () {
       const { title, url } = await this.getCurrentTab()
-      const fURL = url.slice(0, 30)
-      return await this.createOrUpdateTabs([{ title, url: fURL, wsId: this.ws.id }])
+      this.createOrUpdateTabs([{ title, url, wsId: this.ws.id }])
     },
 
     // Add all current window's tabs
     async createNewTabsFromWindow () {
-      // const windowTabs = await this.getAllTabsFromWindow()
-      // this.tabs = [...this.tabs, ...windowTabs.map(t => { return { ...t, tempId: true } })]
+      const windowTabs = await this.getAllTabsFromWindow()
+      this.createOrUpdateTabs(windowTabs.map(t => { return { ...t, wsId: this.ws.id } }))
     }
 
   }

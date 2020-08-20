@@ -7,10 +7,10 @@ import { Workspace } from '../db/services/Workspace'
 import { Tab } from '../db/services/Tab'
 
 // Un-comment this line to enable browser testing in regular Vue app
-import { Browser } from '../db/browser'
-const browser = Browser
+// import { Browser } from '../db/browser'
+// const browser = Browser
 
-// const browser = require('webextension-polyfill')
+const browser = require('webextension-polyfill')
 
 const MUTATIONS_LOG = true
 
@@ -35,16 +35,6 @@ export default new Vuex.Store({
     'SET_TABS' (state, tabsData) {
       state.tabs = tabsData
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs)
-    },
-
-    'CREATE_WS' (state, newWSData) {
-      state.ws.unshift(newWSData)
-      if (MUTATIONS_LOG) console.log('CREATE_WS :>> ', newWSData)
-    },
-
-    'CREATE_TAB' (state, tabsArray) {
-      state.tabs = [...state.tabs, ...tabsArray]
-      if (MUTATIONS_LOG) console.log('CREATE_TAB :>> ', state.tabs)
     },
 
     'SET_ADDING_WS' (state, isVisible) {
@@ -108,10 +98,9 @@ export default new Vuex.Store({
       return id
     },
 
+    // Remove a tab by ID
     deleteTab: async ({ commit, dispatch }, tabId) => {
-      // console.log('blop :>> ', tabId)
-      const blop = await new Tab().deleteTab(tabId)
-      console.log('blop :>> ', blop)
+      await new Tab().deleteTab(tabId)
       const refreshTabs = await dispatch('getAllTabs')
       commit('SET_TABS', refreshTabs)
     },
