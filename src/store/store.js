@@ -7,12 +7,19 @@ import { Workspace } from '../db/services/Workspace'
 import { Tab } from '../db/services/Tab'
 
 // Un-comment this line to enable browser testing in regular Vue app
-// import { Browser } from '../db/browser'
-// const browser = Browser
+import { Browser } from '../db/browser'
+const browser = Browser
 
-const browser = require('webextension-polyfill')
+// const browser = require('webextension-polyfill')
 
-const MUTATIONS_LOG = true
+// Communication with background.js
+// browser.storage.local.set({
+//   [window.location.hostname]: document.title
+// }).then(() => {
+//   browser.runtime.sendMessage(`Saved document title for ${window.location.hostname}`)
+// })
+
+const MUTATIONS_LOG = false
 
 Vue.use(Vuex)
 
@@ -172,16 +179,16 @@ export default new Vuex.Store({
   }
 })
 
-function sortTabs (tabs) {
-  return tabs.sort((tab1, tab2) => {
-    return tab1.index === tab2.index ? 0 : tab1.index > tab2.index ? 1 : -1
-  })
-}
+// function sortTabs (tabs) {
+//   return tabs.sort((tab1, tab2) => {
+//     return tab1.index === tab2.index ? 0 : tab1.index > tab2.index ? 1 : -1
+//   })
+// }
 
-function printObj (msg, o) {
-  console.log('PRINTING >> ', msg)
-  Object.keys(o).map(ws => console.log(ws))
-}
+// function printObj (msg, o) {
+//   console.log('PRINTING >> ', msg)
+//   Object.keys(o).map(ws => console.log(ws))
+// }
 
 // Temporary fix until tabs are managed by a separate jsStore table
 // function fixTabIds (tabs) {

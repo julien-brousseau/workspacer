@@ -7,7 +7,7 @@ import store from './store/store'
 
 Vue.use(Vuex)
 
-Vue.filter('shorten', function (str, width = 80) {
+Vue.filter('shorten', function (str, width = 70) {
   return str.slice(0, width) + ((str.length > width - 4) ? '...' : '')
 })
 

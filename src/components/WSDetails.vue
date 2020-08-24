@@ -69,7 +69,7 @@ export default {
 
     // Create/edit the current WS data
     async submit (e) {
-      const id = await this.createOrUpdateWS(this.workspace)
+      await this.createOrUpdateWS(this.workspace)
       this.cancel()
     },
 

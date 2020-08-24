@@ -32,7 +32,7 @@ export default {
   computed: {
     ...mapGetters(['selectedWS', 'selectedWSTabs']),
     ws () { return this.selectedWS },
-    tabs () { return this.selectedWSTabs }
+    tabs () { return this.selectedWSTabs }
   },
 
   methods: {

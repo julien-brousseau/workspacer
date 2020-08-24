@@ -16,7 +16,7 @@ import WSList from './components/WSList.vue'
 import WSDetails from './components/WSDetails.vue'
 import Loading from './components/items/Loading.vue'
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
-    loading () { return this.allWS === null || this.allTabs === null }
+    loading () { return this.allWS === null || this.allTabs === null }
   },
   mounted () {
     this.$store.dispatch('initWS')
