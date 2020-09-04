@@ -7,17 +7,13 @@ import { Workspace } from '../db/services/Workspace'
 import { Tab } from '../db/services/Tab'
 
 // Un-comment this line to enable browser testing in regular Vue app
-import { Browser } from '../db/browser'
-const browser = Browser
+// import { Browser } from '../db/browser'
+// const browser = Browser
 
-// const browser = require('webextension-polyfill')
+const browser = require('webextension-polyfill')
 
 // Communication with background.js
-// browser.storage.local.set({
-//   [window.location.hostname]: document.title
-// }).then(() => {
-//   browser.runtime.sendMessage(`Saved document title for ${window.location.hostname}`)
-// })
+browser.runtime.sendMessage('BLOP!')
 
 const MUTATIONS_LOG = false
 
