@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import WSListItem from './WSListItem'
+import WSListItem from '../components/WSListItem'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {

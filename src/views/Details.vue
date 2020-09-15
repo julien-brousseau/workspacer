@@ -34,8 +34,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import Loading from './items/Loading.vue'
-import WSDetailsTabList from './WSDetailsTabList.vue'
+import Loading from '../components/items/Loading.vue'
+import WSDetailsTabList from '../components/WSDetailsTabList.vue'
 
 export default {
   components: {

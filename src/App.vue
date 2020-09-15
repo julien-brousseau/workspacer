@@ -1,12 +1,13 @@
 <template>
   <div id="app" class="ui">
 
-    <ws-loading v-if="loading"></ws-loading>
+    <!-- <ws-loading v-if="loading"></ws-loading> -->
 
-    <div v-else class="content">
-      <ws-details v-if="addingWS || editingWS"></ws-details>
-      <ws-list v-else></ws-list>
-    </div>
+    <!-- <div v-else class="content"> -->
+      <router-view/>
+      <!-- <ws-details v-if="addingWS || editingWS"></ws-details>
+      <ws-list v-else></ws-list> -->
+    <!-- </div> -->
 
   </div>
 </template>
@@ -17,6 +18,8 @@ import WSDetails from './components/WSDetails.vue'
 import Loading from './components/items/Loading.vue'
 
 import { mapGetters } from 'vuex'
+
+// removed from package:  "webextension-polyfill": "^0.6.0"
 
 export default {
   components: {
@@ -34,11 +37,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   min-width: 800px !important;
   height: 800px !important;
-  color: #333333;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* color: #333333; */
+  color: #2c3e50;
   padding: 30px;
   margin: 0px;
 }
