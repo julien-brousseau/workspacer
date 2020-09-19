@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // External data
-import { initJSS } from '../db/jss_db'
+// import { initJSS } from '../db/jss_db'
 import { Workspace } from '../db/services/Workspace'
 import { Tab } from '../db/services/Tab'
 
@@ -10,10 +10,10 @@ import { Tab } from '../db/services/Tab'
 // import { Browser } from '../db/browser'
 // const browser = Browser
 
-const browser = require('webextension-polyfill')
+// const browser = require('webextension-polyfill')
 
 // Communication with background.js
-browser.runtime.sendMessage('BLOP!')
+// browser.runtime.sendMessage('blop')
 
 const MUTATIONS_LOG = true
 
@@ -63,18 +63,11 @@ export default new Vuex.Store({
   actions: {
 
     // Init indexDB and load workspaces/tabs
-    initWS: async ({ dispatch, commit }) => {
-      return initJSS()
-
-        // Fetch all WS
-        .then(() => dispatch('getAllWS'))
-        .then(ws => commit('SET_WS', ws))
-
-        // Fetch all tbas
-        .then(() => dispatch('getAllTabs'))
-        .then(tabs => commit('SET_TABS', tabs))
-
-        .catch(e => console.log('Error > initWS :>> ', e))
+    initWS: async ({ commit }) => {
+      const ws = await browser.runtime.sendMessage('GET_WS')
+      commit('SET_WS', ws)
+      const tabs = await browser.runtime.sendMessage('GET_TABS')
+      commit('SET_TABS', tabs)
     },
 
     // Clear the workspace database
