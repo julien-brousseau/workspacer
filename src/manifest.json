@@ -6,8 +6,10 @@
   "version": "1.0.0",
   "incognito": "not_allowed",
   "icons": { "48": "/icons/48.svg" },
+  "default_locale": "en",
   
   "permissions": [
+    "*://localhost/*",
     "<all_urls>",
     "activeTab",
     "storage",
@@ -17,18 +19,12 @@
   ],
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["js/background.js"]
   },
-
   "browser_action": {
+    "default_popup": "popup.html",
     "default_title": "__MSG_extName__",
-    "default_popup": "/index.html",
     "browser_style": true,
     "default_icon": { "48": "/icons/48.svg" }
-  },
-
-  "options_ui": {
-    "page": "options.html",
-    "browser_style": true
   }
 }

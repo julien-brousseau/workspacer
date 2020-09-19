@@ -1,10 +1,17 @@
 <template>
   <div id="app" class="ui">
 
+    <div id="nav">
+      <router-link to="/">List</router-link> |
+      <router-link to="/Details">Details</router-link>
+    </div>
+
     <!-- <ws-loading v-if="loading"></ws-loading> -->
 
     <!-- <div v-else class="content"> -->
-      <router-view/>
+
+      <router-view/>  <!-- Should show the default View -->
+
       <!-- <ws-details v-if="addingWS || editingWS"></ws-details>
       <ws-list v-else></ws-list> -->
     <!-- </div> -->
@@ -13,9 +20,9 @@
 </template>
 
 <script>
-import WSList from './components/WSList.vue'
-import WSDetails from './components/WSDetails.vue'
-import Loading from './components/items/Loading.vue'
+// import WSList from './views/List.vue'
+// import WSDetails from './views/Details.vue'
+// import Loading from './components/items/Loading.vue'
 
 import { mapGetters } from 'vuex'
 
@@ -23,9 +30,9 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    wsList: WSList,
-    wsDetails: WSDetails,
-    wsLoading: Loading
+    // wsList: WSList,
+    // wsDetails: WSDetails,
+    // wsLoading: Loading
   },
   computed: {
     ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),

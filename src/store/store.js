@@ -15,7 +15,7 @@ const browser = require('webextension-polyfill')
 // Communication with background.js
 browser.runtime.sendMessage('BLOP!')
 
-const MUTATIONS_LOG = false
+const MUTATIONS_LOG = true
 
 Vue.use(Vuex)
 
