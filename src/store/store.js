@@ -1,20 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// External data
-// import { initJSS } from '../db/jss_db'
-import { Workspace } from '../db/services/Workspace'
-import { Tab } from '../db/services/Tab'
-
-// Un-comment this line to enable browser testing in regular Vue app
-// import { Browser } from '../db/browser'
-// const browser = Browser
-
-// const browser = require('webextension-polyfill')
-
-// Communication with background.js
-// browser.runtime.sendMessage('blop')
-
 const MUTATIONS_LOG = true
 
 Vue.use(Vuex)
@@ -62,60 +48,42 @@ export default new Vuex.Store({
   },
   actions: {
 
-    // Init indexDB and load workspaces/tabs
-    initWS: async ({ commit }) => {
-      const ws = await browser.runtime.sendMessage('GET_WS')
+    // Refresh all workspaces and tabs
+    loadWS: async ({ commit }) => {
+      const ws = await browser.runtime.sendMessage({ type: 'GET_WS' })
       commit('SET_WS', ws)
-      const tabs = await browser.runtime.sendMessage('GET_TABS')
+      const tabs = await browser.runtime.sendMessage({ type: 'GET_TABS' })
       commit('SET_TABS', tabs)
     },
 
     // Clear the workspace database
     clearWS: async ({ commit }) => {
-      await new Workspace().clearWS()
+      await browser.runtime.sendMessage({ type: 'CLEAR_ALL' })
       commit('SET_WS', [])
-      await new Tab().clearTabs()
       commit('SET_TABS', [])
     },
 
     // Create a new Workspace object and return its id
-    createOrUpdateWS: async ({ commit, dispatch }, ws) => {
-      const [{ id }] = await new Workspace().createOrUpdateWS(ws)
-      const refreshWS = await dispatch('getAllWS')
-      commit('SET_WS', refreshWS)
+    createOrUpdateWS: async ({ dispatch }, ws) => {
+      const [{ id }] = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_WS', ws })
+      await dispatch('loadWS')
       return id
     },
 
     // Create tabs from an array of objects
-    createOrUpdateTabs: async ({ commit, dispatch }, tabsArray) => {
-      const [{ id }] = await new Tab().createOrUpdateTabs(tabsArray)
-      const refreshTabs = await dispatch('getAllTabs')
-      commit('SET_TABS', refreshTabs)
+    createOrUpdateTabs: async ({ dispatch }, tabs) => {
+      const [{ id }] = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs })
+      await dispatch('loadWS')
       return id
     },
 
     // Remove a tab by ID
-    deleteTab: async ({ commit, dispatch }, tabId) => {
-      await new Tab().deleteTab(tabId)
-      const refreshTabs = await dispatch('getAllTabs')
-      commit('SET_TABS', refreshTabs)
+    deleteTab: async ({ dispatch }, tabId) => {
+      await browser.runtime.sendMessage({ type: 'DELETE_TAB', tabId })
+      await dispatch('loadWS')
     },
 
     // GETTERS
-
-    // Fetch the indexDB-stored workspace database
-    getAllWS: async () => {
-      return new Workspace().getWS()
-        .then(ws => ws)
-        .catch(e => console.log('Error > getAllWS :>> ', e))
-    },
-
-    // Fetch the indexDB-stored workspace database
-    getAllTabs: async () => {
-      return new Tab().getAllTabs()
-        .then(tabs => tabs)
-        .catch(e => console.log('Error > getAllTabs :>> ', e))
-    },
 
     // Get the current tab
     getCurrentTab: async () => {
@@ -167,23 +135,3 @@ export default new Vuex.Store({
     editingTab: state => state.editingTab
   }
 })
-
-// function sortTabs (tabs) {
-//   return tabs.sort((tab1, tab2) => {
-//     return tab1.index === tab2.index ? 0 : tab1.index > tab2.index ? 1 : -1
-//   })
-// }
-
-// function printObj (msg, o) {
-//   console.log('PRINTING >> ', msg)
-//   Object.keys(o).map(ws => console.log(ws))
-// }
-
-// Temporary fix until tabs are managed by a separate jsStore table
-// function fixTabIds (tabs) {
-//   return tabs.map(t => {
-//     if (!t.id) t.id = Date.now()
-//     console.log('t :>> ', t)
-//     return t
-//   })
-// }

@@ -28,7 +28,7 @@ export default {
     loading () { return this.allWS === null || this.allTabs === null }
   },
   mounted () {
-    this.$store.dispatch('initWS')
+    this.$store.dispatch('loadWS')
   }
 }
 </script>

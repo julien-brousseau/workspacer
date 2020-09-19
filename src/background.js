@@ -2,24 +2,34 @@ import { initJSS } from './db/jss_db'
 import { Workspace } from './db/services/Workspace'
 import { Tab } from './db/services/Tab'
 
-// browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//   if (request === 'blop') {
-//     const blop = new Workspace().getWS()
-//     return Promise.resolve(blop)
-//   }
-// })
-
-browser.runtime.onMessage.addListener(handleMessageFromBackground)
 initJSS()
+browser.runtime.onMessage.addListener(handleMessageFromBackground)
 
 async function handleMessageFromBackground (action, sender, sendResponse) {
-  if (action === 'GET_WS') {
-    return await new Workspace().getWS()
+  switch (action.type) {
+    // Get
+    case 'GET_WS':
+      return await new Workspace().getWS()
+    case 'GET_TABS':
+      return await new Tab().getAllTabs()
+
+    // Create / update
+    case 'CREATE_OR_UPDATE_WS':
+      return await new Workspace().createOrUpdateWS(action.ws)
+    case 'CREATE_OR_UPDATE_TAB':
+      return await new Tab().createOrUpdateTabs(action.tabs)
+
+    // Delete
+    case 'DELETE_TAB':
+      return await new Tab().deleteTab(action.tabId)
+    case 'CLEAR_ALL':
+      await new Workspace().clearWS()
+      await new Tab().clearTabs()
+      return true
+
+    default:
+      return false
   }
-  if (action === 'GET_TABS') {
-    return await new Tab().getAllTabs()
-  }
-  return false
 }
 
 // browser.runtime.onMessage.addListener(handleMessage)
