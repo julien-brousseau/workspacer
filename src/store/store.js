@@ -85,14 +85,14 @@ export default new Vuex.Store({
 
     // GETTERS
 
-    // Get the current tab
+    // Query browser for the current active tab
     getCurrentTab: async () => {
       const tab = await browser.tabs.query({ currentWindow: true, active: true })
       const { title, url } = tab[0]
       return { title, url }
     },
 
-    // Query browser to get all current window's tabs
+    // Query browser for all current window's tabs
     getAllTabsFromWindow: async () => {
       return browser.tabs.query({ currentWindow: true })
         .then(tabs => tabs.map(({ title, url }) => { return { title, url } }))

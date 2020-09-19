@@ -27,16 +27,20 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       await new Tab().clearTabs()
       return true
 
+    // Window
+    case 'NEW_WINDOW':
+      createWindow(action.ws.id)
+      return true
+
     default:
       return false
   }
 }
 
-// browser.runtime.onMessage.addListener(handleMessage)
-// function handleMessage (request, sender, sendResponse) {
-//   console.log(request, sender, sendResponse) // logs "your message"
-// }
-
-// browser.browserAction.onClicked.addListener(() => {
-//   browser.tabs.executeScript({ file: 'content.js' })
-// })
+async function createWindow (wsId) {
+  const tabs = await new Tab().getTabsFromWS(wsId)
+  const { id } = await browser.windows.create({ height: 400, width: 1000, left: 0 })
+  tabs.forEach(({ url }) => {
+    browser.tabs.create({ url, windowId: id, discarded: true })
+  })
+}

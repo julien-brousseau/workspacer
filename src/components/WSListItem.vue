@@ -67,7 +67,9 @@ export default {
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
 
     // TODO: Open all ws tabs in new window
-    openWS () { return false },
+    openWS () {
+      browser.runtime.sendMessage({ type: 'NEW_WINDOW', ws: this.ws })
+    },
 
     // Set the ws as globally editing
     editWS () {
