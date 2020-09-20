@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { initJSS } from './db/jss_db'
 import { Workspace } from './db/services/Workspace'
 import { Tab } from './db/services/Tab'
@@ -40,8 +42,13 @@ async function createWindow (wsId) {
   browser.windows.create()
     .then(window => {
       tabs.forEach(tab => {
-        browser.tabs.create({ ...tab, windowId: window.id })
+        browser.tabs.create({
+          ..._.omit(tab, ['Id', 'position', 'wsId']),
+          windowId: window.id,
+          discarded: true
+        })
       })
+      // Remove the empty tab at position 1
       browser.tabs.remove(window.tabs[0].id)
     })
 }
