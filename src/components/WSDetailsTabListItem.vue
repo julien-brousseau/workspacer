@@ -51,7 +51,7 @@ export default {
 
   computed: {
     ...mapGetters(['editingTab']),
-    editing () { return this.editingTab === this.tab.id }
+    editing () { return this.editingTab === this.tab.Id }
   },
 
   methods: {
@@ -61,16 +61,16 @@ export default {
       this.setEditingTab()
     },
     toggleEditingTab () {
-      if (this.editingTab !== this.tab.id) {
+      if (this.editingTab !== this.tab.Id) {
         this.init()
-        this.setEditingTab(this.tab.id)
+        this.setEditingTab(this.tab.Id)
       } else {
         this.upsertTabs([this.tabForm])
         this.init()
       }
     },
     removeTab () {
-      this.deleteTab(this.tab.id)
+      this.deleteTab(this.tab.Id)
     },
     cancel () {
       this.init()

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-const MUTATIONS_LOG = true
+const MUTATIONS_LOG = false
 
 Vue.use(Vuex)
 
@@ -77,9 +77,12 @@ export default new Vuex.Store({
 
     // Create tabs from an array of objects
     upsertTabs: async ({ dispatch }, tabs) => {
-      const [{ id }] = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs })
-      await dispatch('loadWS')
-      return id
+      try {
+        const blop = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs })
+        console.log('INSERTED :>> ', blop)
+        await dispatch('loadWS')
+        // return id
+      } catch (e) { console.log('Error :>> ', e) }
     },
 
     // Remove a tab by ID

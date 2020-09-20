@@ -15,35 +15,40 @@ export class Tab {
   getTabsFromWS (wsId) {
     return connection.select({
       from: this.tableName,
-      where: { wsId }
+      where: { wsId },
+      order: {
+        by: 'position',
+        type: 'desc'
+      }
     })
   }
 
   async upsertTabs (tabsArray) {
     // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
 
-    const props = ['id', 'wsId', 'title', 'url', 'pinned', 'discarded', 'cookieStoreId', 'order']
-    const wsId = tabsArray[0].wsId
+    // Included tab props to filter
+    const props = ['Id', 'wsId', 'title', 'url', 'position', 'pinned', 'discarded']
 
     // Get tabs from current WS to find order
-    const blop = await connection.select({
+    const wsId = tabsArray[0].wsId
+    const nt = await connection.select({
       from: this.tableName,
       where: { wsId },
       order: {
         by: 'position',
-        type: 'desc',
-        limit: 1
-      }
+        type: 'desc'
+      },
+      limit: 1
     })
+    const position = nt.length ? nt[0].position + 1 : 1
 
-    const position = blop.length ? blop[0].position + 1 : 0
+    // Add position to tabs
+    const filteredTabs = tabsArray.map(t => { return { ..._.pick(t, props), position } })
 
+    // Insert or update the tabs array
     return connection.insert({
       into: this.tableName,
-      values: tabsArray.map(t => {
-        const filteredTab = _.pick(t, props)
-        return { ...filteredTab, position }
-      }),
+      values: filteredTabs,
       upsert: true,
       return: true
     })

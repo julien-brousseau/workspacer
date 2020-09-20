@@ -18,7 +18,7 @@
       <ul v-if="selected" class="tabs">
         <li v-if="!tabs.length" class="tab">This workspace contains no tabs</li>
         <!-- <li class="tab header">{{ tabs.length ? "Included tabs" : "This workspace contains no tabs" }}</li> -->
-        <li class="tab" v-for="tab in tabs" :key="tab.id">{{ tab.title | shorten }}</li>
+        <li class="tab" v-for="tab in tabs" :key="tab.Id">[{{ tab.position }}]{{ tab.title | shorten }}</li>
       </ul>
     </div>
 

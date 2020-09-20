@@ -27,7 +27,7 @@ export default {
     ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
     loading () { return this.allWS === null || this.allTabs === null }
   },
-  mounted () {
+  created () {
     this.$store.dispatch('loadWS')
   }
 }

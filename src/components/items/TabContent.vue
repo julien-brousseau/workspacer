@@ -47,7 +47,7 @@ export default {
     ...mapActions(['setEditingTab']),
     toggleEditingTab () {
       console.log('toggleEditingTab :>> ')
-      // this.setEditingTab(this.tab.id)
+      // this.setEditingTab(this.tab.Id)
     },
     deleteTab () {
       console.log('deleteTab :>> ')

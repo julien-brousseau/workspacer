@@ -23,12 +23,13 @@ const getDatabase = () => {
   const tabTable = {
     name: 'Tabs',
     columns: {
-      id: {
+      // Caps to prevent mixup with tab regular id
+      Id: {
         primaryKey: true,
         autoIncrement: true
       },
       wsId: {
-        primaryKey: true,
+        // primaryKey: true,
         dataType: DATA_TYPE.Integer,
         notNull: true
       },
@@ -40,13 +41,12 @@ const getDatabase = () => {
         dataType: DATA_TYPE.String,
         notNull: true
       },
+      position: {
+        dataType: DATA_TYPE.Integer,
+        notNull: false
+      },
       pinned: {
         dataType: DATA_TYPE.Boolean,
-        notNull: true,
-        default: false
-      },
-      cookieStoreId: {
-        dataType: DATA_TYPE.Integer,
         notNull: true,
         default: false
       },
@@ -54,19 +54,20 @@ const getDatabase = () => {
         dataType: DATA_TYPE.Boolean,
         notNull: true,
         default: false
-      },
-      favIconUrl: {
-        dataType: DATA_TYPE.String,
-        notNull: false
-      },
-      isInReaderMode: {
-        dataType: DATA_TYPE.Boolean,
-        notNull: false
-      },
-      position: {
-        dataType: DATA_TYPE.Integer,
-        notNull: false
       }
+      // cookieStoreId: {
+      //   dataType: DATA_TYPE.Integer,
+      //   notNull: true,
+      //   default: false
+      // },
+      // favIconUrl: {
+      //   dataType: DATA_TYPE.String,
+      //   notNull: false
+      // },
+      // isInReaderMode: {
+      //   dataType: DATA_TYPE.Boolean,
+      //   notNull: false
+      // },
     }
   }
 

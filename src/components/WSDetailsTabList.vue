@@ -3,7 +3,7 @@
 
     <!-- Tab item -->
     <tab-item v-for="tab in tabs"
-      :key="tab.id"
+      :key="tab.Id"
       :tab="tab">
     </tab-item>
 
