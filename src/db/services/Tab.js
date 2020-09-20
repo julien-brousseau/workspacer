@@ -19,9 +19,11 @@ export class Tab {
   }
 
   createOrUpdateTabs (tabsArray) {
+    // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
+    // const currentTabs = this.getTabsFromWS
     return connection.insert({
       into: this.tableName,
-      values: tabsArray,
+      values: tabsArray.map((t, i) => { return { ...t, order: i } }),
       upsert: true,
       return: true
     })

@@ -29,7 +29,7 @@
       <button class="ui basic button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
         <i class="icon plus"></i></button>
       <button class="ui basic button icon" :class="[cls.buttonEdit]" @click="editWS">
-        <i class="icon pencil"></i></button>
+        <i class="icon cog"></i></button>
     </div>
 
   </div>

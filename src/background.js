@@ -32,6 +32,8 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       createWindow(action.ws.id)
       return true
 
+      // TODO: Move tab related methods here
+
     default:
       return false
   }
@@ -39,8 +41,11 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
 
 async function createWindow (wsId) {
   const tabs = await new Tab().getTabsFromWS(wsId)
-  const { id } = await browser.windows.create({ height: 400, width: 1000, left: 0 })
-  tabs.forEach(({ url }) => {
-    browser.tabs.create({ url, windowId: id, discarded: true })
-  })
+  browser.windows.create()
+    .then(window => {
+      tabs.forEach(({ url }) => {
+        browser.tabs.create({ url, windowId: window.id, discarded: true })
+      })
+      browser.tabs.remove(window.tabs[0].id)
+    })
 }

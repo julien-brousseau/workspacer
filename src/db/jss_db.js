@@ -38,6 +38,22 @@ const getDatabase = () => {
       url: {
         dataType: DATA_TYPE.String,
         notNull: true
+      },
+      order: {
+        dataType: DATA_TYPE.Integer,
+        notNull: false
+      },
+      pinned: {
+        dataType: DATA_TYPE.Boolean,
+        notNull: false
+      },
+      cookieStoreId: {
+        dataType: DATA_TYPE.Integer,
+        notNull: false
+      },
+      discarted: {
+        dataType: DATA_TYPE.Boolean,
+        notNull: false
       }
     }
   }
