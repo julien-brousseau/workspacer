@@ -7,19 +7,17 @@ browser.runtime.onMessage.addListener(handleMessageFromBackground)
 
 async function handleMessageFromBackground (action, sender, sendResponse) {
   switch (action.type) {
-    // Get
     case 'GET_WS':
       return await new Workspace().getWS()
     case 'GET_TABS':
       return await new Tab().getAllTabs()
 
-    // Create / update
     case 'CREATE_OR_UPDATE_WS':
       return await new Workspace().createOrUpdateWS(action.ws)
     case 'CREATE_OR_UPDATE_TAB':
-      return await new Tab().createOrUpdateTabs(action.tabs)
+      console.log('action.tabs :>> ', action.tabs)
+      return await new Tab().upsertTabs(action.tabs)
 
-    // Delete
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId)
     case 'CLEAR_ALL':
@@ -27,7 +25,6 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       await new Tab().clearTabs()
       return true
 
-    // Window
     case 'NEW_WINDOW':
       createWindow(action.ws.id)
       return true
@@ -43,8 +40,8 @@ async function createWindow (wsId) {
   const tabs = await new Tab().getTabsFromWS(wsId)
   browser.windows.create()
     .then(window => {
-      tabs.forEach(({ url }) => {
-        browser.tabs.create({ url, windowId: window.id, discarded: true })
+      tabs.forEach(tab => {
+        browser.tabs.create({ ...tab, windowId: window.id })
       })
       browser.tabs.remove(window.tabs[0].id)
     })

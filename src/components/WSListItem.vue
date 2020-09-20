@@ -61,7 +61,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['createOrUpdateTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['upsertTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
 
     // Setup/clear the global selected ws
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
@@ -77,10 +77,11 @@ export default {
       this.toggleEditingWS(true)
     },
 
+    // TODO: This code exists in other files - to fix
     // Add active tab to the ws tab list
     async addCurrentTab () {
       const currentTab = await this.getCurrentTab()
-      this.createOrUpdateTabs([{ ...currentTab, wsId: this.ws.id }])
+      this.upsertTabs([{ ...currentTab, wsId: this.ws.id }])
     }
 
   }

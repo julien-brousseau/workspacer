@@ -28,6 +28,7 @@ const getDatabase = () => {
         autoIncrement: true
       },
       wsId: {
+        primaryKey: true,
         dataType: DATA_TYPE.Integer,
         notNull: true
       },
@@ -39,20 +40,31 @@ const getDatabase = () => {
         dataType: DATA_TYPE.String,
         notNull: true
       },
-      order: {
-        dataType: DATA_TYPE.Integer,
-        notNull: false
-      },
       pinned: {
         dataType: DATA_TYPE.Boolean,
-        notNull: false
+        notNull: true,
+        default: false
       },
       cookieStoreId: {
         dataType: DATA_TYPE.Integer,
+        notNull: true,
+        default: false
+      },
+      discarded: {
+        dataType: DATA_TYPE.Boolean,
+        notNull: true,
+        default: false
+      },
+      favIconUrl: {
+        dataType: DATA_TYPE.String,
         notNull: false
       },
-      discarted: {
+      isInReaderMode: {
         dataType: DATA_TYPE.Boolean,
+        notNull: false
+      },
+      position: {
+        dataType: DATA_TYPE.Integer,
         notNull: false
       }
     }

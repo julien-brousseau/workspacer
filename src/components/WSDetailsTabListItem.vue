@@ -55,7 +55,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setEditingTab', 'createOrUpdateTabs', 'deleteTab']),
+    ...mapActions(['setEditingTab', 'upsertTabs', 'deleteTab']),
     init () {
       this.tabForm = { ...this.tab }
       this.setEditingTab()
@@ -65,7 +65,7 @@ export default {
         this.init()
         this.setEditingTab(this.tab.id)
       } else {
-        this.createOrUpdateTabs([this.tabForm])
+        this.upsertTabs([this.tabForm])
         this.init()
       }
     },

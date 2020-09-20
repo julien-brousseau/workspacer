@@ -48,6 +48,11 @@ export default new Vuex.Store({
   },
   actions: {
 
+    // Init the DB
+    // init: async () => {
+
+    // },
+
     // Refresh all workspaces and tabs
     loadWS: async ({ commit }) => {
       const ws = await browser.runtime.sendMessage({ type: 'GET_WS' })
@@ -71,7 +76,7 @@ export default new Vuex.Store({
     },
 
     // Create tabs from an array of objects
-    createOrUpdateTabs: async ({ dispatch }, tabs) => {
+    upsertTabs: async ({ dispatch }, tabs) => {
       const [{ id }] = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs })
       await dispatch('loadWS')
       return id
@@ -85,17 +90,17 @@ export default new Vuex.Store({
 
     // GETTERS
 
+    // TODO: Optimize & move to Background
     // Query browser for the current active tab
     getCurrentTab: async () => {
       const tab = await browser.tabs.query({ currentWindow: true, active: true })
-      const { title, url } = tab[0]
-      return { title, url }
+      return tab[0]
     },
 
     // Query browser for all current window's tabs
     getAllTabsFromWindow: async () => {
       return browser.tabs.query({ currentWindow: true })
-        .then(tabs => tabs.map(({ title, url }) => { return { title, url } }))
+        .then(tabs => tabs) // .map(({ title, url }) => { return { title, url } }))
         .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e))
     },
 
