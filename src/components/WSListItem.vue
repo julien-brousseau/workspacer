@@ -81,7 +81,7 @@ export default {
     // Add active tab to the ws tab list
     async addCurrentTab () {
       const currentTab = await this.getCurrentTab()
-      this.upsertTabs([{ ...currentTab, wsId: this.ws.id }])
+      this.upsertTabs({ tabs: [currentTab], wsId: this.ws.id })
     }
 
   }

@@ -65,7 +65,7 @@ export default {
         this.init()
         this.setEditingTab(this.tab.Id)
       } else {
-        this.upsertTabs([this.tabForm])
+        this.upsertTabs({ tabs: [this.tabForm], wsId: this.tab.wsId })
         this.init()
       }
     },

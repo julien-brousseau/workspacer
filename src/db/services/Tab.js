@@ -23,14 +23,12 @@ export class Tab {
     })
   }
 
-  async upsertTabs (tabsArray) {
-    // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
-
+  // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
+  async upsertTabs (tabsArray, wsId) {
     // Included tab props to filter
     const props = ['Id', 'wsId', 'title', 'url', 'position', 'pinned', 'discarded']
 
     // Get tabs from current WS to find order
-    const wsId = tabsArray[0].wsId
     const nt = await connection.select({
       from: this.tableName,
       where: { wsId },
@@ -42,8 +40,8 @@ export class Tab {
     })
     const position = nt.length ? nt[0].position + 1 : 1
 
-    // Add position to tabs
-    const filteredTabs = tabsArray.map(t => { return { ..._.pick(t, props), position } })
+    // Add position and workspace id to tabs
+    const filteredTabs = tabsArray.map(t => { return { ..._.pick(t, props), position, wsId } })
 
     // Insert or update the tabs array
     return connection.insert({
@@ -54,10 +52,10 @@ export class Tab {
     })
   }
 
-  deleteTab (id) {
+  deleteTab (Id) {
     return connection.remove({
       from: this.tableName,
-      where: { id }
+      where: { Id }
     })
   }
 

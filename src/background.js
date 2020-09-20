@@ -15,8 +15,7 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     case 'CREATE_OR_UPDATE_WS':
       return await new Workspace().createOrUpdateWS(action.ws)
     case 'CREATE_OR_UPDATE_TAB':
-      console.log('CREATE/UPDATE TABS :>> ', action.tabs)
-      return await new Tab().upsertTabs(action.tabs)
+      return await new Tab().upsertTabs(action.tabs, action.wsId)
 
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId)

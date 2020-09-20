@@ -41,14 +41,14 @@ export default {
     // Add a tab to the list containing the current tab info
     async createNewTab () {
       const tab = await this.getCurrentTab()
-      this.upsertTabs([{ ...tab, wsId: this.ws.id }])
+      this.upsertTabs({ tabs: [tab], wsId: this.ws.id })
     },
 
     // TODO: Move to background?
     // Add all current window's tabs
     async createNewTabsFromWindow () {
       const windowTabs = await this.getAllTabsFromWindow()
-      this.upsertTabs(windowTabs.map(t => { return { ...t, wsId: this.ws.id } }))
+      this.upsertTabs({ tabs: windowTabs, wsId: this.ws.id })
     }
 
   }

@@ -48,11 +48,6 @@ export default new Vuex.Store({
   },
   actions: {
 
-    // Init the DB
-    // init: async () => {
-
-    // },
-
     // Refresh all workspaces and tabs
     loadWS: async ({ commit }) => {
       const ws = await browser.runtime.sendMessage({ type: 'GET_WS' })
@@ -76,13 +71,10 @@ export default new Vuex.Store({
     },
 
     // Create tabs from an array of objects
-    upsertTabs: async ({ dispatch }, tabs) => {
-      try {
-        const blop = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs })
-        console.log('INSERTED :>> ', blop)
-        await dispatch('loadWS')
-        // return id
-      } catch (e) { console.log('Error :>> ', e) }
+    upsertTabs: async ({ dispatch }, { tabs, wsId }) => {
+      browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs, wsId })
+        .then(() => dispatch('loadWS')) // Tabs usable as argument
+        .catch(e => console.log('Error > upsertTabs :>> ', e))
     },
 
     // Remove a tab by ID
