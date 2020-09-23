@@ -16,8 +16,9 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
 
     case 'CREATE_OR_UPDATE_WS':
       return await new Workspace().createOrUpdateWS(action.ws)
+
     case 'CREATE_TABS':
-      return await new Tab().insertTabs(action.tabs, action.wsId)
+      return await new Tab().insertTabs(action.tabs)
     case 'EDIT_TABS':
       return await new Tab().updateTabs(action.tabs)
 
@@ -29,18 +30,15 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       return true
 
     case 'NEW_WINDOW':
-      createWindow(action.ws.id)
+      createWindow(action.tabs)
       return true
-
-      // TODO: Move tab related methods here
 
     default:
       return false
   }
 }
 
-async function createWindow (wsId) {
-  const tabs = await new Tab().getTabsFromWS(wsId)
+async function createWindow (tabs) {
   browser.windows.create()
     .then(window => {
       tabs.forEach(tab => {

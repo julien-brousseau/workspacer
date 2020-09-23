@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import _ from 'lodash'
 
 const MUTATIONS_LOG = false
 
@@ -71,8 +72,16 @@ export default new Vuex.Store({
     },
 
     // Create tabs from an array of objects
-    createTabs: async ({ dispatch }, { tabs, wsId }) => {
-      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs, wsId })
+    createTabs: async ({ state, dispatch }, { tabs, wsId }) => {
+      // Get highest position from current WS
+      const pos = state.tabs
+        .filter(t => t.wsId === wsId)
+        .reduce((acc, cur) => cur.position > acc ? cur.position : acc, 0)
+
+      // Filter properties and add wsId, then add position
+      tabs = tabs.map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']), wsId, position: (pos + 1 + i) }))
+
+      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs })
         .then(() => dispatch('loadWS')) // Tabs usable as argument
         .catch(e => console.log('Error > createTabs :>> ', e))
     },
@@ -88,6 +97,11 @@ export default new Vuex.Store({
     deleteTab: async ({ dispatch }, tabId) => {
       await browser.runtime.sendMessage({ type: 'DELETE_TAB', tabId })
       await dispatch('loadWS')
+    },
+
+    // Open all ws tabs in new window
+    createWindow ({ state }, wsId) {
+      browser.runtime.sendMessage({ type: 'NEW_WINDOW', tabs: state.tabs.filter(t => t.wsId === wsId) })
     },
 
     // GETTERS

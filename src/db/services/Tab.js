@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { connection } from '../jss_connexion'
 
 export class Tab {
@@ -12,8 +11,8 @@ export class Tab {
     })
   }
 
-  getTabsFromWS (wsId) {
-    return connection.select({
+  async getHighestTabPosition (wsId) {
+    const tabs = await connection.select({
       from: this.tableName,
       where: { wsId },
       order: {
@@ -21,40 +20,19 @@ export class Tab {
         type: 'desc'
       }
     })
+    return tabs.length ? tabs[0].position : 0
   }
 
-  // Filter an array of tabs from browser and add them to workspace
-  // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
-  async insertTabs (tabsArray, wsId) {
-    // Included tab props to filter
-    const props = ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']
-
-    // Get highest position from current WS
-    const nt = await connection.select({
-      from: this.tableName,
-      where: { wsId },
-      order: {
-        by: 'position',
-        type: 'desc'
-      }
-    })
-    const pos = nt.length ? nt[0].position + 1 : 1
-
-    const filteredTabs = tabsArray
-      // Filter properties and add wsId
-      .map(t => ({ ..._.pick(t, props), wsId }))
-      // Add positition
-      .map((t, i) => ({ ...t, position: (pos + i) }))
-
-    // Insert the tabs array
+  //
+  async insertTabs (tabsArray) {
     return connection.insert({
       into: this.tableName,
-      values: filteredTabs,
+      values: tabsArray,
       return: true
     })
   }
 
-  // Replace the recorded tabs with those in tabs array
+  //
   async updateTabs (tabs) {
     return connection.insert({
       into: this.tableName,

@@ -24,7 +24,7 @@
 
     <!-- WS controls -->
     <div class="actions right floated">
-      <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="openWS">
+      <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="createWindow(ws.id)">
         <i class="icon sticky note"></i></button>
       <button class="ui basic button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
         <i class="icon plus"></i></button>
@@ -61,15 +61,10 @@ export default {
 
   },
   methods: {
-    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS', 'createWindow']),
 
     // Setup/clear the global selected ws
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
-
-    // TODO: Open all ws tabs in new window
-    openWS () {
-      browser.runtime.sendMessage({ type: 'NEW_WINDOW', ws: this.ws })
-    },
 
     // Set the ws as globally editing
     editWS () {
