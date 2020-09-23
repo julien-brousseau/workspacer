@@ -6,7 +6,7 @@
 
     <!-- Static fields -->
     <div v-if="!editing" class="content">
-      <h4>{{ tab.title | shorten(60) }}</h4>
+      <h4>[{{ tab.Id }} / {{ tab.position}}] {{ tab.title | shorten(60) }}</h4>
       <p>{{ tab.url | shorten }}</p>
     </div>
 
@@ -55,7 +55,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setEditingTab', 'upsertTabs', 'deleteTab']),
+    ...mapActions(['setEditingTab', 'editTabs', 'deleteTab']),
     init () {
       this.tabForm = { ...this.tab }
       this.setEditingTab()
@@ -65,7 +65,7 @@ export default {
         this.init()
         this.setEditingTab(this.tab.Id)
       } else {
-        this.upsertTabs({ tabs: [this.tabForm], wsId: this.tab.wsId })
+        this.editTabs([this.tabForm])
         this.init()
       }
     },

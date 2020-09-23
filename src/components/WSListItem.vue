@@ -18,7 +18,7 @@
       <ul v-if="selected" class="tabs">
         <li v-if="!tabs.length" class="tab">This workspace contains no tabs</li>
         <!-- <li class="tab header">{{ tabs.length ? "Included tabs" : "This workspace contains no tabs" }}</li> -->
-        <li class="tab" v-for="tab in tabs" :key="tab.Id">[{{ tab.position }}]{{ tab.title | shorten }}</li>
+        <li class="tab" v-for="tab in tabs" :key="tab.Id">[{{ tab.Id }} / {{ tab.position}}] {{ tab.title | shorten }}</li>
       </ul>
     </div>
 
@@ -61,7 +61,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['upsertTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
+    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS']),
 
     // Setup/clear the global selected ws
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
@@ -81,7 +81,7 @@ export default {
     // Add active tab to the ws tab list
     async addCurrentTab () {
       const currentTab = await this.getCurrentTab()
-      this.upsertTabs({ tabs: [currentTab], wsId: this.ws.id })
+      this.createTabs({ tabs: [currentTab], wsId: this.ws.id })
     }
 
   }

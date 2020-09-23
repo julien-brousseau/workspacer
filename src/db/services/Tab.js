@@ -23,30 +23,42 @@ export class Tab {
     })
   }
 
+  // Filter an array of tabs from browser and add them to workspace
   // TODO: Refactor WS editing, put save button at bottom and make the changes savable - thus easier to sort/pin/etc, then save
-  async upsertTabs (tabsArray, wsId) {
+  async insertTabs (tabsArray, wsId) {
     // Included tab props to filter
-    const props = ['Id', 'wsId', 'title', 'url', 'position', 'pinned', 'discarded']
+    const props = ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']
 
-    // Get tabs from current WS to find order
+    // Get highest position from current WS
     const nt = await connection.select({
       from: this.tableName,
       where: { wsId },
       order: {
         by: 'position',
         type: 'desc'
-      },
-      limit: 1
+      }
     })
-    const position = nt.length ? nt[0].position + 1 : 1
+    const pos = nt.length ? nt[0].position + 1 : 1
 
-    // Add position and workspace id to tabs
-    const filteredTabs = tabsArray.map(t => { return { ..._.pick(t, props), position, wsId } })
+    const filteredTabs = tabsArray
+      // Filter properties and add wsId
+      .map(t => ({ ..._.pick(t, props), wsId }))
+      // Add positition
+      .map((t, i) => ({ ...t, position: (pos + i) }))
 
-    // Insert or update the tabs array
+    // Insert the tabs array
     return connection.insert({
       into: this.tableName,
       values: filteredTabs,
+      return: true
+    })
+  }
+
+  // Replace the recorded tabs with those in tabs array
+  async updateTabs (tabs) {
+    return connection.insert({
+      into: this.tableName,
+      values: tabs,
       upsert: true,
       return: true
     })
@@ -63,3 +75,9 @@ export class Tab {
     return connection.clear(this.tableName)
   }
 }
+
+// async function addAndReorder (wsId) {
+//   const tabs = await connection.select({ wsId })
+//   const blop = tabs.sort((tab1, tab2) => { return tab1.position === tab2.position ? 0 : tab1.position > tab2.position ? 1 : -1 })
+//   return blop
+// }

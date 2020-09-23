@@ -71,10 +71,17 @@ export default new Vuex.Store({
     },
 
     // Create tabs from an array of objects
-    upsertTabs: async ({ dispatch }, { tabs, wsId }) => {
-      browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TAB', tabs, wsId })
+    createTabs: async ({ dispatch }, { tabs, wsId }) => {
+      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs, wsId })
         .then(() => dispatch('loadWS')) // Tabs usable as argument
-        .catch(e => console.log('Error > upsertTabs :>> ', e))
+        .catch(e => console.log('Error > createTabs :>> ', e))
+    },
+
+    // Replace tabs with array of objects
+    editTabs: async ({ dispatch }, tabs) => {
+      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs })
+        .then(() => dispatch('loadWS')) // Tabs usable as argument
+        .catch(e => console.log('Error > editTabs :>> ', e))
     },
 
     // Remove a tab by ID
