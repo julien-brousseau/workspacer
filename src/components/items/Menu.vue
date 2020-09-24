@@ -20,20 +20,20 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters(['addingWS', 'editingWS']),
-    disabled () { return this.addingWS || this.editingWS }
+    disabled () { return this.addingWS || this.editingWS; }
   },
   methods: {
     ...mapActions(['toggleAddingWS', 'clearWS']),
     toggleNewWS () {
-      this.toggleAddingWS(true)
+      this.toggleAddingWS(true);
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import TabControls from './TabControls.vue'
+import { mapActions } from 'vuex';
+import TabControls from './TabControls.vue';
 
 export default {
   components: {
@@ -46,13 +46,13 @@ export default {
   methods: {
     ...mapActions(['setEditingTab']),
     toggleEditingTab () {
-      console.log('toggleEditingTab :>> ')
+      console.log('toggleEditingTab :>> ');
       // this.setEditingTab(this.tab.Id)
     },
     deleteTab () {
-      console.log('deleteTab :>> ')
+      console.log('deleteTab :>> ');
       // this.tabs = this.tabs.filter(t => t.id !== deleteId)
     }
   }
-}
+};
 </script>

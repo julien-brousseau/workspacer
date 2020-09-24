@@ -2,7 +2,7 @@
   <div class="item" :class="{ selected: editing }">
 
     <!-- Index buttons -->
-    <tab-controls></tab-controls>
+    <tab-controls :tab="tab"></tab-controls>
 
     <!-- Static fields -->
     <div v-if="!editing" class="content">
@@ -38,45 +38,45 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import TabControls from './items/TabControls.vue'
+import { mapGetters, mapActions } from 'vuex';
+import TabControls from './items/TabControls.vue';
 
 export default {
   components: {
     tabControls: TabControls
   },
-  data () { return { tabForm: null } },
+  data () { return { tabForm: null }; },
   props: ['tab'],
-  created () { this.init() },
+  created () { this.init(); },
 
   computed: {
     ...mapGetters(['editingTab']),
-    editing () { return this.editingTab === this.tab.Id }
+    editing () { return this.editingTab === this.tab.Id; }
   },
 
   methods: {
     ...mapActions(['setEditingTab', 'editTabs', 'deleteTab']),
     init () {
-      this.tabForm = { ...this.tab }
-      this.setEditingTab()
+      this.tabForm = { ...this.tab };
+      this.setEditingTab();
     },
     toggleEditingTab () {
       if (this.editingTab !== this.tab.Id) {
-        this.init()
-        this.setEditingTab(this.tab.Id)
+        this.init();
+        this.setEditingTab(this.tab.Id);
       } else {
-        this.editTabs([this.tabForm])
-        this.init()
+        this.editTabs([this.tabForm]);
+        this.init();
       }
     },
     removeTab () {
-      this.deleteTab(this.tab.Id)
+      this.deleteTab(this.tab.Id);
     },
     cancel () {
-      this.init()
+      this.init();
     }
   }
-}
+};
 </script>
 
 <style scoped>

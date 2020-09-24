@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import WSListItem from '../components/WSListItem'
-import { mapGetters, mapActions } from 'vuex'
+import WSListItem from '../components/WSListItem';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -43,9 +43,9 @@ export default {
 
   methods: {
     ...mapActions(['toggleAddingWS', 'clearWS']),
-    toggleNewWS () { this.toggleAddingWS(true) }
+    toggleNewWS () { this.toggleAddingWS(true); }
   }
-}
+};
 </script>
 
 <style scoped>

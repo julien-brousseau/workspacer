@@ -23,4 +23,4 @@ export default {
   // url,
   // width,
   // windowId
-}
+};

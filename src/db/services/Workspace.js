@@ -1,14 +1,14 @@
-import { connection } from '../jss_connexion'
+import { connection } from '../jss_connexion';
 
 export class Workspace {
   constructor () {
-    this.tableName = 'Workspaces'
+    this.tableName = 'Workspaces';
   }
 
   getWS () {
     return connection.select({
       from: this.tableName
-    })
+    });
   }
 
   createOrUpdateWS (ws) {
@@ -17,7 +17,7 @@ export class Workspace {
       values: [ws],
       upsert: true,
       return: true
-    })
+    });
   }
 
   updateWS ({ id, title, tabs }) {
@@ -25,10 +25,10 @@ export class Workspace {
       in: this.tableName,
       set: { title, tabs },
       where: { id }
-    })
+    });
   }
 
   clearWS () {
-    return connection.clear(this.tableName)
+    return connection.clear(this.tableName);
   }
 }

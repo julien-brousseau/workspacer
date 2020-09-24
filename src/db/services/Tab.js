@@ -1,14 +1,18 @@
-import { connection } from '../jss_connexion'
+import { connection } from '../jss_connexion';
 
 export class Tab {
   constructor () {
-    this.tableName = 'Tabs'
+    this.tableName = 'Tabs';
   }
 
   getAllTabs () {
     return connection.select({
-      from: this.tableName
-    })
+      from: this.tableName,
+      order: {
+        by: 'position',
+        type: 'desc'
+      }
+    });
   }
 
   async getHighestTabPosition (wsId) {
@@ -19,8 +23,8 @@ export class Tab {
         by: 'position',
         type: 'desc'
       }
-    })
-    return tabs.length ? tabs[0].position : 0
+    });
+    return tabs.length ? tabs[0].position : 0;
   }
 
   //
@@ -29,7 +33,7 @@ export class Tab {
       into: this.tableName,
       values: tabsArray,
       return: true
-    })
+    });
   }
 
   //
@@ -39,18 +43,18 @@ export class Tab {
       values: tabs,
       upsert: true,
       return: true
-    })
+    });
   }
 
   deleteTab (Id) {
     return connection.remove({
       from: this.tableName,
       where: { Id }
-    })
+    });
   }
 
   clearTabs () {
-    return connection.clear(this.tableName)
+    return connection.clear(this.tableName);
   }
 }
 

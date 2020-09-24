@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import Loading from '../components/items/Loading.vue'
-import WSDetailsTabList from '../components/WSDetailsTabList.vue'
+import { mapGetters, mapActions } from 'vuex';
+import Loading from '../components/items/Loading.vue';
+import WSDetailsTabList from '../components/WSDetailsTabList.vue';
 
 export default {
   components: {
@@ -46,12 +46,12 @@ export default {
   data () {
     return {
       workspace: null
-    }
+    };
   },
 
   computed: {
     ...mapGetters(['selectedWS', 'editingWS', 'selectedWSTabs']),
-    editing () { return this.editingWS }
+    editing () { return this.editingWS; }
   },
 
   methods: {
@@ -60,32 +60,32 @@ export default {
     // Assign the selected/new WS data
     init () {
       if (this.selectedWS) {
-        this.workspace = { ...this.selectedWS }
+        this.workspace = { ...this.selectedWS };
       } else {
-        const rnd = Math.round(Math.random() * 99)
-        this.workspace = { title: 'Workspace #' + rnd }
+        const rnd = Math.round(Math.random() * 99);
+        this.workspace = { title: 'Workspace #' + rnd };
       }
     },
 
     // Create/edit the current WS data
     async submit (e) {
-      await this.createOrUpdateWS(this.workspace)
-      this.cancel()
+      await this.createOrUpdateWS(this.workspace);
+      this.cancel();
     },
 
     // Clear the form display variables
     cancel () {
-      this.toggleSelectedWS(null)
-      this.toggleEditingWS(false)
-      this.toggleAddingWS(false)
+      this.toggleSelectedWS(null);
+      this.toggleEditingWS(false);
+      this.toggleAddingWS(false);
     }
   },
 
   created () {
-    this.init()
+    this.init();
   }
 
-}
+};
 </script>
 
 <style scoped>

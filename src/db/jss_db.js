@@ -1,5 +1,5 @@
-import { connection } from './jss_connexion'
-import { DATA_TYPE } from 'jsstore'
+import { connection } from './jss_connexion';
+import { DATA_TYPE } from 'jsstore';
 
 const getDatabase = () => {
   const wsTable = {
@@ -18,7 +18,7 @@ const getDatabase = () => {
         // notNull: true
       }
     }
-  }
+  };
 
   const tabTable = {
     name: 'Tabs',
@@ -69,12 +69,12 @@ const getDatabase = () => {
       //   notNull: false
       // },
     }
-  }
+  };
 
-  return { name: 'Workspaces database', tables: [wsTable, tabTable] }
-}
+  return { name: 'Workspaces database', tables: [wsTable, tabTable] };
+};
 
 export const initJSS = async () => {
-  const dataBase = getDatabase()
-  return await connection.initDb(dataBase)
-}
+  const dataBase = getDatabase();
+  return await connection.initDb(dataBase);
+};

@@ -12,10 +12,10 @@
 </template>
 
 <script>
-import WSList from '../views/List.vue'
-import WSDetails from '../views/Details.vue'
-import Loading from '../components/items/Loading.vue'
-import { mapGetters } from 'vuex'
+import WSList from '../views/List.vue';
+import WSDetails from '../views/Details.vue';
+import Loading from '../components/items/Loading.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
@@ -25,12 +25,12 @@ export default {
   },
   computed: {
     ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
-    loading () { return this.allWS === null || this.allTabs === null }
+    loading () { return this.allWS === null || this.allTabs === null; }
   },
   created () {
-    this.$store.dispatch('loadWS')
+    this.$store.dispatch('loadWS');
   }
-}
+};
 </script>
 
 <style lang="scss">
