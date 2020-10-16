@@ -6,7 +6,7 @@
 
     <!-- Static fields -->
     <div v-if="!editing" class="content">
-      <h4>[{{ tab.Id }} / {{ tab.position}}] {{ tab.title | shorten(60) }}</h4>
+      <h4>{{ tab.title | shorten(60) }}</h4>
       <p>{{ tab.url | shorten }}</p>
     </div>
 

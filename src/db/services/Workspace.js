@@ -1,5 +1,6 @@
 import { connection } from '../jss_connexion';
 
+// Database operations
 export class Workspace {
   constructor () {
     this.tableName = 'Workspaces';
@@ -20,13 +21,14 @@ export class Workspace {
     });
   }
 
-  updateWS ({ id, title, tabs }) {
-    return connection.update({
-      in: this.tableName,
-      set: { title, tabs },
-      where: { id }
-    });
-  }
+  // Deprecated?
+  // updateWS ({ id, title, tabs }) {
+  //   return connection.update({
+  //     in: this.tableName,
+  //     set: { title, tabs },
+  //     where: { id }
+  //   });
+  // }
 
   clearWS () {
     return connection.clear(this.tableName);

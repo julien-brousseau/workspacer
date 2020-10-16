@@ -4,11 +4,11 @@
     <!-- Section title and main controls -->
     <h1>
       <button class="ui huge basic icon button" @click="cancel"><i class="caret left icon"></i></button>
-      {{ editing ? workspace.title : 'Create new workspace' }}
+      {{ editing ? 'Edit workspace' : 'Create new workspace' }}
     </h1>
 
     <!-- Loading screen until workspace available -->
-    <ws-loading v-if="!workspace"></ws-loading>
+    <Loading v-if="!workspace" />
 
     <div v-else class="ui ws" :class="{ editing }">
 
@@ -23,8 +23,8 @@
 
       <!-- Tab list -->
       <div v-if="editing">
-        <h3>{{ selectedWSTabs.length ? 'Workspace included tabs' : 'This workspace contains no tabs' }}</h3>
-        <ws-tab-list></ws-tab-list>
+        <h3>{{ selectedWSTabs.length ? 'This workspace contains the following tabs' : 'This workspace contains no tabs' }}</h3>
+        <WSDetailsTabList />
       </div>
 
     </div>
@@ -38,53 +38,33 @@ import Loading from '../components/items/Loading.vue';
 import WSDetailsTabList from '../components/WSDetailsTabList.vue';
 
 export default {
-  components: {
-    wsLoading: Loading,
-    wsTabList: WSDetailsTabList
-  },
-
+  components: { Loading, WSDetailsTabList },
+  created () { this.init(); },
   data () {
-    return {
-      workspace: null
-    };
+    return { workspace: null };
   },
-
   computed: {
     ...mapGetters(['selectedWS', 'editingWS', 'selectedWSTabs']),
     editing () { return this.editingWS; }
   },
-
   methods: {
     ...mapActions(['toggleSelectedWS', 'toggleAddingWS', 'toggleEditingWS', 'createOrUpdateWS']),
-
-    // Assign the selected/new WS data
+    // Assign {data.workspace} to current Workspace if selected, or a new empty {Workspace} with random name
     init () {
-      if (this.selectedWS) {
-        this.workspace = { ...this.selectedWS };
-      } else {
-        const rnd = Math.round(Math.random() * 99);
-        this.workspace = { title: 'Workspace #' + rnd };
-      }
+      this.workspace = (this.selectedWS) ? { ...this.selectedWS } : { title: 'Workspace #' + Math.round(Math.random() * 99) };
     },
-
-    // Create/edit the current WS data
+    // Dispatch {workspace} saving, then clear form
     async submit (e) {
       await this.createOrUpdateWS(this.workspace);
       this.cancel();
     },
-
-    // Clear the form display variables
+    // Clear the form display
     cancel () {
       this.toggleSelectedWS(null);
       this.toggleEditingWS(false);
       this.toggleAddingWS(false);
     }
-  },
-
-  created () {
-    this.init();
   }
-
 };
 </script>
 

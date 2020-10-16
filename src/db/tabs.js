@@ -1,3 +1,4 @@
+// REFERENCE - Browser Tab object
 export default {
   // active,
   // attention,

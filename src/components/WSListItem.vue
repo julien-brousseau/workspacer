@@ -14,17 +14,16 @@
         {{ ws.title }}
       </h2>
 
-      <!-- List of static tabs -->
+      <!-- Static list of tabs -->
       <ul v-if="selected" class="tabs">
         <li v-if="!tabs.length" class="tab">This workspace contains no tabs</li>
-        <!-- <li class="tab header">{{ tabs.length ? "Included tabs" : "This workspace contains no tabs" }}</li> -->
-        <li class="tab" v-for="tab in tabs" :key="tab.Id">[{{ tab.Id }} / {{ tab.position}}] {{ tab.title | shorten }}</li>
+        <li class="tab" v-for="tab in tabs" :key="tab.Id">{{ tab.title | shorten }}</li>
       </ul>
     </div>
 
     <!-- WS controls -->
     <div class="actions right floated">
-      <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="createWindow(ws.id)">
+      <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="openWindow">
         <i class="icon sticky note"></i></button>
       <button class="ui basic button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
         <i class="icon plus"></i></button>
@@ -37,7 +36,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   props: ['ws'],
@@ -45,42 +44,44 @@ export default {
     ...mapGetters(['selectedWS', 'allTabs']),
 
     // Getters
-    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id) },
-    selected () { return this.selectedWS && this.selectedWS.id === this.ws.id },
+    tabs () { return this.allTabs.filter(t => t.wsId === this.ws.id); },
+    selected () { return this.selectedWS && this.selectedWS.id === this.ws.id; },
 
     // Dynamic class control
-    selectedCaret () { return this.selected ? 'down' : 'right' },
+    selectedCaret () { return this.selected ? 'down' : 'right'; },
     cls () {
       return {
         buttons: this.selected ? 'vertical labeled icon' : '',
         buttonOpen: this.selected ? 'large green' : 'basic small',
         buttonAdd: this.selected ? 'large primary' : 'basic small',
         buttonEdit: this.selected ? 'large orange' : 'basic small'
-      }
+      };
     }
 
   },
   methods: {
     ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS', 'createWindow']),
 
-    // Setup/clear the global selected ws
-    selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id) },
-
-    // Set the ws as globally editing
+    // Setup/clear the global selected workspace
+    selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id); },
+    // Set the workspace as globally editing
     editWS () {
-      this.toggleSelectedWS(this.ws.id)
-      this.toggleEditingWS(true)
+      this.toggleSelectedWS(this.ws.id);
+      this.toggleEditingWS(true);
     },
-
-    // TODO: This code exists in other files - to fix
-    // Add active tab to the ws tab list
+    // Create new window only if workspace contains tabs
+    openWindow () {
+      if (this.tabs.length) this.createWindow(this.ws.id);
+    },
+    // TODO: !Repeating in other files
+    // Add active tab to the workspace tab list
     async addCurrentTab () {
-      const currentTab = await this.getCurrentTab()
-      this.createTabs({ tabs: [currentTab], wsId: this.ws.id })
+      const currentTab = await this.getCurrentTab();
+      this.createTabs({ tabs: [currentTab], wsId: this.ws.id });
     }
 
   }
-}
+};
 </script>
 
 <style scoped>

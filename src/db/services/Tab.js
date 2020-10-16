@@ -37,10 +37,10 @@ export class Tab {
   }
 
   //
-  async updateTabs (tabs) {
+  async updateTabs (tabsArray) {
     return connection.insert({
       into: this.tableName,
-      values: tabs,
+      values: tabsArray,
       upsert: true,
       return: true
     });

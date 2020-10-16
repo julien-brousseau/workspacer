@@ -1,11 +1,11 @@
 <template>
   <div id="app" class="ui">
 
-    <ws-loading v-if="loading"></ws-loading>
+    <Loading v-if="loading" />
 
     <div v-else class="content">
-      <ws-details v-if="addingWS || editingWS"></ws-details>
-      <ws-list v-else></ws-list>
+      <WSDetails v-if="addingWS || editingWS" />
+      <WSList v-else />
     </div>
 
   </div>
@@ -18,30 +18,23 @@ import Loading from '../components/items/Loading.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: {
-    wsList: WSList,
-    wsDetails: WSDetails,
-    wsLoading: Loading
-  },
+  components: { WSList, WSDetails, Loading },
+  created () { this.$store.dispatch('loadWS'); },
   computed: {
     ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
     loading () { return this.allWS === null || this.allTabs === null; }
-  },
-  created () {
-    this.$store.dispatch('loadWS');
   }
 };
 </script>
 
-<style lang="scss">
+<style>
 #app {
   min-width: 800px !important;
   height: 800px !important;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* color: #333333; */
-  color: #2c3e50;
+  color: #2c3e50 !important;
   padding: 30px;
   margin: 0px;
 }

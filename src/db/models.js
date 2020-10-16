@@ -1,7 +1,9 @@
+// JSStore database connexion init
 import { connection } from './jss_connexion';
 import { DATA_TYPE } from 'jsstore';
 
-const getDatabase = () => {
+// Model object
+const getModels = () => {
   const wsTable = {
     name: 'Workspaces',
     columns: {
@@ -23,7 +25,7 @@ const getDatabase = () => {
   const tabTable = {
     name: 'Tabs',
     columns: {
-      // Caps to prevent mixup with tab regular id
+      // Capitalized to prevent mixup with tab regular id
       Id: {
         primaryKey: true,
         autoIncrement: true
@@ -74,7 +76,8 @@ const getDatabase = () => {
   return { name: 'Workspaces database', tables: [wsTable, tabTable] };
 };
 
-export const initJSS = async () => {
-  const dataBase = getDatabase();
-  return await connection.initDb(dataBase);
+// Export the connection object initialized with models
+export const Models = async () => {
+  const models = getModels();
+  return await connection.initDb(models);
 };

@@ -13,8 +13,7 @@
     "activeTab",
     "storage",
     "tabs",
-    "contextualIdentities",
-    "cookies"
+    "contextualIdentities"
   ],
 
   "background": {

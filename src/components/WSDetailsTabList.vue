@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import WSDetailsTabListItem from './WSDetailsTabListItem.vue'
+import { mapGetters, mapActions } from 'vuex';
+import WSDetailsTabListItem from './WSDetailsTabListItem.vue';
 
 export default {
   components: {
@@ -31,8 +31,8 @@ export default {
 
   computed: {
     ...mapGetters(['selectedWS', 'selectedWSTabs']),
-    ws () { return this.selectedWS },
-    tabs () { return this.selectedWSTabs }
+    ws () { return this.selectedWS; },
+    tabs () { return this.selectedWSTabs; }
   },
 
   methods: {
@@ -40,19 +40,19 @@ export default {
 
     // Add a tab to the list containing the current tab info
     async createNewTab () {
-      const tab = await this.getCurrentTab()
-      this.createTabs({ tabs: [tab], wsId: this.ws.id })
+      const tab = await this.getCurrentTab();
+      this.createTabs({ tabs: [tab], wsId: this.ws.id });
     },
 
     // TODO: Move to background?
     // Add all current window's tabs
     async createNewTabsFromWindow () {
-      const windowTabs = await this.getAllTabsFromWindow()
-      this.createTabs({ tabs: windowTabs, wsId: this.ws.id })
+      const windowTabs = await this.getAllTabsFromWindow();
+      this.createTabs({ tabs: windowTabs, wsId: this.ws.id });
     }
 
   }
-}
+};
 </script>
 
 <style scoped>

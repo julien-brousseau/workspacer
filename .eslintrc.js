@@ -17,15 +17,4 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'semi': [2, "always"]
   }
-  // overrides: [
-  //   {
-  //     files: [
-  //       '**/__tests__/*.{j,t}s?(x)',
-  //       '**/tests/unit/**/*.spec.{j,t}s?(x)'
-  //     ],
-  //     env: {
-  //       jest: true
-  //     }
-  //   }
-  // ]
 }

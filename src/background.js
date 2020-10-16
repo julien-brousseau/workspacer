@@ -1,54 +1,65 @@
-import _ from 'lodash'
+import _ from 'lodash'; // used in createWindow > _.omit(...)
 
-import { initJSS } from './db/jss_db'
-import { Workspace } from './db/services/Workspace'
-import { Tab } from './db/services/Tab'
+// Database models
+import { Models } from './db/models';
 
-initJSS()
-browser.runtime.onMessage.addListener(handleMessageFromBackground)
+// Database services
+import { Workspace } from './db/services/Workspace';
+import { Tab } from './db/services/Tab';
 
+Models();
+browser.runtime.onMessage.addListener(handleMessageFromBackground);
+
+// Route application based on "action.type"
 async function handleMessageFromBackground (action, sender, sendResponse) {
   switch (action.type) {
+    // Fetch all Workspaces
     case 'GET_WS':
-      return await new Workspace().getWS()
+      return await new Workspace().getWS();
+    // Fetch all Tabs
     case 'GET_TABS':
-      return await new Tab().getAllTabs()
-
+      return await new Tab().getAllTabs();
+    // Replace Workspace in {action.ws} if its id exists in database, otherwise create a new one
     case 'CREATE_OR_UPDATE_WS':
-      return await new Workspace().createOrUpdateWS(action.ws)
-
+      return await new Workspace().createOrUpdateWS(action.ws);
+    // Insert all Tabs contained in [action.tabs]
     case 'CREATE_TABS':
-      return await new Tab().insertTabs(action.tabs)
+      return await new Tab().insertTabs(action.tabs);
+    // Replace all Tabs contained in [action.tabs]
     case 'EDIT_TABS':
-      return await new Tab().updateTabs(action.tabs)
-
+      return await new Tab().updateTabs(action.tabs);
+    // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
-      return await new Tab().deleteTab(action.tabId)
+      return await new Tab().deleteTab(action.tabId);
+    // Remove all Workspaces and Tabs from the database
     case 'CLEAR_ALL':
-      await new Workspace().clearWS()
-      await new Tab().clearTabs()
-      return true
-
+      await new Workspace().clearWS();
+      await new Tab().clearTabs();
+      return true;
+    // Open a new browser window with [action.tabs]
     case 'NEW_WINDOW':
-      createWindow(action.tabs)
-      return true
+      createWindow(action.tabs);
+      return true;
 
     default:
-      return false
+      return false;
   }
 }
 
+// Query browser to create a new window with tabs contained in [tabs] arg
 async function createWindow (tabs) {
   browser.windows.create()
     .then(window => {
+      // Create a new tabs
       tabs.forEach(tab => {
         browser.tabs.create({
+          // Remove conflicting properties
           ..._.omit(tab, ['Id', 'position', 'wsId']),
           windowId: window.id,
-          discarded: true
-        })
-      })
-      // Remove the empty tab at position 1
-      browser.tabs.remove(window.tabs[0].id)
-    })
+          discarded: true // TODO: !hardcoded
+        });
+      });
+      // Remove the empty tab at position 1 (created automatically by browser)
+      browser.tabs.remove(window.tabs[0].id);
+    });
 }
