@@ -15,7 +15,8 @@ export default new Vuex.Store({
     addingWS: false,
     editingWS: false,
     selectedId: null,
-    editingTab: null
+    editingTab: null,
+    settingsOpen: false // TEMP
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -47,6 +48,11 @@ export default new Vuex.Store({
     'SET_EDITING_TAB' (state, tabId) {
       state.editingTab = tabId;
       if (MUTATIONS_LOG) console.log('SET_EDITING_TAB :>> ', state.editingTab);
+    },
+    // TEMP
+    'SET_SETTINGS' (state, open) {
+      state.settingsOpen = open;
+      if (MUTATIONS_LOG) console.log('SET_SETTINGS :>> ', state.settingsOpen);
     }
   },
   actions: {
@@ -139,6 +145,7 @@ export default new Vuex.Store({
     toggleAddingWS: ({ state, commit }, addingWS = null) => {
       commit('SET_SELECTED_WS', null);
       commit('SET_EDITING_WS', null);
+      commit('SET_SETTINGS', false);
       commit('SET_ADDING_WS', addingWS === null ? !state.addingWS : addingWS);
     },
     // Toggle "Edit Workspace" form visibility (true/false)
@@ -152,6 +159,22 @@ export default new Vuex.Store({
     // Set/clear selected tab flagged for editing
     setEditingTab: ({ commit }, tabId = null) => {
       commit('SET_EDITING_TAB', tabId);
+    },
+    //
+    toggleSettings: ({ commit }, open = false) => {
+      commit('SET_SETTINGS', open);
+    },
+    // FILE SUPPORT
+    // Export all data as JSON
+    exportAllWS: async ({ state }) => {
+      return browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs })
+        .then(() => true)
+        .catch(e => console.log('Error > exportAllWS :>> ', e));
+    },
+    // Import ws and tabs from JSON file
+    importAllWS: ({ state }) => {
+      return false;
+      // browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs });
     }
   },
   getters: {
@@ -168,6 +191,8 @@ export default new Vuex.Store({
     // Return Boolean flag for workspace editing
     editingWS: state => state.editingWS,
     // Return the id of currently selected tab flagged for editing
-    editingTab: state => state.editingTab
+    editingTab: state => state.editingTab,
+    // TODO: Replace with router
+    settings: state => state.settingsOpen
   }
 });

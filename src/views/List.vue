@@ -3,6 +3,11 @@
 
     <!-- Section title and main controls -->
     <h1>
+      <button class="ui basic blue icon button right floated"
+        @click="toggleSettings">
+          <i class="cog icon"></i>
+          Settings
+      </button>
       <button class="ui huge basic icon green button"
         @click="toggleNewWS">
           <i class="plus icon"></i>
@@ -20,13 +25,6 @@
         :ws="ws" />
     </div>
 
-    <!-- Temporary clear database button -->
-    <button class="ui basic red icon button btn-reset right floated"
-      style="margin-top: 40px"
-      @click="clearWS">
-        <i class="trash icon"></i>
-    </button>
-
   </div>
 </template>
 
@@ -38,7 +36,7 @@ export default {
   components: { WSListItem },
   computed: { ...mapGetters(['allWS']) },
   methods: {
-    ...mapActions(['toggleAddingWS', 'clearWS']),
+    ...mapActions(['toggleAddingWS', 'toggleSettings']),
     toggleNewWS () { this.toggleAddingWS(true); }
   }
 };

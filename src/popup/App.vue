@@ -5,6 +5,7 @@
 
     <div v-else class="content">
       <WSDetails v-if="addingWS || editingWS" />
+      <Settings v-else-if="settings" />
       <WSList v-else />
     </div>
 
@@ -14,14 +15,15 @@
 <script>
 import WSList from '../views/List.vue';
 import WSDetails from '../views/Details.vue';
+import Settings from '../views/Settings.vue';
 import Loading from '../components/items/Loading.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: { WSList, WSDetails, Loading },
+  components: { WSList, WSDetails, Settings, Loading },
   created () { this.$store.dispatch('loadWS'); },
   computed: {
-    ...mapGetters(['addingWS', 'editingWS', 'allWS', 'allTabs']),
+    ...mapGetters(['addingWS', 'editingWS', 'settings', 'allWS', 'allTabs']),
     loading () { return this.allWS === null || this.allTabs === null; }
   }
 };

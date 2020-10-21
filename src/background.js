@@ -40,10 +40,24 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     case 'NEW_WINDOW':
       createWindow(action.tabs);
       return true;
+    // Export a json file containing [action.ws] and [action.tabs]
+    case 'EXPORT':
+      saveAsJSON(action.ws, action.tabs);
+      return true;
 
     default:
       return false;
   }
+}
+
+// Create a json file containing all workspaces and tabs
+function saveAsJSON (ws, tabs) {
+  const json = JSON.stringify({ ws, tabs });
+  const type = 'text/json;charset=utf-8';
+  const filename = 'data.json';
+
+  const url = URL.createObjectURL(new Blob([json], { type }));
+  browser.downloads.download({ url, filename });
 }
 
 // Query browser to create a new window with tabs contained in [tabs] arg
