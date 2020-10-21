@@ -4,24 +4,25 @@
     <Loading v-if="loading" />
 
     <div v-else class="content">
-      <WSDetails v-if="addingWS || editingWS" />
+      <router-view></router-view>
+      <!-- <WSDetails v-if="addingWS || editingWS" />
       <Settings v-else-if="settings" />
-      <WSList v-else />
+      <WSList v-else /> -->
     </div>
 
   </div>
 </template>
 
 <script>
-import WSList from '../views/List.vue';
-import WSDetails from '../views/Details.vue';
-import Settings from '../views/Settings.vue';
 import Loading from '../components/items/Loading.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: { WSList, WSDetails, Settings, Loading },
-  created () { this.$store.dispatch('loadWS'); },
+  components: { Loading },
+  async created () {
+    await this.$store.dispatch('loadWS');
+    this.$router.push('/');
+  },
   computed: {
     ...mapGetters(['addingWS', 'editingWS', 'settings', 'allWS', 'allTabs']),
     loading () { return this.allWS === null || this.allTabs === null; }

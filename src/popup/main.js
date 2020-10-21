@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from '../router';
 
 import App from './App.vue';
 
@@ -16,5 +17,6 @@ Vue.filter('shorten', function (str, width = 70) {
 
 new Vue({
   store,
+  router,
   render: h => h(App)
 }).$mount('#app');
