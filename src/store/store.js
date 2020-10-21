@@ -12,11 +12,8 @@ export default new Vuex.Store({
   state: {
     ws: null, // [workspaces]
     tabs: null, // [tabs]
-    addingWS: false,
-    editingWS: false,
     selectedId: null,
-    editingTab: null,
-    settingsOpen: false // TEMP
+    editingTab: null
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -29,16 +26,6 @@ export default new Vuex.Store({
       state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
     },
-    // Replace state.addingWS with isVisible (Boolean)
-    'SET_ADDING_WS' (state, isVisible) {
-      state.addingWS = isVisible;
-      if (MUTATIONS_LOG) console.log('SET_ADDING_WS :>> ', state.addingWS);
-    },
-    // Replace state.editingWS with isEditing (Boolean)
-    'SET_EDITING_WS' (state, isEditing) {
-      state.editingWS = isEditing;
-      if (MUTATIONS_LOG) console.log('SET_EDITING_WS :>> ', state.editingWS);
-    },
     // Replace state.selectedId with wsId (Integer)
     'SET_SELECTED_WS' (state, wsId) {
       state.selectedId = wsId;
@@ -48,11 +35,6 @@ export default new Vuex.Store({
     'SET_EDITING_TAB' (state, tabId) {
       state.editingTab = tabId;
       if (MUTATIONS_LOG) console.log('SET_EDITING_TAB :>> ', state.editingTab);
-    },
-    // TEMP
-    'SET_SETTINGS' (state, open) {
-      state.settingsOpen = open;
-      if (MUTATIONS_LOG) console.log('SET_SETTINGS :>> ', state.settingsOpen);
     }
   },
   actions: {
@@ -140,18 +122,6 @@ export default new Vuex.Store({
     },
 
     // TOGGLERS
-    // Toggle "New Workspace" form visibility after unselect workspace and cancel workspace editing
-    // TODO: split into unselect and toggle adding
-    toggleAddingWS: ({ state, commit }, addingWS = null) => {
-      commit('SET_SELECTED_WS', null);
-      commit('SET_EDITING_WS', null);
-      commit('SET_SETTINGS', false);
-      commit('SET_ADDING_WS', addingWS === null ? !state.addingWS : addingWS);
-    },
-    // Toggle "Edit Workspace" form visibility (true/false)
-    toggleEditingWS: ({ commit, state }, editingWS = null) => {
-      commit('SET_EDITING_WS', editingWS === null ? !state.editingWS : editingWS);
-    },
     // Set/clear selected workspace as "wsId"
     toggleSelectedWS: ({ commit }, wsId = null) => {
       commit('SET_SELECTED_WS', wsId);
@@ -182,17 +152,11 @@ export default new Vuex.Store({
     allWS: state => state.ws,
     // Return all [tabs]
     allTabs: state => state.tabs,
-    // Return Boolean flag for "New Workspace" form visibility
-    addingWS: state => state.addingWS,
     // Return currently selected {workspace}
     selectedWS: state => state.ws.find(ws => ws.id === state.selectedId),
     // Return [tabs] from selected workspace
     selectedWSTabs: state => state.tabs.filter(tab => tab.wsId === state.selectedId),
-    // Return Boolean flag for workspace editing
-    editingWS: state => state.editingWS,
     // Return the id of currently selected tab flagged for editing
-    editingTab: state => state.editingTab,
-    // TODO: Replace with router
-    settings: state => state.settingsOpen
+    editingTab: state => state.editingTab
   }
 });

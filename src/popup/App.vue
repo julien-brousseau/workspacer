@@ -5,9 +5,6 @@
 
     <div v-else class="content">
       <router-view></router-view>
-      <!-- <WSDetails v-if="addingWS || editingWS" />
-      <Settings v-else-if="settings" />
-      <WSList v-else /> -->
     </div>
 
   </div>
@@ -19,12 +16,12 @@ import { mapGetters } from 'vuex';
 
 export default {
   components: { Loading },
-  async created () {
-    await this.$store.dispatch('loadWS');
+  created () {
+    this.$store.dispatch('loadWS');
     this.$router.push('/');
   },
   computed: {
-    ...mapGetters(['addingWS', 'editingWS', 'settings', 'allWS', 'allTabs']),
+    ...mapGetters(['allWS', 'allTabs']),
     loading () { return this.allWS === null || this.allTabs === null; }
   }
 };

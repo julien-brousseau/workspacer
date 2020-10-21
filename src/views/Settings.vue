@@ -3,10 +3,9 @@
 
   <!-- Section title and main controls -->
   <h1>
-    <button class="ui huge basic icon button"
-      @click="back">
-        <i class="caret left icon"></i>
-    </button>
+    <router-link to="/" class="ui huge basic icon button">
+      <i class="caret left icon"></i>
+    </router-link>
     Settings
   </h1>
 
@@ -19,7 +18,7 @@
 
   <h2>Delete all Workspace and Tabs</h2>
   <button class="ui red icon button"
-    @click="clearWS">
+    @click="clear">
       <i class="trash icon"></i>
       Delete
   </button>
@@ -33,11 +32,14 @@ import { mapActions } from 'vuex';
 
 export default {
   methods: {
-    ...mapActions(['toggleAddingWS', 'exportAllWS', 'clearWS']),
-    back () { this.toggleAddingWS(false); },
+    ...mapActions(['exportAllWS', 'clearWS']),
     async save () {
       await this.exportAllWS();
-      this.toggleAddingWS(false);
+      this.$router.push('/');
+    },
+    async clear () {
+      await this.clearWS();
+      this.$router.push('/');
     }
   }
 };

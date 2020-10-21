@@ -60,14 +60,13 @@ export default {
 
   },
   methods: {
-    ...mapActions(['createTabs', 'getCurrentTab', 'toggleEditingWS', 'toggleSelectedWS', 'createWindow']),
+    ...mapActions(['createTabs', 'getCurrentTab', 'toggleSelectedWS', 'createWindow']),
 
     // Setup/clear the global selected workspace
     selectWS () { this.toggleSelectedWS(this.selectedWS && this.selectedWS.id === this.ws.id ? null : this.ws.id); },
     // Set the workspace as globally editing
     editWS () {
-      this.toggleSelectedWS(this.ws.id);
-      this.toggleEditingWS(true);
+      this.$router.push({ name: 'Workspace', params: { id: 1 } });
     },
     // Create new window only if workspace contains tabs
     openWindow () {

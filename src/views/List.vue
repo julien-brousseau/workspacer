@@ -3,15 +3,13 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <button class="ui basic blue icon button right floated"
-        @click="toggleSettings">
-          <i class="cog icon"></i>
-          Settings
-      </button>
-      <button class="ui huge basic icon green button"
-        @click="toggleNewWS">
-          <i class="plus icon"></i>
-      </button>
+      <router-link to="/settings" class="ui basic blue icon button right floated">
+        <i class="cog icon"></i>
+        Settings
+      </router-link>
+      <router-link to="/create" class="ui huge basic icon green button">
+        <i class="plus icon"></i>
+      </router-link>
       My Workspaces
     </h1>
 
@@ -30,15 +28,11 @@
 
 <script>
 import WSListItem from '../components/WSListItem';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   components: { WSListItem },
-  computed: { ...mapGetters(['allWS']) },
-  methods: {
-    ...mapActions(['toggleAddingWS', 'toggleSettings']),
-    toggleNewWS () { this.toggleAddingWS(true); }
-  }
+  computed: { ...mapGetters(['allWS']) }
 };
 </script>
 
