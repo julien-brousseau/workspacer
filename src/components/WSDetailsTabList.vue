@@ -25,14 +25,14 @@ import { mapGetters, mapActions } from 'vuex';
 import WSDetailsTabListItem from './WSDetailsTabListItem.vue';
 
 export default {
+  props: ['wsId'],
   components: {
     tabItem: WSDetailsTabListItem
   },
 
   computed: {
-    ...mapGetters(['selectedWS', 'selectedWSTabs']),
-    ws () { return this.selectedWS; },
-    tabs () { return this.selectedWSTabs; }
+    ...mapGetters(['allTabs']),
+    tabs () { return this.allTabs.filter(t => t.wsId === this.wsId); }
   },
 
   methods: {
@@ -41,14 +41,14 @@ export default {
     // Add a tab to the list containing the current tab info
     async createNewTab () {
       const tab = await this.getCurrentTab();
-      this.createTabs({ tabs: [tab], wsId: this.ws.id });
+      this.createTabs({ tabs: [tab], wsId: this.wsId });
     },
 
     // TODO: Move to background?
     // Add all current window's tabs
     async createNewTabsFromWindow () {
       const windowTabs = await this.getAllTabsFromWindow();
-      this.createTabs({ tabs: windowTabs, wsId: this.ws.id });
+      this.createTabs({ tabs: windowTabs, wsId: this.wsId });
     }
 
   }

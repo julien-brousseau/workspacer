@@ -13,21 +13,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
-  props: ['tab'],
+  props: {
+    tab: { required: true },
+    lockedUp: { default: null },
+    lockedDown: { default: null }
+  },
   computed: {
-    ...mapGetters(['selectedWSTabs']),
-    lockedUp () {
-      const index = this.selectedWSTabs.indexOf(this.tab);
-      return index === 0;
-    },
-    lockedDown () {
-      const tabs = this.selectedWSTabs;
-      const index = tabs.indexOf(this.tab);
-      return index === tabs.length - 1;
-    }
+    // ...mapGetters(['allTabs']),
+    // lockedUp () {
+    //   const index = this.tabs.indexOf(this.tab);
+    //   return index === 0;
+    // },
+    // lockedDown () {
+    //   const tabs = this.tabs;
+    //   const index = tabs.indexOf(this.tab);
+    //   return index === tabs.length - 1;
+    // }
   },
   methods: {
     ...mapActions(['moveTab']),

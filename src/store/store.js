@@ -11,9 +11,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ws: null, // [workspaces]
-    tabs: null, // [tabs]
-    selectedId: null,
-    editingTab: null
+    tabs: null // [tabs]
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -25,16 +23,6 @@ export default new Vuex.Store({
     'SET_TABS' (state, tabsData) {
       state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
-    },
-    // Replace state.selectedId with wsId (Integer)
-    'SET_SELECTED_WS' (state, wsId) {
-      state.selectedId = wsId;
-      if (MUTATIONS_LOG) console.log('SET_SELECTED_WS :>> ', state.selectedId);
-    },
-    // Replace state.editingTab with tabId (Integer)
-    'SET_EDITING_TAB' (state, tabId) {
-      state.editingTab = tabId;
-      if (MUTATIONS_LOG) console.log('SET_EDITING_TAB :>> ', state.editingTab);
     }
   },
   actions: {
@@ -106,6 +94,23 @@ export default new Vuex.Store({
         .catch(e => console.log('Error > moveTab :>> ', e));
     },
 
+    //
+    tabIsLocked: ({ getters }, tab) => {
+      const tabs = getters.allTabs.filter(t => t.wsId === tab.wsId);
+      const index = tabs.indexOf(this.tab);
+      const up = index === 0;
+      const down = index === tabs.length - 1;
+      return { up, down };
+    },
+    // lockedUp () {
+    //   const index = this.tabs.indexOf(this.tab);
+    //   return index === 0;
+    // },
+    // lockedDown () {
+    //   const tabs = this.tabs;
+    //   const index = tabs.indexOf(this.tab);
+    // }
+
     // GETTERS
     // Query browser for the current active {tab}
     // TODO: Optimize & move to Background
@@ -121,19 +126,6 @@ export default new Vuex.Store({
         .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e));
     },
 
-    // TOGGLERS
-    // Set/clear selected workspace as "wsId"
-    toggleSelectedWS: ({ commit }, wsId = null) => {
-      commit('SET_SELECTED_WS', wsId);
-    },
-    // Set/clear selected tab flagged for editing
-    setEditingTab: ({ commit }, tabId = null) => {
-      commit('SET_EDITING_TAB', tabId);
-    },
-    //
-    toggleSettings: ({ commit }, open = false) => {
-      commit('SET_SETTINGS', open);
-    },
     // FILE SUPPORT
     // Export all data as JSON
     exportAllWS: async ({ state }) => {
@@ -148,15 +140,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    // Return all [workspaces]
     allWS: state => state.ws,
-    // Return all [tabs]
-    allTabs: state => state.tabs,
-    // Return currently selected {workspace}
-    selectedWS: state => state.ws.find(ws => ws.id === state.selectedId),
-    // Return [tabs] from selected workspace
-    selectedWSTabs: state => state.tabs.filter(tab => tab.wsId === state.selectedId),
-    // Return the id of currently selected tab flagged for editing
-    editingTab: state => state.editingTab
+    allTabs: state => state.tabs
   }
 });

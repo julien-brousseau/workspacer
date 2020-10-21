@@ -50,12 +50,15 @@ export default {
   created () { this.init(); },
 
   computed: {
-    ...mapGetters(['editingTab']),
-    editing () { return this.editingTab === this.tab.Id; }
+    ...mapGetters(['editingTab', 'allTabs']),
+    editing () { return true; },
+    locked () {
+      return this.tabIsLocked(this.tab);
+    }
   },
 
   methods: {
-    ...mapActions(['setEditingTab', 'editTabs', 'deleteTab']),
+    ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),
     init () {
       this.tabForm = { ...this.tab };
       this.setEditingTab();

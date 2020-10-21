@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import List from '../views/List.vue';
-import Details from '../views/Details.vue';
+import Workspace from '../views/Workspace.vue';
 import Settings from '../views/Settings.vue';
 
 Vue.use(VueRouter);
@@ -16,12 +16,12 @@ const routes = [
   {
     path: '/create',
     name: 'Create',
-    component: Details
+    component: Workspace
   },
   {
     path: '/workspace/:id',
     name: 'Workspace',
-    component: Details
+    component: Workspace
   },
   {
     path: '/settings',
