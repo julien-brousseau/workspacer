@@ -39,6 +39,15 @@ export default new Vuex.Store({
       commit('SET_WS', []);
       commit('SET_TABS', []);
     },
+    // Batch add ws and tabs (Settings > Load)
+    importfromJSON: async ({ commit, dispatch }, { ws, tabs }) => {
+      ws.forEach(async (w) => {
+        const id = await dispatch('createOrUpdateWS', w);
+        const blop = tabs.filter(t => t.wsId === id);
+        await dispatch('createTabs', { tabs: blop, wsId: id });
+      });
+      return true;
+    },
     // Create a new {Workspace} object, then reload all [workspaces] and return the created Workspace id
     createOrUpdateWS: async ({ dispatch }, ws) => {
       const [{ id }] = await browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_WS', ws });
@@ -94,7 +103,9 @@ export default new Vuex.Store({
         .catch(e => console.log('Error > moveTab :>> ', e));
     },
 
-    //
+    // TODO: Test & Fix
+    // TODO: Change components and name (details)
+    // TODO: Make global tabs filter action
     tabIsLocked: ({ getters }, tab) => {
       const tabs = getters.allTabs.filter(t => t.wsId === tab.wsId);
       const index = tabs.indexOf(this.tab);
@@ -102,14 +113,6 @@ export default new Vuex.Store({
       const down = index === tabs.length - 1;
       return { up, down };
     },
-    // lockedUp () {
-    //   const index = this.tabs.indexOf(this.tab);
-    //   return index === 0;
-    // },
-    // lockedDown () {
-    //   const tabs = this.tabs;
-    //   const index = tabs.indexOf(this.tab);
-    // }
 
     // GETTERS
     // Query browser for the current active {tab}
@@ -127,16 +130,11 @@ export default new Vuex.Store({
     },
 
     // FILE SUPPORT
-    // Export all data as JSON
-    exportAllWS: async ({ state }) => {
+    // Export all data in ~/Downloads/data.json
+    exportToJSON: async ({ state }) => {
       return browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs })
         .then(() => true)
-        .catch(e => console.log('Error > exportAllWS :>> ', e));
-    },
-    // Import ws and tabs from JSON file
-    importAllWS: ({ state }) => {
-      return false;
-      // browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs });
+        .catch(e => console.log('Error > exportToJSON :>> ', e));
     }
   },
   getters: {
