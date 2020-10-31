@@ -1,27 +1,27 @@
 <template>
-  <div class="item" :class="{ selected: editing }">
+  <div class="ui basic segment">
 
     <!-- Index buttons -->
-    <tab-controls :tab="tab"></tab-controls>
+    <!-- <tab-controls :tab="tab"></tab-controls> -->
 
     <!-- Static fields -->
-    <div v-if="!editing" class="content">
+    <!-- <div v-if="!editing" class="content">
       <h4>{{ tab.title | shorten(60) }}</h4>
       <p>{{ tab.url | shorten }}</p>
-    </div>
+    </div> -->
 
     <!-- Editing fields -->
-    <div v-else class="content edit" style="margin-top: 10px !important">
+    <!-- <div v-else class="content edit" style="margin-top: 10px !important">
       <div class="ui input" style="width:40%">
         <input type="text" placeholder="Title" v-model="tabForm.title">
       </div>
       <div class="ui input" style="width:59%;margin-left:5px;">
         <input type="text" placeholder="URL" v-model="tabForm.url">
       </div>
-    </div>
+    </div> -->
 
     <!-- Field controls -->
-    <div class="actions right floated">
+    <!-- <div class="actions right floated">
       <div class="ui buttons">
         <button class="ui button icon basic large"
           @click="toggleEditingTab()">
@@ -32,77 +32,77 @@
             <i class="icon" :class="editing ? 'cancel' : 'trash'"></i>
         </button>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import TabControls from './items/TabControls.vue';
+// import { mapGetters, mapActions } from 'vuex';
+// import TabControls from './items/TabControls.vue';
 
 export default {
-  components: {
-    tabControls: TabControls
-  },
-  data () { return { tabForm: null }; },
-  props: ['tab'],
-  created () { this.init(); },
+  // components: {
+  //   tabControls: TabControls
+  // },
+  // data () { return { tabForm: null }; },
+  props: ['tab']
+  // created () { this.init(); },
 
-  computed: {
-    ...mapGetters(['editingTab', 'allTabs']),
-    editing () { return true; },
-    locked () {
-      return this.tabIsLocked(this.tab);
-    }
-  },
+  // computed: {
+  //   ...mapGetters(['editingTab', 'allTabs']),
+  //   editing () { return true; },
+  //   locked () {
+  //     return this.tabIsLocked(this.tab);
+  //   }
+  // },
 
-  methods: {
-    ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),
-    init () {
-      this.tabForm = { ...this.tab };
-      // this.setEditingTab();
-    },
-    toggleEditingTab () {
-      if (this.editingTab !== this.tab.Id) {
-        this.init();
-        // this.setEditingTab(this.tab.Id);
-      } else {
-        this.editTabs([this.tabForm]);
-        this.init();
-      }
-    },
-    removeTab () {
-      this.deleteTab(this.tab.Id);
-    },
-    cancel () {
-      this.init();
-    }
-  }
+  // methods: {
+  //   ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),
+  //   init () {
+  //     this.tabForm = { ...this.tab };
+  //     // this.setEditingTab();
+  //   },
+  //   toggleEditingTab () {
+  //     if (this.editingTab !== this.tab.Id) {
+  //       this.init();
+  //       // this.setEditingTab(this.tab.Id);
+  //     } else {
+  //       this.editTabs([this.tabForm]);
+  //       this.init();
+  //     }
+  //   },
+  //   removeTab () {
+  //     this.deleteTab(this.tab.Id);
+  //   },
+  //   cancel () {
+  //     this.init();
+  //   }
+  // }
 };
 </script>
 
 <style scoped>
-.item {
+/* .item {
   border-top: 1px solid #EEEEEE !important;
   padding: 5px 5px 10px 5px !important;
   margin: 0px !important;
-}
-.edit {
+} */
+/* .edit {
   margin-top: 13px !important;
-}
-.item:hover {
+} */
+/* .item:hover {
   color: orange !important;
   background-color: rgb(255, 253, 249);
   border-top: 1px solid orange !important;
   border-bottom: 1px solid orange !important;
-}
-.selected {
+} */
+/* .selected {
   background-color: rgb(255, 253, 249);
   border-top: 1px solid orange !important;
   border-bottom: 1px solid orange !important;
-}
-.actions {
+} */
+/* .actions {
   margin-top: 6px;
-}
+} */
 </style>

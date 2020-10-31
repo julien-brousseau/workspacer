@@ -3,88 +3,69 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <router-link to="/" class="ui basic icon button right floated">
+      <router-link :to="{ name: 'List' }" class="ui basic icon button right floated">
         <i class="caret left icon"></i>Back
       </router-link>
-      {{ wsId ? 'Workspace details' : 'New workspace' }}
+      Workspace details
     </h1>
 
-    <!-- Workspace info -->
+    <!-- Workspace name -->
     <div class="ui basic segment">
-      <button class="ui basic icon button right floated btn-rename"><i class="pencil icon"></i></button>
-      <p class="label">Workspace name</p>
+      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic button right floated btn-rename">
+        Rename
+      </router-link>
+      <p class="label" style="border-bottom: 1px solid #DDD;">Workspace name</p>
       <h3 class="ui header">{{ workspace.title }}</h3>
     </div>
 
-    <!-- Actions -->
-    <div class="ui basic segment">
-      <!-- Static list of tabs -->
-      <ul class="">
-        <li v-if="!tabs.length" class="tab">This workspace contains no tabs</li>
-        <li class="tab" v-for="tab in tabs" :key="tab.Id">{{ tab.title | shorten }}</li>
-      </ul>
-
-      <!-- WS controls -->
-      <!-- <div class="actions right floated">
-        <button class="ui basic button icon" :class="[cls.buttonOpen]" @click="openWindow">
-          <i class="icon sticky note"></i></button>
-        <button class="ui basic button icon" :class="[cls.buttonAdd]" @click="addCurrentTab">
-          <i class="icon plus"></i></button>
-        <button class="ui basic button icon" :class="[cls.buttonEdit]" @click="editWS">
-          <i class="icon cog"></i></button>
-      </div> -->
+    <!-- Tab list -->
+    <div class="ui basic segment divided list">
+      <p class="label" style="border-bottom: 1px solid #DDD;">Tabs</p>
+      <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
+      <div v-for="tab in tabs" :key="tab" class="item">
+        {{ tab.title | shorten }}
+      </div>
     </div>
 
-    <!-- Workspace create/edit form -->
-    <!-- <h3>Workspace name</h3> -->
-    <!-- <div class="ui big input" style="width: 100%; margin-bottom: 35px;"> -->
-      <!-- <input type="text" v-model="workspace.title" style="width:80%"> -->
-      <!-- <button @click="submit" class="ui large button green" :class="{ orange: wsId }" style="margin-left: 10px; width: 90px;"> -->
-        <!-- {{ wsId ? 'Save' : 'Create' }} -->
-      <!-- </button> -->
-    <!-- </div> -->
-
-    <!-- Tab list -->
-    <!-- <div v-if="wsId">
-      <h3>{{ tabs.length ? 'This workspace contains the following tabs' : 'This workspace contains no tabs' }}</h3>
-      <WSDetailsTabList :wsId="workspace.id" />
-    </div> -->
-
-    <!-- </div> -->
+    <div class="ui basic segment">
+      <!-- Open all tabs in new window -->
+      <button class="ui basic button" @click="openInNewWindow">
+        <i class="icon sticky note"></i>Open in new window
+      </button>
+      <!-- Add active tab to workspace -->
+      <button class="ui basic button" @click="addCurrentTabToWorkspace">
+        <i class="icon plus"></i>Add current tab</button>
+      <!-- Edit tabs -->
+      <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui basic button icon">
+        <i class="icon cog"></i>Edit tabs</router-link>
+    </div>
 
   </div>
 </template>
 
 <script>
-// import Loading from '../components/items/Loading.vue';
-// import WSDetailsTabList from '../components/WSDetailsTabList.vue';
 
 export default {
-  // components: { WSDetailsTabList },
-  data () { return { workspace: null }; },
+  data () {
+    return { workspace: null };
+  },
   created () {
-    // Create new workspace with deconstructed data or default
-    const defaultWS = { title: 'Workspace #' + Math.round(Math.random() * 99) };
-    this.workspace = this.wsId ? { ...this.$store.getters.allWS.find(ws => ws.id === this.wsId) } : defaultWS;
+    this.workspace = this.$store.getters.allWS.find(ws => ws.id === this.$route.params.id);
   },
   computed: {
-    wsId: function () {
-      return this.$route.params.id || null;
-    },
-    tabs: function () {
-      if (!this.workspace.id) return [];
-      return [...this.$store.getters.allTabs.filter(t => t.wsId === this.workspace.id)];
+    tabs () {
+      return this.$store.getters.allTabs.filter(t => t.wsId === this.workspace.id);
     }
   },
   methods: {
-    // ...mapActions(['createOrUpdateWS']),
-    // async submit (e) {
-    // await this.createOrUpdateWS(this.workspace);
-    // this.$router.push('/');
-    // },
-    // cancel () {
-    // this.$router.push('/');
-    // }
+    // Create new window only if workspace contains tabs
+    openInNewWindow () {
+      if (this.tabs.length) this.$store.dispatch('createWindow', this.workspace);
+    },
+    // Add active tab to the workspace tab list
+    addCurrentTabToWorkspace () {
+      this.$store.dispatch('addCurrentTab', this.workspace.id);
+    }
   }
 };
 </script>
@@ -94,14 +75,18 @@ export default {
   border: 0px none !important;
 }
 .header {
-  margin-top: 0px;
+  margin-top: 5px;
 }
 .label {
-  margin-bottom: 5px;
-  color: #999;
+  margin-bottom: 0px;
+  font-size: 0.92em;
+  font-weight: bold;
+}
+.item {
+  padding: 8px 0px !important;
 }
 .btn-rename {
   border: 0px none !important;
-  margin-top: 18px !important;
+  margin-top: 24px !important;
 }
 </style>

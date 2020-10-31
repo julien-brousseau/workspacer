@@ -29,10 +29,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50 !important;
   margin: 0px;
-  width: 400px !important;
-  min-width: 400px !important;
+  width: 500px !important;
+  min-width: 500px !important;
   height: auto !important;
-  min-height: 500px !important;
+  min-height: 250px !important;
 }
 
 /* Section title */
