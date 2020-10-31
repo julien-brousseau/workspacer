@@ -36,12 +36,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getCurrentTab', 'getAllTabsFromWindow', 'createTabs']),
+    ...mapActions(['addCurrentTab', 'getAllTabsFromWindow', 'createTabs']),
 
     // Add a tab to the list containing the current tab info
     async createNewTab () {
-      const tab = await this.getCurrentTab();
-      this.createTabs({ tabs: [tab], wsId: this.wsId });
+      // Use store.dispatch(addCurrentTab)
+      // const tab = await this.getCurrentTab();
+      // this.createTabs({ tabs: [tab], wsId: this.wsId });
     },
 
     // TODO: Move to background?

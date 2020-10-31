@@ -3,8 +3,8 @@
 
   <!-- Section title and main controls -->
   <h1>
-    <router-link to="/" class="ui huge basic icon button">
-      <i class="caret left icon"></i>
+    <router-link to="/" class="ui basic icon button right floated">
+      <i class="caret left icon"></i>Back
     </router-link>
     Settings
   </h1>
@@ -15,12 +15,13 @@
       <i class="download icon"></i>
       Export
   </button>
+
   <div class="ui divider"></div>
 
   <h2>Import json file</h2>
   <div class="ui form">
     <div class="field">
-      <textarea v-model="jsonData" placeholder="Enter json data to import"></textarea>
+      <textarea rows="3" v-model="jsonData" placeholder="Enter json data to import"></textarea>
     </div>
     <button class="ui orange icon button"
       @click="load">
@@ -28,6 +29,7 @@
         Import
     </button>
   </div>
+
   <div class="ui divider"></div>
 
   <h2>Delete all Workspace and Tabs</h2>
@@ -36,7 +38,7 @@
       <i class="trash icon"></i>
       Delete
   </button>
-  <h4 class="ui red header">Warning: This operation is irreversable</h4>
+  <h4 class="ui red header">Warning: This operation is irreversible</h4>
 
 </div>
 </template>

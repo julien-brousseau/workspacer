@@ -8,10 +8,13 @@ const MUTATIONS_LOG = false;
 
 Vue.use(Vuex);
 
+// TODO: Find a way to filter tabs to prevent urls starting with 'about:'
+
 export default new Vuex.Store({
   state: {
     ws: null, // [workspaces]
-    tabs: null // [tabs]
+    tabs: null, // [tabs]
+    selectedWorkspace: null
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -23,6 +26,11 @@ export default new Vuex.Store({
     'SET_TABS' (state, tabsData) {
       state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
+    },
+    //
+    'SET_SELECTED_WORKSPACE' (state, selected) {
+      state.selectedWorkspace = selected;
+      if (MUTATIONS_LOG) console.log('SET_SELECTED_WORKSPACE :>> ', state.selectedWorkspace);
     }
   },
   actions: {
@@ -81,11 +89,12 @@ export default new Vuex.Store({
       await browser.runtime.sendMessage({ type: 'DELETE_TAB', tabId });
       await dispatch('loadWS');
     },
-    // Query browser to open a new window containing tabs from specified workspace
-    createWindow: async ({ state }, wsId) => {
-      const tabs = state.tabs.filter(t => t.wsId === wsId);
-      if (tabs.length) browser.runtime.sendMessage({ type: 'NEW_WINDOW', tabs });
+    // Query browser to open a new window containing tabs from specified {workspace}
+    createWindow: async ({ state }, workspace) => {
+      const tabs = state.tabs.filter(t => t.wsId === workspace.id);
+      if (tabs.length) browser.runtime.sendMessage({ type: 'NEW_WINDOW', workspace, tabs });
     },
+
     // Reorder all {tabs} from same workspace as specified tab based on the move direction
     moveTab: async ({ state, dispatch }, { tab, direction }) => {
       // Current WS tabs
@@ -102,7 +111,6 @@ export default new Vuex.Store({
         .then(() => dispatch('loadWS')) // Tabs usable as argument
         .catch(e => console.log('Error > moveTab :>> ', e));
     },
-
     // TODO: Test & Fix
     // TODO: Change components and name (details)
     // TODO: Make global tabs filter action
@@ -114,12 +122,19 @@ export default new Vuex.Store({
       return { up, down };
     },
 
+    // Set the {selectedWorkspace} to arg, or null if already selected
+    selectWorkspace: ({ state, commit }, workspace = null) => {
+      if (workspace === state.selectedWorkspace) workspace = null;
+      commit('SET_SELECTED_WORKSPACE', workspace);
+    },
+
     // GETTERS
     // Query browser for the current active {tab}
     // TODO: Optimize & move to Background
-    getCurrentTab: async () => {
-      const tab = await browser.tabs.query({ currentWindow: true, active: true });
-      return tab[0];
+    addCurrentTab: async ({ dispatch }, wsId) => {
+      const tabs = await browser.tabs.query({ currentWindow: true, active: true });
+      dispatch('createTabs', { tabs, wsId });
+      // return tab[0];
     },
     // Query browser for all current window's [tabs]
     // TODO: Optimize & move to Background
@@ -139,6 +154,7 @@ export default new Vuex.Store({
   },
   getters: {
     allWS: state => state.ws,
-    allTabs: state => state.tabs
+    allTabs: state => state.tabs,
+    selectedWorkspace: state => state.selectedWorkspace
   }
 });

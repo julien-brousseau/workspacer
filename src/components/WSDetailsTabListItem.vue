@@ -61,12 +61,12 @@ export default {
     ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),
     init () {
       this.tabForm = { ...this.tab };
-      this.setEditingTab();
+      // this.setEditingTab();
     },
     toggleEditingTab () {
       if (this.editingTab !== this.tab.Id) {
         this.init();
-        this.setEditingTab(this.tab.Id);
+        // this.setEditingTab(this.tab.Id);
       } else {
         this.editTabs([this.tabForm]);
         this.init();

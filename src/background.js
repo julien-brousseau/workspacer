@@ -38,7 +38,7 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       return true;
     // Open a new browser window with [action.tabs]
     case 'NEW_WINDOW':
-      createWindow(action.tabs);
+      createWindow(action.workspace, action.tabs);
       return true;
 
       // Export a json file containing [action.ws] and [action.tabs]
@@ -52,7 +52,7 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
 }
 
 // Query browser to create a new window with tabs contained in [tabs] arg
-async function createWindow (tabs) {
+async function createWindow (workspace, tabs) {
   browser.windows.create()
     .then(window => {
       // Create a new tabs

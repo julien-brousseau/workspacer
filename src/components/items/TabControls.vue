@@ -1,15 +1,15 @@
 <template>
-  <div class="ui mini vertical buttons">
+<div class="ui mini vertical buttons">
 
-    <button :disabled="lockedUp" class="ui mini button icon basic" @click="moveUp()">
-      <i class="icon caret up"></i>
-    </button>
+  <button :disabled="lockedUp" class="ui mini button icon basic" @click="moveUp()">
+    <i class="icon caret up"></i>
+  </button>
 
-    <button :disabled="lockedDown" class="ui mini button icon basic" @click="moveDown()">
-      <i class="icon caret down"></i>
-    </button>
+  <button :disabled="lockedDown" class="ui mini button icon basic" @click="moveDown()">
+    <i class="icon caret down"></i>
+  </button>
 
-  </div>
+</div>
 </template>
 
 <script>
@@ -20,18 +20,6 @@ export default {
     tab: { required: true },
     lockedUp: { default: null },
     lockedDown: { default: null }
-  },
-  computed: {
-    // ...mapGetters(['allTabs']),
-    // lockedUp () {
-    //   const index = this.tabs.indexOf(this.tab);
-    //   return index === 0;
-    // },
-    // lockedDown () {
-    //   const tabs = this.tabs;
-    //   const index = tabs.indexOf(this.tab);
-    //   return index === tabs.length - 1;
-    // }
   },
   methods: {
     ...mapActions(['moveTab']),
