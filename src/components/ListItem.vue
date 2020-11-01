@@ -2,10 +2,10 @@
   <div class="ui basic segment">
 
     <!-- Controls -->
-    <button class="ui small basic icon button right floated" @click="openInNewWindow">
-      <i class="window maximize outline icon"></i>
+    <button class="ui small basic icon secondary button right floated" @click="openInNewWindow">
+      <i class="external alternate icon"></i>
     </button>
-    <button class="ui small basic icon button right floated" @click="addCurrentTabToWorkspace">
+    <button class="ui small basic icon secondary button right floated" @click="addCurrentTabToWorkspace">
       <i class="plus icon"></i>
     </button>
 

@@ -3,7 +3,7 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <router-link :to="backRoute" class="ui basic icon button right floated">
+      <router-link :to="backRoute" class="ui basic icon secondary button right floated">
         <i class="caret left icon"></i>Back
       </router-link>
       {{ id ? 'Edit Workspace' : 'New workspace' }}
@@ -16,7 +16,7 @@
         <input type="text" v-model="workspace.title" placeholder="Ex: School">
       </div>
 
-      <button class="ui primary button" type="submit">
+      <button class="ui basic secondary button" type="submit">
         {{ id ? 'Save changes' : 'Create workspace' }}
       </button>
     </form>

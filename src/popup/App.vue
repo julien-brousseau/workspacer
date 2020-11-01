@@ -33,6 +33,7 @@ export default {
   min-width: 500px !important;
   height: auto !important;
   min-height: 250px !important;
+  max-height: 900px !important;
 }
 
 /* Section title */

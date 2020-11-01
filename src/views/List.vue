@@ -3,10 +3,10 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <router-link :to="{ name: 'Settings' }" class="ui basic icon button right floated">
+      <router-link :to="{ name: 'Settings' }" class="ui basic secondary icon button right floated">
         <i class="cog icon"></i>
       </router-link>
-      <router-link :to="{ name: 'Create' }" class="ui basic green icon button right floated">
+      <router-link :to="{ name: 'Create' }" class="ui basic secondary icon button right floated">
         <i class="plus icon"></i>
       </router-link>
       My Workspaces

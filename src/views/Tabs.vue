@@ -3,7 +3,7 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <router-link :to="{ name: 'Workspace', params: { id: workspace.id } }" class="ui basic icon button right floated">
+      <router-link :to="{ name: 'Workspace', params: { id: workspace.id } }" class="ui basic icon secondary button right floated">
         <i class="caret left icon"></i>Back
       </router-link>
       Edit tabs

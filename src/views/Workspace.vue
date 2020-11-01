@@ -3,7 +3,7 @@
 
     <!-- Section title and main controls -->
     <h1>
-      <router-link :to="{ name: 'List' }" class="ui basic icon button right floated">
+      <router-link :to="{ name: 'List' }" class="ui basic icon secondary button right floated">
         <i class="caret left icon"></i>Back
       </router-link>
       Workspace details
@@ -11,33 +11,32 @@
 
     <!-- Workspace name -->
     <div class="ui basic segment">
-      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic button right floated btn-rename">
+      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic secondary button right floated btn-rename">
         Rename
       </router-link>
-      <p class="label" style="border-bottom: 1px solid #DDD;">Workspace name</p>
+      <p class="label">Name</p>
       <h3 class="ui header">{{ workspace.title }}</h3>
     </div>
 
-    <!-- Tab list -->
+    <!-- Tab list and controls -->
     <div class="ui basic segment divided list">
-      <p class="label" style="border-bottom: 1px solid #DDD;">Tabs</p>
+      <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="tab in tabs" :key="tab" class="item">
         {{ tab.title | shorten }}
       </div>
+
+      <button class="ui basic secondary button" @click="addCurrentTabToWorkspace">
+        <i class="plus icon"></i>Add current tab</button>
+      <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
+        <i class="pen square icon"></i>View tabs</router-link>
     </div>
 
+    <!-- Workspace controls -->
     <div class="ui basic segment">
-      <!-- Open all tabs in new window -->
-      <button class="ui basic button" @click="openInNewWindow">
-        <i class="icon sticky note"></i>Open in new window
+      <button class="ui basic secondary button" @click="openInNewWindow">
+        <i class="external alternate icon"></i>Open in new window
       </button>
-      <!-- Add active tab to workspace -->
-      <button class="ui basic button" @click="addCurrentTabToWorkspace">
-        <i class="icon plus"></i>Add current tab</button>
-      <!-- Edit tabs -->
-      <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui basic button icon">
-        <i class="icon cog"></i>Edit tabs</router-link>
     </div>
 
   </div>
@@ -87,6 +86,6 @@ export default {
 }
 .btn-rename {
   border: 0px none !important;
-  margin-top: 24px !important;
+  margin-top: 20px !important;
 }
 </style>
