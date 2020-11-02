@@ -1,13 +1,8 @@
 <template>
   <div id="Workspace">
 
-    <!-- Section title and main controls -->
-    <h1>
-      <router-link :to="{ name: 'List' }" class="ui basic icon secondary button right floated">
-        <i class="caret left icon"></i>Back
-      </router-link>
-      Workspace details
-    </h1>
+    <!-- App header -->
+    <Header :title="'Workspace details'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'List' } }]" />
 
     <!-- Workspace name -->
     <div class="ui basic segment">
@@ -43,8 +38,10 @@
 </template>
 
 <script>
+import Header from '@/components/items/Header.vue';
 
 export default {
+  components: { Header },
   data () {
     return { workspace: null };
   },

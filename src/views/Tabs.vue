@@ -2,12 +2,7 @@
   <div class="Tabs">
 
     <!-- Section title and main controls -->
-    <h1>
-      <router-link :to="{ name: 'Workspace', params: { id: workspace.id } }" class="ui basic icon secondary button right floated">
-        <i class="caret left icon"></i>Back
-      </router-link>
-      Edit tabs
-    </h1>
+    <Header :title="'Edit tabs'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'Workspace', params: { id: workspace.id } }}]" />
 
     <!-- Tab items -->
     <div v-if="!tabs.length" class="ui basic segment empty">
@@ -18,25 +13,25 @@
       :tab="tab">
     </TabItem>
 
-    <!-- Tabs commands -->
+    <!-- Tab list commands -->
     <div class="ui basic segment">
-      BUTTONS
-      <!-- <button class="ui primary button" @click="createNewTab">
+      <button class="ui basic secondary button" @click="addActiveTab">
         Add tab
       </button>
-      <button class="ui primary button" @click="createNewTabsFromWindow">
+      <button class="ui basic secondary button" @click="addAllTabsFromWindow">
         Add all tabs
-      </button> -->
+      </button>
     </div>
 
   </div>
 </template>
 
 <script>
+import Header from '@/components/items/Header.vue';
 import TabItem from '@/components/TabItem.vue';
 
 export default {
-  components: { TabItem },
+  components: { Header, TabItem },
   data () {
     return {
       workspace: null,
@@ -51,18 +46,17 @@ export default {
   },
   methods: {
     // Add a tab to the list containing the current tab info
-    // async createNewTab () {
-    // Use store.dispatch(addCurrentTab)
-    // const tab = await this.getCurrentTab();
+    addActiveTab () {
+      this.$store.dispatch('addCurrentTab', this.workspace.id);
     // this.createTabs({ tabs: [tab], wsId: this.wsId });
-    // },
+    },
 
     // TODO: Move to background?
     // Add all current window's tabs
-    // async createNewTabsFromWindow () {
+    async addAllTabsFromWindow () {
     //   const windowTabs = await this.getAllTabsFromWindow();
     //   this.createTabs({ tabs: windowTabs, wsId: this.wsId });
-    // }
+    }
 
   }
 };

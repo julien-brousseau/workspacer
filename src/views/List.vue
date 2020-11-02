@@ -1,21 +1,15 @@
 <template>
   <div id="List">
 
-    <!-- Section title and main controls -->
-    <h1>
-      <router-link :to="{ name: 'Settings' }" class="ui basic secondary icon button right floated">
-        <i class="cog icon"></i>
-      </router-link>
-      <router-link :to="{ name: 'Create' }" class="ui basic secondary icon button right floated">
-        <i class="plus icon"></i>
-      </router-link>
-      My Workspaces
-    </h1>
+    <!-- App header -->
+    <Header :title="'Workspaces'" :routes="routes" />
 
-    <!-- Workspaces -->
+    <!-- No workspace message -->
     <div v-if="!workspaces.length" class="ui basic segment empty">
       You have no workspaces
     </div>
+
+    <!-- Workspace list -->
     <ListItem v-else v-for="ws in workspaces"
       :key="ws.id"
       :ws="ws" />
@@ -24,10 +18,19 @@
 </template>
 
 <script>
+import Header from '@/components/items/Header.vue';
 import ListItem from '../components/ListItem';
 
 export default {
-  components: { ListItem },
+  components: { Header, ListItem },
+  data () {
+    return {
+      routes: [
+        { title: '', icon: 'cog', route: { name: 'Settings' } },
+        { title: '', icon: 'plus', route: { name: 'Create' } }
+      ]
+    };
+  },
   computed: {
     workspaces () {
       return this.$store.getters.allWS;

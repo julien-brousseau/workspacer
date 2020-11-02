@@ -5,10 +5,10 @@
     <!-- <tab-controls :tab="tab"></tab-controls> -->
 
     <!-- Static fields -->
-    <!-- <div v-if="!editing" class="content">
-      <h4>{{ tab.title | shorten(60) }}</h4>
-      <p>{{ tab.url | shorten }}</p>
-    </div> -->
+    <div v-if="!editing" class="ui content">
+      <h4 class="ui header">{{ tab.title | shorten(50) }}</h4>
+      <p class="label">{{ tab.url | shorten(50) }}</p>
+    </div>
 
     <!-- Editing fields -->
     <!-- <div v-else class="content edit" style="margin-top: 10px !important">
@@ -46,16 +46,16 @@ export default {
   //   tabControls: TabControls
   // },
   // data () { return { tabForm: null }; },
-  props: ['tab']
+  props: ['tab'],
   // created () { this.init(); },
 
-  // computed: {
+  computed: {
   //   ...mapGetters(['editingTab', 'allTabs']),
-  //   editing () { return true; },
+    editing () { return false; }
   //   locked () {
   //     return this.tabIsLocked(this.tab);
   //   }
-  // },
+  }
 
   // methods: {
   //   ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),

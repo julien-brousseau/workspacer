@@ -13,8 +13,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ws: null, // [workspaces]
-    tabs: null, // [tabs]
-    selectedWorkspace: null
+    tabs: null // [tabs]
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -26,11 +25,6 @@ export default new Vuex.Store({
     'SET_TABS' (state, tabsData) {
       state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
-    },
-    //
-    'SET_SELECTED_WORKSPACE' (state, selected) {
-      state.selectedWorkspace = selected;
-      if (MUTATIONS_LOG) console.log('SET_SELECTED_WORKSPACE :>> ', state.selectedWorkspace);
     }
   },
   actions: {
@@ -48,7 +42,7 @@ export default new Vuex.Store({
       commit('SET_TABS', []);
     },
     // Batch add ws and tabs (Settings > Load)
-    importfromJSON: async ({ commit, dispatch }, { ws, tabs }) => {
+    importfromJSON: async ({ dispatch }, { ws, tabs }) => {
       ws.forEach(async (w) => {
         const id = await dispatch('createOrUpdateWS', w);
         const blop = tabs.filter(t => t.wsId === id);
@@ -122,19 +116,15 @@ export default new Vuex.Store({
       return { up, down };
     },
 
-    // Set the {selectedWorkspace} to arg, or null if already selected
-    selectWorkspace: ({ state, commit }, workspace = null) => {
-      if (workspace === state.selectedWorkspace) workspace = null;
-      commit('SET_SELECTED_WORKSPACE', workspace);
-    },
-
-    // GETTERS
-    // Query browser for the current active {tab}
-    // TODO: Optimize & move to Background
-    addCurrentTab: async ({ dispatch }, wsId) => {
+    // Fetch the active {tab} from current window
+    getActiveTab: async () => {
       const tabs = await browser.tabs.query({ currentWindow: true, active: true });
-      dispatch('createTabs', { tabs, wsId });
-      // return tab[0];
+      return tabs[0];
+    },
+    // Add the active {tab} to workspace
+    addCurrentTab: async ({ dispatch }, wsId) => {
+      const tab = await dispatch('getActiveTab');
+      dispatch('createTabs', { tabs: [tab], wsId });
     },
     // Query browser for all current window's [tabs]
     // TODO: Optimize & move to Background

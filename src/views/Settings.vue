@@ -1,23 +1,20 @@
 <template>
   <div id="ws-settings">
 
-    <!-- Section title and main controls -->
-    <h1>
-      <router-link :to="{ name: 'List' }" class="ui basic icon secondary button right floated">
-        <i class="caret left icon"></i>Back
-      </router-link>
-      App settings
-    </h1>
+    <!-- App header -->
+    <Header :title="'App settings'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'List' } }]" />
 
+    <!-- Export -->
     <div class="ui basic segment">
       <h3>Export Workspaces as json</h3>
       <button class="ui basic primary button" @click="save">
-        <i class="download icon"></i>Export
+        <i class="upload icon"></i>Export
       </button>
     </div>
 
+    <!-- Import -->
     <div class="ui basic segment">
-      <h3>Import json file</h3>
+      <h3>Import json data</h3>
       <div class="ui form">
         <div class="field">
           <textarea rows="3" v-model="jsonData" placeholder="Enter json data to import"></textarea>
@@ -28,6 +25,7 @@
       </div>
     </div>
 
+    <!-- Clear database -->
     <div class="ui basic segment">
       <h3>Delete all Workspace and Tabs</h3>
       <button class="ui basic red button" @click="clear">
@@ -40,7 +38,10 @@
 </template>
 
 <script>
+import Header from '@/components/items/Header.vue';
+
 export default {
+  components: { Header },
   data () {
     return { jsonData: '' };
   },
