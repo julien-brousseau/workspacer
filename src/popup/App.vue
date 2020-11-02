@@ -12,8 +12,8 @@ export default {
   components: { Loading },
   created () {
     this.$store.dispatch('loadWS');
-    // this.$router.push('/');
-    this.$router.push({ name: 'Tabs', params: { wsId: 1 } });
+    this.$router.push('/');
+    // this.$router.push({ name: 'Tabs', params: { wsId: 1 } });
   },
   computed: {
     loading () {
@@ -42,6 +42,7 @@ h1 {
   border-bottom: 1px solid #CCCCCC;
   padding: 20px;
   margin-bottom: 0px !important;
+  padding-right: 25px !important;
 }
 
 /* Other */
@@ -49,6 +50,7 @@ h1 {
   padding: 16px !important;
   margin: 0px !important;
   border-bottom: 1px solid #EEE !important;
+  padding-right: 25px !important;
 }
 
 </style>

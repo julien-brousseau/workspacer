@@ -5,6 +5,7 @@ import List from '../views/List.vue';
 import Workspace from '../views/Workspace.vue';
 import Form from '../views/Form.vue';
 import Tabs from '../views/Tabs.vue';
+import Tab from '../views/Tab.vue';
 import Settings from '../views/Settings.vue';
 
 Vue.use(VueRouter);
@@ -29,6 +30,11 @@ const routes = [
     path: '/workspace/edit/:id',
     name: 'Edit',
     component: Form
+  },
+  {
+    path: '/tab/:id',
+    name: 'Tab',
+    component: Tab
   },
   {
     path: '/tabs/:wsId',

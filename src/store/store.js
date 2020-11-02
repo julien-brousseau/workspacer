@@ -13,8 +13,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ws: null, // Object
-    tabs: null, // Array
-    selectedTab: null // Id
+    tabs: null // Array
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -26,11 +25,6 @@ export default new Vuex.Store({
     'SET_TABS' (state, tabsData) {
       state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
-    },
-    //
-    'SET_SELECTED_TAB' (state, tabId) {
-      state.selectedTab = tabId;
-      if (MUTATIONS_LOG) console.log('SET_SELECTED_TAB :>> ', state.selectedTab);
     }
   },
   actions: {
@@ -95,31 +89,7 @@ export default new Vuex.Store({
       if (tabs.length) browser.runtime.sendMessage({ type: 'NEW_WINDOW', workspace, tabs });
     },
 
-    // // Reorder all {tabs} from same workspace as specified tab based on the move direction
-    // moveTab: async ({ state, dispatch }, { tab, direction }) => {
-    //   // Current WS tabs
-    //   const tabs = state.tabs.filter(t => t.wsId === tab.wsId);
-    //   // Current tab index in tabs array
-    //   const index = tabs.indexOf(tab);
-    //   // Swap the tab positions in array
-    //   const mod = index + (direction === 'down' ? 1 : -1);
-    //   [tabs[index], tabs[mod]] = [tabs[mod], tabs[index]];
-    //   // Set new tab position order
-    //   const orderedTabs = tabs.map((t, i) => ({ ...t, position: (i + 1) }));
-    //   // Save reordered tabs and update state
-    //   browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs: orderedTabs })
-    //     .then(() => dispatch('loadWS')) // Tabs usable as argument
-    //     .catch(e => console.log('Error > moveTab :>> ', e));
-    // },
-    // // TODO: Test & Fix
-    // tabIsLocked: ({ getters }, tab) => {
-    //   const tabs = getters.allTabs.filter(t => t.wsId === tab.wsId);
-    //   const index = tabs.findIndex(t => t.Id === tab.Id);
-    //   const up = index === 0;
-    //   const down = index === tabs.length - 1;
-    //   return { up, down };
-    // },
-
+    // TODO: Move browser tab queries to background?
     // Fetch the active {tab} from current window
     getActiveTab: async () => {
       const tabs = await browser.tabs.query({ currentWindow: true, active: true });
@@ -130,31 +100,24 @@ export default new Vuex.Store({
       const tab = await dispatch('getActiveTab');
       dispatch('createTabs', { tabs: [tab], wsId });
     },
-    // Query browser for all current window's [tabs]
-    // TODO: Optimize & move to Background
-    getAllTabsFromWindow: async () => {
+    // Fetch all current window's [tabs] and create {tabs} in specified {workspace}
+    addAllTabsFromWindow: async ({ dispatch }, wsId) => {
       return browser.tabs.query({ currentWindow: true })
-        .then(tabs => tabs)
+        .then(tabs => {
+          dispatch('createTabs', { tabs, wsId });
+        })
         .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e));
     },
 
-    // FILE SUPPORT
     // Export all data in ~/Downloads/data.json
     exportToJSON: async ({ state }) => {
       return browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs })
         .then(() => true)
         .catch(e => console.log('Error > exportToJSON :>> ', e));
-    },
-
-    // Set or toggle id of the tab being edited (in TabItem component)
-    selectTab: ({ state, commit }, tabId = null) => {
-      const id = state.selectedTab === tabId ? null : tabId;
-      commit('SET_SELECTED_TAB', id);
     }
   },
   getters: {
     allWS: state => state.ws,
-    allTabs: state => state.tabs,
-    selectedTab: state => state.selectedTab // For editing purposes
+    allTabs: state => state.tabs
   }
 });

@@ -4,6 +4,16 @@
     <!-- Section title and main controls -->
     <Header :title="'Edit tabs'" :routes="[header]" />
 
+    <!-- Tab list commands -->
+    <div class="ui basic segment">
+      <button class="ui basic secondary button" @click="addActiveTab">
+        Add tab
+      </button>
+      <button class="ui basic secondary button" @click="addAllTabsFromWindow">
+        Add all tabs
+      </button>
+    </div>
+
     <!-- No tabs message -->
     <div v-if="!tabs.length" class="ui basic segment empty">
       This workspace contains no tabs
@@ -15,19 +25,6 @@
       :tab="tab"
       :edit="null">
     </TabItem>
-
-    <!-- Tab list commands -->
-    <div class="ui basic segment">
-      <button class="ui orange button right floated" @click="saveAllTabs">
-        Save changes
-      </button>
-      <button class="ui basic secondary button" @click="addActiveTab">
-        Add tab
-      </button>
-      <button class="ui basic secondary button" @click="addAllTabsFromWindow">
-        Add all tabs
-      </button>
-    </div>
 
   </div>
 </template>
@@ -45,8 +42,6 @@ export default {
     // Set [tabs] and {workspace} data
     const wsId = this.$route.params.wsId;
     this.workspace = { ...this.$store.getters.allWS.find(ws => ws.id === wsId) };
-    // Unselect all tabs
-    this.$store.dispatch('selectTab', null);
   },
   computed: {
     // Header data for link back to Workspace
@@ -60,23 +55,14 @@ export default {
     }
   },
   methods: {
-    // Save all modifications from tabs and return to Workspace
-    async saveAllTabs () {
-      await this.$store.dispatch('editTabs', this.tabs);
-      this.$router.push(this.header.route);
-    },
-
     // Add active browser {tab} to the current {workspace}
     addActiveTab () {
       this.$store.dispatch('addCurrentTab', this.workspace.id);
     },
-
     // Add all current window's [tabs] to current {workspace}
-    async addAllTabsFromWindow () {
-    //   const windowTabs = await this.getAllTabsFromWindow();
-    //   this.createTabs({ tabs: windowTabs, wsId: this.wsId });
+    addAllTabsFromWindow () {
+      this.$store.dispatch('addAllTabsFromWindow', this.workspace.id);
     }
-
   }
 };
 </script>

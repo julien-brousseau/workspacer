@@ -20,11 +20,12 @@
       <div v-for="(tab, i) in tabs" :key="i" class="item">
         {{ tab.title | shorten }}
       </div>
-
-      <button class="ui basic secondary button" @click="addCurrentTabToWorkspace">
-        <i class="plus icon"></i>Add current tab</button>
-      <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
-        <i class="pen square icon"></i>View tabs</router-link>
+      <div style="margin-top: 20px;">
+        <button class="ui basic secondary button" @click="addCurrentTabToWorkspace">
+          <i class="plus icon"></i>Add current tab</button>
+        <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
+          <i class="pen square icon"></i>View tabs</router-link>
+      </div>
     </div>
 
     <!-- Workspace controls -->
