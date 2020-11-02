@@ -15,7 +15,7 @@
         <input type="text" placeholder="URL" v-model="tab.url">
       </div>
 
-      <button class="ui basic secondary button" type="submit">
+      <button class="ui primary button" type="submit">
         Save changes
       </button>
     </form>

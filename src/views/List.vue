@@ -27,7 +27,7 @@ export default {
     return {
       routes: [
         { title: '', icon: 'cog', route: { name: 'Settings' } },
-        { title: '', icon: 'plus', route: { name: 'Create' } }
+        { title: 'Create workspace', icon: 'plus', route: { name: 'Create' }, color: 'primary' }
       ]
     };
   },

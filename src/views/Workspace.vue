@@ -6,7 +6,7 @@
 
     <!-- Workspace name -->
     <div class="ui basic segment">
-      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic secondary button right floated btn-rename">
+      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic orange button right floated btn-rename">
         Rename
       </router-link>
       <p class="label">Name</p>

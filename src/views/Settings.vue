@@ -7,7 +7,7 @@
     <!-- Export -->
     <div class="ui basic segment">
       <h3>Export Workspaces as json</h3>
-      <button class="ui basic primary button" @click="save">
+      <button class="ui primary button" @click="save">
         <i class="upload icon"></i>Export
       </button>
     </div>
@@ -19,7 +19,7 @@
         <div class="field">
           <textarea rows="3" v-model="jsonData" placeholder="Enter json data to import"></textarea>
         </div>
-        <button class="ui basic orange button" @click="load">
+        <button class="ui orange button" @click="load">
           <i class="download icon"></i>Import
         </button>
       </div>
@@ -28,7 +28,7 @@
     <!-- Clear database -->
     <div class="ui basic segment">
       <h3>Delete all Workspace and Tabs</h3>
-      <button class="ui basic red button" @click="clear">
+      <button class="ui red button" @click="clear">
         <i class="trash icon"></i>Delete
       </button>
       <h4 class="ui red header">Warning: This operation is irreversible</h4>

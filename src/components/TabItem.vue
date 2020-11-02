@@ -8,10 +8,10 @@
 
     <!-- Field controls -->
     <div class="ui buttons actions">
-      <router-link :to="route" class="ui basic secondary icon button">
+      <router-link :to="route" class="ui basic primary icon button">
         <i class="pencil icon"></i>
       </router-link>
-      <button @click="removeTab" class="ui basic secondary icon button">
+      <button @click="removeTab" class="ui basic red icon button">
         <i class="trash icon"></i>
       </button>
     </div>

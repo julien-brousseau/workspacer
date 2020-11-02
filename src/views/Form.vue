@@ -11,7 +11,7 @@
         <input type="text" v-model="workspace.title" placeholder="Ex: School">
       </div>
 
-      <button class="ui basic secondary button" type="submit">
+      <button class="ui primary button" type="submit">
         {{ id ? 'Save changes' : 'Create workspace' }}
       </button>
     </form>
