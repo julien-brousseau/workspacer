@@ -12,7 +12,8 @@ export default {
   components: { Loading },
   created () {
     this.$store.dispatch('loadWS');
-    this.$router.push('/');
+    // this.$router.push('/');
+    this.$router.push({ name: 'Tabs', params: { wsId: 1 } });
   },
   computed: {
     loading () {

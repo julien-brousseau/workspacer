@@ -1,108 +1,76 @@
 <template>
   <div class="ui basic segment">
 
-    <!-- Index buttons -->
-    <!-- <tab-controls :tab="tab"></tab-controls> -->
+    <!-- Up/Down buttons -->
+    <div class="controls">
+      <TabControls :tab="tab" />
+    </div>
 
-    <!-- Static fields -->
-    <div v-if="!editing" class="ui content">
-      <h4 class="ui header">{{ tab.title | shorten(50) }}</h4>
-      <p class="label">{{ tab.url | shorten(50) }}</p>
+    <!-- Field controls -->
+    <div class="ui buttons actions">
+      <button class="ui basic secondary icon button" @click="selectTab">
+        <i class="icon" :class="selected ? 'save' : 'pencil'"></i>
+      </button>
+      <button v-if="!selected" class="ui basic secondary icon button" @click="removeTab">
+        <i class="trash icon"></i>
+      </button>
     </div>
 
     <!-- Editing fields -->
-    <!-- <div v-else class="content edit" style="margin-top: 10px !important">
-      <div class="ui input" style="width:40%">
-        <input type="text" placeholder="Title" v-model="tabForm.title">
+    <form v-if="selected" class="ui form">
+      <div class="field">
+        <label for="">Name</label>
+        <input type="text" placeholder="Title" v-model="tab.title">
       </div>
-      <div class="ui input" style="width:59%;margin-left:5px;">
-        <input type="text" placeholder="URL" v-model="tabForm.url">
+      <div class="field">
+        <label for="">URL</label>
+        <input type="text" placeholder="URL" v-model="tab.url">
       </div>
-    </div> -->
+    </form>
 
-    <!-- Field controls -->
-    <!-- <div class="actions right floated">
-      <div class="ui buttons">
-        <button class="ui button icon basic large"
-          @click="toggleEditingTab()">
-            <i class="icon" :class="editing ? 'save' : 'pencil'"></i>
-        </button>
-        <button class="ui button icon basic large"
-          @click="editing ? cancel() : removeTab()">
-            <i class="icon" :class="editing ? 'cancel' : 'trash'"></i>
-        </button>
-      </div>
-    </div> -->
+    <!-- Static fields -->
+    <div v-else class="">
+      <h4 class="header">{{ tab.title | shorten(40) }}</h4>
+      <p class="url">{{ tab.url | shorten(40) }}</p>
+    </div>
 
   </div>
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex';
-// import TabControls from './items/TabControls.vue';
+import TabControls from './items/TabControls.vue';
 
 export default {
-  // components: {
-  //   tabControls: TabControls
-  // },
-  // data () { return { tabForm: null }; },
+  components: { TabControls },
   props: ['tab'],
-  // created () { this.init(); },
-
   computed: {
-  //   ...mapGetters(['editingTab', 'allTabs']),
-    editing () { return false; }
-  //   locked () {
-  //     return this.tabIsLocked(this.tab);
-  //   }
+    selected () {
+      return this.$store.getters.selectedTab === this.tab.Id;
+    },
+    locked () {
+      return this.$store.dispatch('tabIsLocked', this.tab.Id);
+    }
+  },
+  methods: {
+    selectTab () {
+      this.$store.dispatch('selectTab', this.tab.Id);
+    },
+    removeTab () {
+      this.$store.dispatch('deleteTab', this.tab.Id);
+    }
   }
-
-  // methods: {
-  //   ...mapActions(['setEditingTab', 'editTabs', 'deleteTab', 'tabIsLocked']),
-  //   init () {
-  //     this.tabForm = { ...this.tab };
-  //     // this.setEditingTab();
-  //   },
-  //   toggleEditingTab () {
-  //     if (this.editingTab !== this.tab.Id) {
-  //       this.init();
-  //       // this.setEditingTab(this.tab.Id);
-  //     } else {
-  //       this.editTabs([this.tabForm]);
-  //       this.init();
-  //     }
-  //   },
-  //   removeTab () {
-  //     this.deleteTab(this.tab.Id);
-  //   },
-  //   cancel () {
-  //     this.init();
-  //   }
-  // }
 };
 </script>
 
 <style scoped>
-/* .item {
-  border-top: 1px solid #EEEEEE !important;
-  padding: 5px 5px 10px 5px !important;
-  margin: 0px !important;
-} */
-/* .edit {
-  margin-top: 13px !important;
-} */
-/* .item:hover {
-  color: orange !important;
-  background-color: rgb(255, 253, 249);
-  border-top: 1px solid orange !important;
-  border-bottom: 1px solid orange !important;
-} */
-/* .selected {
-  background-color: rgb(255, 253, 249);
-  border-top: 1px solid orange !important;
-  border-bottom: 1px solid orange !important;
-} */
-/* .actions {
-  margin-top: 6px;
-} */
+.controls {
+  float: left;
+}
+.actions {
+  float: right;
+}
+.form {
+  width: 75%;
+  display: inline-block;
+}
 </style>

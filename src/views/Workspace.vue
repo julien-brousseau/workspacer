@@ -17,7 +17,7 @@
     <div class="ui basic segment divided list">
       <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
-      <div v-for="tab in tabs" :key="tab" class="item">
+      <div v-for="(tab, i) in tabs" :key="i" class="item">
         {{ tab.title | shorten }}
       </div>
 
