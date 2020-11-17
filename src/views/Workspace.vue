@@ -18,6 +18,7 @@
       <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="(tab, i) in tabs" :key="i" class="item">
+        <img width="12px" :src="icon(tab.url)" />
         {{ tab.title | shorten }}
       </div>
       <div style="margin-top: 20px;">
@@ -62,6 +63,10 @@ export default {
     // Add active tab to the workspace tab list
     addCurrentTabToWorkspace () {
       this.$store.dispatch('addCurrentTab', this.workspace.id);
+    },
+    // Favicon fetcher
+    icon (url) {
+      return 'https://' + (new URL(url)).hostname + '/favicon.ico';
     }
   }
 };

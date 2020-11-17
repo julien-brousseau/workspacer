@@ -28,10 +28,10 @@
     <!-- Clear database -->
     <div class="ui basic segment">
       <h3>Delete all Workspace and Tabs</h3>
+      <p style="color:red">Warning: This operation is irreversible</p>
       <button class="ui red button" @click="clear">
         <i class="trash icon"></i>Delete
       </button>
-      <h4 class="ui red header">Warning: This operation is irreversible</h4>
     </div>
 
   </div>
