@@ -18,10 +18,11 @@
 
     <!-- Static fields -->
     <div>
-      <img class="tab-icon" width="30px" :src="tabIcon(tab.url)" />
+      <img class="tab-icon" width="30px" height="30px" alt=" " :src="tabIcon(tab.url)" />
       <div class="tab-content">
         <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
         <p>{{ tab.url | shorten(40) }}</p>
+        <!-- <p>{{ tabIcon(tab.url) }}</p> -->
       </div>
     </div>
 
