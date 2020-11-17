@@ -46,6 +46,7 @@ export class Tab {
     });
   }
 
+  // Remove a single tab
   deleteTab (Id) {
     return connection.remove({
       from: this.tableName,
@@ -53,6 +54,15 @@ export class Tab {
     });
   }
 
+  // Remove all tabs from specified workspace
+  clearTabsFromWorkspace (wsId) {
+    return connection.remove({
+      from: this.tableName,
+      where: { wsId }
+    });
+  }
+
+  // Empty database
   clearTabs () {
     return connection.clear(this.tableName);
   }

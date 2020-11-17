@@ -31,6 +31,9 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId);
+    // Remove all tabs from workspace
+    case 'CLEAR_TABS':
+      return await new Tab().clearTabsFromWorkspace(action.wsId);
     // Remove all Workspaces and Tabs from the database
     case 'CLEAR_ALL':
       await new Workspace().clearWS();

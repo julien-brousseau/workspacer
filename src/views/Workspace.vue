@@ -6,9 +6,19 @@
 
     <!-- Workspace name -->
     <div class="ui basic segment">
-      <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic orange button right floated btn-rename">
+
+      <sui-dropdown class="basic secondary right floated" text="Options" button floating>
+        <sui-dropdown-menu>
+          <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" tag="sui-dropdown-item"><sui-icon name="pencil" />Rename</router-link>
+          <sui-dropdown-item class="btn-clear" @click="clearAllTabs"><sui-icon name="times circle outline" />Clear tabs</sui-dropdown-item>
+          <sui-dropdown-item class="btn-delete" @click="deleteWorkspace"><sui-icon name="trash" />Delete</sui-dropdown-item>
+        </sui-dropdown-menu>
+      </sui-dropdown>
+
+      <!-- <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic orange button right floated btn-rename">
         Rename
-      </router-link>
+      </router-link> -->
+
       <p class="label">Name</p>
       <h3 class="ui header">{{ workspace.title }}</h3>
     </div>
@@ -50,7 +60,13 @@ export default {
     }
   },
   methods: {
-    tabIcon: url => icon(url)
+    tabIcon: url => icon(url),
+    clearAllTabs () {
+      this.$store.dispatch('clearTabs', this.workspace.id);
+    },
+    deleteWorkspace () {
+      this.$store.dispatch('deleteWS', this.workspace.id);
+    }
   }
 };
 </script>
@@ -76,5 +92,11 @@ export default {
 }
 .btn-action {
   margin-top: 10px;
+}
+.btn-clear {
+  color: rgb(208, 109, 44) !important;
+}
+.btn-delete {
+  color: red !important;
 }
 </style>

@@ -86,6 +86,11 @@ export default new Vuex.Store({
       await browser.runtime.sendMessage({ type: 'DELETE_TAB', tabId });
       await dispatch('loadWS');
     },
+    // Delete all [Tabs] from specified workspace
+    clearTabs: async ({ dispatch }, wsId) => {
+      await browser.runtime.sendMessage({ type: 'CLEAR_TABS', wsId });
+      await dispatch('loadWS');
+    },
     // Query browser to open a new window containing tabs from specified {workspace}
     createWindow: async ({ state }, workspace) => {
       const tabs = state.tabs.filter(t => t.wsId === workspace.id);
