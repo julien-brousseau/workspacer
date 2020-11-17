@@ -32,7 +32,10 @@ export default {
     return { tab: null };
   },
   created () {
-    this.tab = { ...this.$store.getters.allTabs.find(t => t.Id === this.$route.params.id) };
+    const id = this.$route.params.id || null;
+    this.tab = id
+      ? { ...this.$store.getters.allTabs.find(t => t.Id === id) }
+      : { title: 'New Tab', url: 'http://nowhere.com', wsId: this.$route.params.wsId };
   },
   computed: {
     route () {
@@ -41,7 +44,7 @@ export default {
   },
   methods: {
     async submit () {
-      await this.$store.dispatch('editTabs', [this.tab]);
+      if (this.$route.params.id) { await this.$store.dispatch('editTabs', [this.tab]); } else { await this.$store.dispatch('createTabs', { tabs: [{ ...this.tab }], wsId: this.$route.params.wsId }); };
       this.$router.push(this.route);
     }
   }

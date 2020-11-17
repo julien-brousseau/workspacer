@@ -32,6 +32,11 @@ const routes = [
     component: Form
   },
   {
+    path: '/tab/:wsId',
+    name: 'NewTab',
+    component: Tab
+  },
+  {
     path: '/tab/:id',
     name: 'Tab',
     component: Tab

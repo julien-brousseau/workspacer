@@ -3,7 +3,7 @@
 
     <sui-dropdown class="basic primary" text="Add tab to workspace" button floating>
       <sui-dropdown-menu>
-        <!-- <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item> -->
+        <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item>
         <sui-dropdown-item @click="addCurrentTabToWorkspace"><sui-icon name="window maximize outline" />Current tab</sui-dropdown-item>
         <sui-dropdown-item @click="addAllTabsFromWindow"><sui-icon name="window restore outline" />All tabs from window</sui-dropdown-item>
       </sui-dropdown-menu>
@@ -24,9 +24,9 @@ export default {
   props: ['workspace'],
   methods: {
     // Add an empty tab to the workspace tab list
-    // addEmptyTabToWorkspace () {
-
-    // },
+    addEmptyTabToWorkspace () {
+      this.$router.push({ name: 'NewTab', params: { wsId: this.workspace.id } });
+    },
     // Add active tab to the workspace tab list
     addCurrentTabToWorkspace () {
       this.$store.dispatch('addCurrentTab', this.workspace.id);
