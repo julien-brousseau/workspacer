@@ -35,6 +35,7 @@ export default {
   height: auto !important;
   min-height: 250px !important;
   max-height: 900px !important;
+  padding-bottom: 50px;
 }
 
 /* Section title */

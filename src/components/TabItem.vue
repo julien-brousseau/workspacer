@@ -17,9 +17,12 @@
     </div>
 
     <!-- Static fields -->
-    <div class="">
-      <h4 class="header">{{ tab.title | shorten(40) }}</h4>
-      <p class="url">{{ tab.url | shorten(40) }}</p>
+    <div>
+      <img class="tab-icon" width="30px" :src="tabIcon(tab.url)" />
+      <div class="tab-content">
+        <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
+        <p>{{ tab.url | shorten(40) }}</p>
+      </div>
     </div>
 
   </div>
@@ -27,6 +30,7 @@
 
 <script>
 import TabControls from './items/TabControls.vue';
+import { icon } from '@/utils/icon';
 
 export default {
   components: { TabControls },
@@ -39,16 +43,28 @@ export default {
   methods: {
     removeTab () {
       this.$store.dispatch('deleteTab', this.tab.Id);
-    }
+    },
+    tabIcon: url => icon(url)
   }
 };
 </script>
 
 <style scoped>
+.segment:hover {
+  background-color: rgb(250, 250, 250) !important;
+}
 .controls {
   float: left;
 }
 .actions {
   float: right;
+}
+.tab-icon {
+  display:inline-block;
+  margin-top: 10px
+}
+.tab-content {
+  display:inline-block;
+  margin-left: 8px;
 }
 </style>

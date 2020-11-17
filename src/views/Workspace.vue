@@ -18,22 +18,20 @@
       <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="(tab, i) in tabs" :key="i" class="item">
-        <img width="12px" :src="icon(tab.url)" />
+        <img width="12px" :src="tabIcon(tab.url)" />
         {{ tab.title | shorten }}
       </div>
-      <div style="margin-top: 20px;">
-        <button class="ui basic secondary button" @click="addCurrentTabToWorkspace">
-          <i class="plus icon"></i>Add current tab</button>
-        <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
-          <i class="pen square icon"></i>View tabs</router-link>
-      </div>
+      <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
+        <i class="pen square icon"></i>View tabs</router-link>
     </div>
 
     <!-- Workspace controls -->
     <div class="ui basic segment">
-      <button class="ui basic secondary button" @click="openInNewWindow">
-        <i class="external alternate icon"></i>Open in new window
-      </button>
+      <p class="label">Actions</p>
+      <button class="ui basic secondary button btn-action" @click="addCurrentTabToWorkspace">
+        <i class="plus icon"></i>Add current tab</button>
+      <button class="ui basic secondary button btn-action" @click="openInNewWindow">
+        <i class="external alternate icon"></i>Open in new window</button>
     </div>
 
   </div>
@@ -41,6 +39,7 @@
 
 <script>
 import Header from '@/components/items/Header.vue';
+import { icon } from '@/utils/icon';
 
 export default {
   components: { Header },
@@ -65,9 +64,7 @@ export default {
       this.$store.dispatch('addCurrentTab', this.workspace.id);
     },
     // Favicon fetcher
-    icon (url) {
-      return 'https://' + (new URL(url)).hostname + '/favicon.ico';
-    }
+    tabIcon: url => icon(url)
   }
 };
 </script>
@@ -90,5 +87,8 @@ export default {
 .btn-rename {
   border: 0px none !important;
   margin-top: 20px !important;
+}
+.btn-action {
+  margin-top: 10px;
 }
 </style>
