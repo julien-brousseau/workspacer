@@ -15,6 +15,7 @@
 
     <!-- Tab list and controls -->
     <div class="ui basic segment divided list">
+
       <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="(tab, i) in tabs" :key="i" class="item">
@@ -25,24 +26,18 @@
         <i class="pen square icon"></i>View or edit tabs</router-link>
     </div>
 
-    <!-- Workspace controls -->
-    <div class="ui basic segment">
-      <p class="label">Actions</p>
-      <button class="ui basic secondary button btn-action" @click="addCurrentTabToWorkspace">
-        <i class="plus icon"></i>Add current tab</button>
-      <button class="ui basic secondary button btn-action" @click="openInNewWindow">
-        <i class="external alternate icon"></i>Open in new window</button>
-    </div>
+    <Controls :workspace="workspace" />
 
   </div>
 </template>
 
 <script>
 import Header from '@/components/items/Header.vue';
+import Controls from '@/components/items/WorkspaceControls.vue';
 import { icon } from '@/utils/icon';
 
 export default {
-  components: { Header },
+  components: { Header, Controls },
   data () {
     return { workspace: null };
   },
@@ -55,15 +50,6 @@ export default {
     }
   },
   methods: {
-    // Create new window only if workspace contains tabs
-    openInNewWindow () {
-      if (this.tabs.length) this.$store.dispatch('createWindow', this.workspace);
-    },
-    // Add active tab to the workspace tab list
-    addCurrentTabToWorkspace () {
-      this.$store.dispatch('addCurrentTab', this.workspace.id);
-    },
-    // Favicon fetcher
     tabIcon: url => icon(url)
   }
 };

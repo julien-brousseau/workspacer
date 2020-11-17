@@ -2,10 +2,10 @@
   <div class="ui basic segment">
 
     <!-- Controls -->
-    <button class="ui small basic icon secondary button right floated" @click="openInNewWindow">
+    <button class="ui small basic icon green button right floated" @click="openInNewWindow" title="Open in new window">
       <i class="external alternate icon"></i>
     </button>
-    <button class="ui small basic icon secondary button right floated" @click="addCurrentTabToWorkspace">
+    <button class="ui small basic icon primary button right floated" @click="addCurrentTabToWorkspace" title="Add current tab">
       <i class="plus icon"></i>
     </button>
 

@@ -8,7 +8,7 @@
 
     <!-- Field controls -->
     <div class="ui buttons actions">
-      <router-link :to="route" class="ui basic primary icon button">
+      <router-link :to="route" class="ui basic orange icon button">
         <i class="pencil icon"></i>
       </router-link>
       <button @click="removeTab" class="ui basic red icon button">
@@ -22,7 +22,6 @@
       <div class="tab-content">
         <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
         <p>{{ tab.url | shorten(40) }}</p>
-        <!-- <p>{{ tabIcon(tab.url) }}</p> -->
       </div>
     </div>
 

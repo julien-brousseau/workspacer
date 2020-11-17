@@ -5,14 +5,7 @@
     <Header :title="'Edit tabs'" :routes="[header]" />
 
     <!-- Tab list commands -->
-    <div class="ui basic segment">
-      <button class="ui basic secondary button" @click="addActiveTab">
-        Add tab
-      </button>
-      <button class="ui basic secondary button" @click="addAllTabsFromWindow">
-        Add all tabs
-      </button>
-    </div>
+    <Controls :workspace="workspace" />
 
     <!-- No tabs message -->
     <div v-if="!tabs.length" class="ui basic segment empty">
@@ -31,10 +24,11 @@
 
 <script>
 import Header from '@/components/items/Header.vue';
+import Controls from '@/components/items/WorkspaceControls.vue';
 import TabItem from '@/components/TabItem.vue';
 
 export default {
-  components: { Header, TabItem },
+  components: { Header, Controls, TabItem },
   data () {
     return { workspace: null };
   },
@@ -52,16 +46,6 @@ export default {
     tabs () {
       const wsId = this.$route.params.wsId;
       return this.$store.getters.allTabs.filter(tab => tab.wsId === wsId);
-    }
-  },
-  methods: {
-    // Add active browser {tab} to the current {workspace}
-    addActiveTab () {
-      this.$store.dispatch('addCurrentTab', this.workspace.id);
-    },
-    // Add all current window's [tabs] to current {workspace}
-    addAllTabsFromWindow () {
-      this.$store.dispatch('addAllTabsFromWindow', this.workspace.id);
     }
   }
 };

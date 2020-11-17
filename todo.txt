@@ -1,0 +1,2 @@
+ - Replace all hardcoded semanticui elements with Vue version
+ -  
