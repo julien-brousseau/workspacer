@@ -6,6 +6,7 @@
         <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item>
         <sui-dropdown-item @click="addCurrentTabToWorkspace"><sui-icon name="window maximize outline" />Current tab</sui-dropdown-item>
         <sui-dropdown-item @click="addAllTabsFromWindow"><sui-icon name="window restore outline" />All tabs from window</sui-dropdown-item>
+        <sui-dropdown-item @click="replaceWorkspace"><sui-icon name="exchange" />Replace workspace</sui-dropdown-item>
       </sui-dropdown-menu>
     </sui-dropdown>
 
@@ -34,6 +35,10 @@ export default {
     // Add all current window's [tabs] to current {workspace}
     addAllTabsFromWindow () {
       this.$store.dispatch('addAllTabsFromWindow', this.workspace.id);
+    },
+    // Replace all tabs of current workspace with current window's tabs
+    replaceWorkspace () {
+      this.$store.dispatch('replaceWorkspace', this.workspace.id);
     },
     // Create new window only if workspace contains tabs
     openInNewWindow () {

@@ -58,7 +58,7 @@ export default new Vuex.Store({
     },
     //
     deleteWS: async ({ dispatch }, id) => {
-      await browser.runtime.sendMessage({ type: 'CLEAR_TABS', wsId: id });
+      await dispatch('clearTabs', id);
       await browser.runtime.sendMessage({ type: 'DELETE_WS', id });
       await dispatch('loadWS');
       return true;
@@ -102,6 +102,11 @@ export default new Vuex.Store({
     createWindow: async ({ state }, workspace) => {
       const tabs = state.tabs.filter(t => t.wsId === workspace.id);
       if (tabs.length) browser.runtime.sendMessage({ type: 'NEW_WINDOW', workspace, tabs });
+    },
+    // Clear all tabs from workspace and add tabs from current window
+    replaceWorkspace: async ({ dispatch }, wsId) => {
+      await dispatch('clearTabs', wsId);
+      dispatch('addAllTabsFromWindow', wsId);
     },
 
     // TODO: Move browser tab queries to background?
