@@ -21,6 +21,13 @@ export class Workspace {
     });
   }
 
+  deleteWS (id) {
+    return connection.remove({
+      from: this.tableName,
+      where: { id }
+    });
+  }
+
   // Deprecated?
   // updateWS ({ id, title, tabs }) {
   //   return connection.update({

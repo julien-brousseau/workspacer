@@ -22,6 +22,10 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Replace Workspace in {action.ws} if its id exists in database, otherwise create a new one
     case 'CREATE_OR_UPDATE_WS':
       return await new Workspace().createOrUpdateWS(action.ws);
+    // Remove selected workspace
+    case 'DELETE_WS':
+      return await new Workspace().deleteWS(action.id);
+
     // Insert all Tabs contained in [action.tabs]
     case 'CREATE_TABS':
       return await new Tab().insertTabs(action.tabs);
@@ -39,11 +43,11 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       await new Workspace().clearWS();
       await new Tab().clearTabs();
       return true;
-    // Open a new browser window with [action.tabs]
+
+      // Open a new browser window with [action.tabs]
     case 'NEW_WINDOW':
       createWindow(action.workspace, action.tabs);
       return true;
-
       // Export a json file containing [action.ws] and [action.tabs]
     case 'EXPORT':
       saveAsJSON(action.ws, action.tabs);

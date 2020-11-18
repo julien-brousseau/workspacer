@@ -56,6 +56,13 @@ export default new Vuex.Store({
       await dispatch('loadWS');
       return id;
     },
+    //
+    deleteWS: async ({ dispatch }, id) => {
+      await browser.runtime.sendMessage({ type: 'CLEAR_TABS', wsId: id });
+      await browser.runtime.sendMessage({ type: 'DELETE_WS', id });
+      await dispatch('loadWS');
+      return true;
+    },
     // Create new {Tabs} in database from [tabs], then reload data
     createTabs: async ({ state, dispatch }, { tabs, wsId }) => {
       // Get highest position from current workspace tab list

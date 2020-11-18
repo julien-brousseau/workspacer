@@ -4,20 +4,16 @@
     <!-- App header -->
     <Header :title="'Workspace details'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'List' } }]" />
 
-    <!-- Workspace name -->
+    <!-- Workspace name and settings -->
     <div class="ui basic segment">
 
-      <sui-dropdown class="basic secondary right floated" text="Options" button floating>
+      <sui-dropdown class="basic secondary right floated btn-options" text="Options" button floating>
         <sui-dropdown-menu>
           <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" tag="sui-dropdown-item"><sui-icon name="pencil" />Rename</router-link>
           <sui-dropdown-item class="btn-clear" @click="clearAllTabs"><sui-icon name="times circle outline" />Clear tabs</sui-dropdown-item>
           <sui-dropdown-item class="btn-delete" @click="deleteWorkspace"><sui-icon name="trash" />Delete</sui-dropdown-item>
         </sui-dropdown-menu>
       </sui-dropdown>
-
-      <!-- <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" class="ui small basic orange button right floated btn-rename">
-        Rename
-      </router-link> -->
 
       <p class="label">Name</p>
       <h3 class="ui header">{{ workspace.title }}</h3>
@@ -61,11 +57,14 @@ export default {
   },
   methods: {
     tabIcon: url => icon(url),
+    // Remove all tabs from workspace
     clearAllTabs () {
       this.$store.dispatch('clearTabs', this.workspace.id);
     },
-    deleteWorkspace () {
-      this.$store.dispatch('deleteWS', this.workspace.id);
+    // Delete workspace and all its tabs
+    async deleteWorkspace () {
+      await this.$store.dispatch('deleteWS', this.workspace.id);
+      this.$router.push('/');
     }
   }
 };
@@ -86,12 +85,8 @@ export default {
 .item {
   padding: 8px 0px !important;
 }
-.btn-rename {
-  border: 0px none !important;
-  margin-top: 20px !important;
-}
-.btn-action {
-  margin-top: 10px;
+.btn-options {
+  margin-top: 10px !important;
 }
 .btn-clear {
   color: rgb(208, 109, 44) !important;
