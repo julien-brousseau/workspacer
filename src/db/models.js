@@ -2,6 +2,32 @@
 import { connection } from './jss_connexion';
 import { DATA_TYPE } from 'jsstore';
 
+// Tab object properties
+// active,
+// attention,
+// audible,
+// cookieStoreId,
+// discarded,
+// favIconUrl,
+// height,
+// hidden,
+// highlighted,
+// id,
+// incognito,
+// index,
+// isArticle,
+// isInReaderMode,
+// lastAccessed,
+// mutedInfo,
+// pinned,
+// sharingState,
+// status,
+// successorTabId,
+// title,
+// url,
+// width,
+// windowId
+
 // Model object
 const getModels = () => {
   const wsTable = {

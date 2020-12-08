@@ -8,8 +8,6 @@ const MUTATIONS_LOG = false;
 
 Vue.use(Vuex);
 
-// TODO: Find a way to filter tabs to prevent urls starting with 'about:'
-
 export default new Vuex.Store({
   state: {
     ws: null, // Object

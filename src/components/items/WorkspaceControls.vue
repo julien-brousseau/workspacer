@@ -1,5 +1,5 @@
 <template>
-  <sui-segment>
+  <sui-segment style="border: 0px none">
 
     <sui-dropdown class="basic primary" text="Add tab to workspace" button floating>
       <sui-dropdown-menu>
