@@ -18,7 +18,7 @@
 
     <!-- Static fields -->
     <div>
-      <img class="tab-icon" width="30px" height="30px" alt=" " :src="tabIcon(tab.url)" />
+      <img class="tab-icon" width="30px" height="30px" alt=" " :src="tab.favIconUrl" />
       <div class="tab-content">
         <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
         <p>{{ tab.url | shorten(40) }}</p>
@@ -30,7 +30,6 @@
 
 <script>
 import TabControls from './items/TabControls.vue';
-import { icon } from '@/utils/icon';
 
 export default {
   components: { TabControls },
@@ -43,8 +42,7 @@ export default {
   methods: {
     removeTab () {
       this.$store.dispatch('deleteTab', this.tab.Id);
-    },
-    tabIcon: url => icon(url)
+    }
   }
 };
 </script>

@@ -69,7 +69,7 @@ export default new Vuex.Store({
         .reduce((acc, cur) => cur.position > acc ? cur.position : acc, 0);
 
       // Filter properties from original Tab object, then and add wsId and position (order)
-      tabs = tabs.map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']), wsId, position: (pos + 1 + i) }));
+      tabs = tabs.map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId, position: (pos + 1 + i) }));
 
       // Send action to browser, then reload data
       browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs })

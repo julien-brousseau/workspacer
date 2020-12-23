@@ -25,7 +25,7 @@
       <p class="label">Tabs</p>
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="(tab, i) in tabs" :key="i" class="item">
-        <img width="12px" height="12px" alt=" " :src="tabIcon(tab.url)" style="display: inline-block" />
+        <img width="12px" height="12px" alt=" " :src="tab.favIconUrl" style="display: inline-block" />
         {{ tab.title | shorten(60) }}
       </div>
       <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
@@ -40,7 +40,6 @@
 <script>
 import Header from '@/components/items/Header.vue';
 import Controls from '@/components/items/WorkspaceControls.vue';
-import { icon } from '@/utils/icon';
 
 export default {
   components: { Header, Controls },
@@ -56,7 +55,6 @@ export default {
     }
   },
   methods: {
-    tabIcon: url => icon(url),
     // Remove all tabs from workspace
     clearAllTabs () {
       this.$store.dispatch('clearTabs', this.workspace.id);

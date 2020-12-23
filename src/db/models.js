@@ -30,6 +30,7 @@ import { DATA_TYPE } from 'jsstore';
 
 // Model object
 const getModels = () => {
+  // Workspaces database model
   const wsTable = {
     name: 'Workspaces',
     columns: {
@@ -47,7 +48,7 @@ const getModels = () => {
       }
     }
   };
-
+  // Tabs database model
   const tabTable = {
     name: 'Tabs',
     columns: {
@@ -82,15 +83,15 @@ const getModels = () => {
         dataType: DATA_TYPE.Boolean,
         notNull: true,
         default: false
+      },
+      favIconUrl: {
+        dataType: DATA_TYPE.String,
+        notNull: false
       }
       // cookieStoreId: {
       //   dataType: DATA_TYPE.Integer,
       //   notNull: true,
       //   default: false
-      // },
-      // favIconUrl: {
-      //   dataType: DATA_TYPE.String,
-      //   notNull: false
       // },
       // isInReaderMode: {
       //   dataType: DATA_TYPE.Boolean,
