@@ -26,7 +26,7 @@
       <div v-if="!tabs.length" class="item">This workspace contains no tabs</div>
       <div v-for="(tab, i) in tabs" :key="i" class="item">
         <img width="12px" height="12px" alt=" " :src="tabIcon(tab.url)" style="display: inline-block" />
-        {{ tab.title | shorten }}
+        {{ tab.title | shorten(60) }}
       </div>
       <router-link :to="{ name: 'Tabs', params: { wsId: workspace.id } }" class="ui secondary basic button" style="margin-top: 10px;">
         <i class="pen square icon"></i>View or edit tabs</router-link>

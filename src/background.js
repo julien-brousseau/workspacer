@@ -68,7 +68,8 @@ async function createWindow (workspace, tabs) {
           // Remove conflicting properties
           ..._.omit(tab, ['Id', 'position', 'wsId']),
           windowId: window.id,
-          discarded: true // TODO: !hardcoded
+          title: tab.discarded ? tab.title : null,
+          discarded: !tab.pinned
         });
       });
       // Remove the empty tab at position 1 (created automatically by browser)
