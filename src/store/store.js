@@ -68,11 +68,8 @@ export default new Vuex.Store({
         .filter(t => t.wsId === wsId)
         .reduce((acc, cur) => cur.position > acc ? cur.position : acc, 0);
 
-      tabs = tabs
-        // Filter out Firefox about: tabs
-        .filter(t => t.url.slice(0, 6) !== 'about:')
-        // Filter properties from original Tab object, then and add wsId and position (order)
-        .map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']), wsId, position: (pos + 1 + i) }));
+      // Filter properties from original Tab object, then and add wsId and position (order)
+      tabs = tabs.map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded']), wsId, position: (pos + 1 + i) }));
 
       // Send action to browser, then reload data
       browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs })
