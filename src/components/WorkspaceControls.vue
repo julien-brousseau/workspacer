@@ -1,12 +1,11 @@
 <template>
   <sui-segment style="border: 0px none">
 
-    <sui-dropdown class="basic primary" text="Add tab to workspace" button floating>
+    <sui-dropdown class="basic primary" text="Add tab" button floating>
       <sui-dropdown-menu>
         <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item>
         <sui-dropdown-item @click="addCurrentTabToWorkspace"><sui-icon name="window maximize outline" />Current tab</sui-dropdown-item>
         <sui-dropdown-item @click="addAllTabsFromWindow"><sui-icon name="window restore outline" />All tabs from window</sui-dropdown-item>
-        <sui-dropdown-item @click="replaceWorkspace"><sui-icon name="exchange" />Replace workspace</sui-dropdown-item>
       </sui-dropdown-menu>
     </sui-dropdown>
 
@@ -14,8 +13,23 @@
       color="green"
       class="btn-action"
       @click="openInNewWindow"
-      content="Open in new window" icon="external alternate">
+      content="Open" icon="external alternate">
     </sui-button>
+
+    <sui-button basic
+      color="orange"
+      class="btn-refresh"
+      @click="replaceWorkspace"
+      content="Refresh" icon="exchange">
+    </sui-button>
+
+    <sui-dropdown class="basic secondary right floated btn-options" text="Options" button floating>
+      <sui-dropdown-menu :style="{'margin-left': '-50px'}">
+        <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" tag="sui-dropdown-item"><sui-icon name="pencil" />Rename</router-link>
+        <sui-dropdown-item class="btn-clear" @click="clearAllTabs"><sui-icon name="times circle outline" />Delete all tabs</sui-dropdown-item>
+        <sui-dropdown-item class="btn-delete" @click="deleteWorkspace"><sui-icon name="trash" />Delete workspace</sui-dropdown-item>
+      </sui-dropdown-menu>
+    </sui-dropdown>
 
   </sui-segment>
 </template>
@@ -24,6 +38,15 @@
 export default {
   props: ['workspace'],
   methods: {
+    // Remove all tabs from workspace
+    clearAllTabs () {
+      this.$store.dispatch('clearTabs', this.workspace.id);
+    },
+    // Delete workspace and all its tabs
+    async deleteWorkspace () {
+      await this.$store.dispatch('deleteWS', this.workspace.id);
+      this.$router.push('/');
+    },
     // Add an empty tab to the workspace tab list
     addEmptyTabToWorkspace () {
       this.$router.push({ name: 'NewTab', params: { wsId: this.workspace.id } });
@@ -48,3 +71,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.btn-clear {
+  color: rgb(208, 109, 44) !important;
+}
+.btn-delete {
+  color: red !important;
+}
+</style>

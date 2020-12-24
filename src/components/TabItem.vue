@@ -1,49 +1,24 @@
 <template>
   <div class="ui basic segment">
 
-    <!-- Up/Down buttons -->
-    <div class="controls">
-      <TabControls :tab="tab" />
-    </div>
+    <TabControls :tab="tab" :class="['right floated']" />
 
-    <!-- Field controls -->
-    <div class="ui buttons actions">
-      <router-link :to="route" class="ui basic orange icon button">
-        <i class="pencil icon"></i>
-      </router-link>
-      <button @click="removeTab" class="ui basic red icon button">
-        <i class="trash icon"></i>
-      </button>
-    </div>
+    <img class="tab-icon" width="35px" height="35px" alt=" " :src="tab.favIconUrl" />
 
-    <!-- Static fields -->
-    <div>
-      <img class="tab-icon" width="30px" height="30px" alt=" " :src="tab.favIconUrl" />
-      <div class="tab-content">
-        <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
-        <p>{{ tab.url | shorten(40) }}</p>
-      </div>
+    <div class="tab-content">
+      <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(30) }}</h4>
+      <p>{{ tab.url | shorten(35) }}</p>
     </div>
 
   </div>
 </template>
 
 <script>
-import TabControls from './items/TabControls.vue';
+import TabControls from './TabControls.vue';
 
 export default {
   components: { TabControls },
-  props: ['tab'],
-  computed: {
-    route () {
-      return { name: 'Tab', params: { id: this.tab.Id } };
-    }
-  },
-  methods: {
-    removeTab () {
-      this.$store.dispatch('deleteTab', this.tab.Id);
-    }
-  }
+  props: ['tab']
 };
 </script>
 
@@ -51,18 +26,13 @@ export default {
 .segment:hover {
   background-color: rgb(250, 250, 250) !important;
 }
-.controls {
-  float: left;
-}
-.actions {
-  float: right;
+.tab-controls {
+  width: auto !important;
 }
 .tab-icon {
-  display:inline-block;
-  margin-top: 10px
-}
-.tab-content {
-  display:inline-block;
-  margin-left: 8px;
+  margin: 5px 5px 10px 0px;
+  float: left;
+  padding: 6px;
+  border: 1px solid #AAA;
 }
 </style>
