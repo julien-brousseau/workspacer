@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import List from '../views/List.vue';
-import Workspace from '../views/Workspace.vue';
 import Form from '../views/Form.vue';
 import Tabs from '../views/Tabs.vue';
 import Tab from '../views/Tab.vue';
@@ -19,7 +18,7 @@ const routes = [
   {
     path: '/workspace/:id',
     name: 'Workspace',
-    component: Workspace
+    component: Tabs
   },
   {
     path: '/workspace/create',
@@ -40,11 +39,6 @@ const routes = [
     path: '/tab/:id',
     name: 'Tab',
     component: Tab
-  },
-  {
-    path: '/tabs/:wsId',
-    name: 'Tabs',
-    component: Tabs
   },
   {
     path: '/settings',

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import Header from '@/components/items/Header.vue';
+import Header from '@/components/Header.vue';
 import ListItem from '../components/ListItem';
 
 export default {

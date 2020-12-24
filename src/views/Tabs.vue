@@ -2,7 +2,7 @@
   <div class="Tabs">
 
     <!-- Section title and main controls -->
-    <Header :title="'Edit tabs'" :routes="[header]" />
+    <Header :title="this.workspace.title" :routes="[header]" />
 
     <!-- Tab list commands -->
     <Controls :workspace="workspace" />
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Header from '@/components/items/Header.vue';
-import Controls from '@/components/items/WorkspaceControls.vue';
+import Header from '@/components/Header.vue';
+import Controls from '@/components/WorkspaceControls.vue';
 import TabItem from '@/components/TabItem.vue';
 
 export default {
@@ -33,18 +33,18 @@ export default {
     return { workspace: null };
   },
   created () {
-    // Set [tabs] and {workspace} data
-    const wsId = this.$route.params.wsId;
+    // Set {workspace} data
+    const wsId = this.$route.params.id;
     this.workspace = { ...this.$store.getters.allWS.find(ws => ws.id === wsId) };
   },
   computed: {
     // Header data for link back to Workspace
     header () {
-      return { title: 'Back', icon: 'caret left', route: { name: 'Workspace', params: { id: this.workspace.id } } };
+      return { title: 'Back', icon: 'caret left', route: { name: 'List', params: { id: this.workspace.id } } };
     },
     // All [tabs] for this {workspace}
     tabs () {
-      const wsId = this.$route.params.wsId;
+      const wsId = this.workspace.id;
       return this.$store.getters.allTabs.filter(tab => tab.wsId === wsId);
     }
   }
