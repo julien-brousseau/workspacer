@@ -66,7 +66,7 @@ async function createWindow (workspace, tabs) {
       tabs.forEach(tab => {
         browser.tabs.create({
           // Remove conflicting properties
-          ..._.omit(tab, ['Id', 'position', 'wsId']),
+          ..._.omit(tab, ['Id', 'position', 'wsId', 'favIconUrl']),
           windowId: window.id,
           title: tab.discarded ? tab.title : null,
           discarded: !tab.pinned
