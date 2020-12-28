@@ -31,24 +31,26 @@ export class Tab {
   async insertTabs (tabsArray) {
     // Filter out Firefox about: tabs
     const values = tabsArray.filter(t => t.url.slice(0, 6) !== 'about:');
+    // Print console error if an invalid tab is inserted
     if (values.length < tabsArray.length) console.log('Warning: Pages using about: protocol cannot be saved in workspaces');
 
     return connection.insert({
       into: this.tableName,
       values,
+      upsert: true,
       return: true
     });
   }
 
   //
-  async updateTabs (tabsArray) {
-    return connection.insert({
-      into: this.tableName,
-      values: tabsArray,
-      upsert: true,
-      return: true
-    });
-  }
+  // async updateTabs (tabsArray) {
+  //   return connection.insert({
+  //     into: this.tableName,
+  //     values: tabsArray,
+  //     upsert: true,
+  //     return: true
+  //   });
+  // }
 
   // Remove a single tab
   deleteTab (Id) {

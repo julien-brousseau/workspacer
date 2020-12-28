@@ -45,7 +45,7 @@ export default {
     // All [tabs] for this {workspace}
     tabs () {
       const wsId = this.workspace.id;
-      return this.$store.getters.allTabs.filter(tab => tab.wsId === wsId);
+      return this.$store.getters.allTabs.filter(tab => tab.wsId === wsId).sort((x, y) => y.pinned - x.pinned);
     }
   }
 };

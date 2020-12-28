@@ -1,9 +1,9 @@
 <template>
   <div class="ui mini horizontal buttons">
 
-    <!-- <button @click="true" class="ui mini toggle button icon basic" :class="pinned">
+    <button @click="pinTab" class="ui mini toggle button icon basic" :class="pinned">
       <i class="pin icon"></i>
-    </button> -->
+    </button>
 
     <button :disabled="locked.up" class="ui mini secondary button icon basic" @click="moveUp">
       <i class="icon caret up"></i>
@@ -43,7 +43,7 @@ export default {
       return { name: 'Tab', params: { id: this.tab.Id } };
     },
     pinned () {
-      return this.tab.pinned ? 'blue' : 'disabled';
+      return this.tab.pinned ? 'blue' : 'secondary';
     }
   },
   methods: {
@@ -55,12 +55,19 @@ export default {
       if (!this.locked.down) this.moveTab('down');
     },
 
-    // Reorder all {tabs} from same workspace as current tab based on the move direction
+    // Reorder all {tabs} from same workspace as current tab based on the move direction (up/down)
     moveTab (direction) {
       const { index, tabs } = this;
       const mod = index + (direction === 'down' ? 1 : -1);
       [tabs[index], tabs[mod]] = [tabs[mod], tabs[index]];
-      this.$store.dispatch('editTabs', tabs.map((t, i) => ({ ...t, position: (i + 1) })));
+      this.$store.dispatch('editTabs', tabs);
+      // this.$store.dispatch('editTabs', tabs.map((t, i) => ({ ...t, position: (i + 1) })));
+    },
+
+    //
+    pinTab () {
+      this.$store.dispatch('reorderTabs', this.tab.wsId);
+      // this.$store.dispatch('editTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
     },
 
     removeTab () {

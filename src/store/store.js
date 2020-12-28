@@ -61,26 +61,23 @@ export default new Vuex.Store({
       await dispatch('loadWS');
       return true;
     },
-    // Create new {Tabs} in database from [tabs], then reload data
+
+    // Create new {Tabs} in database from [tabs] argument, then reload data
     createTabs: async ({ state, dispatch }, { tabs, wsId }) => {
-      // Get highest position from current workspace tab list
-      const pos = state.tabs
-        .filter(t => t.wsId === wsId)
-        .reduce((acc, cur) => cur.position > acc ? cur.position : acc, 0);
-
-      // Filter properties from original Tab object, then and add wsId and position (order)
-      tabs = tabs.map((t, i) => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId, position: (pos + 1 + i) }));
-
+      // Filter properties from original Tab objects and add workspace id
+      tabs = tabs.map(t => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId }));
+      // Reset the tabs positions
+      const reorderedTabs = reorderTabs([...state.tabs, ...tabs]);
       // Send action to browser, then reload data
-      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs })
-        .then(() => dispatch('loadWS')) // Tabs usable as argument
+      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs: reorderedTabs })
+        .then(() => dispatch('loadWS'))
         .catch(e => console.log('Error > createTabs :>> ', e));
     },
     // Replace all {Tabs} in database contained in [tabs], then reload data
-    // TODO: Merge with createTabs?
     editTabs: async ({ dispatch }, tabs) => {
-      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs })
-        .then(() => dispatch('loadWS')) // Tabs usable as argument
+      const reorderedTabs = reorderTabs(tabs);
+      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs: reorderedTabs })
+        .then(() => dispatch('loadWS'))
         .catch(e => console.log('Error > editTabs :>> ', e));
     },
     // Delete the {Tab} in database with id corresponding to tabId
@@ -136,3 +133,12 @@ export default new Vuex.Store({
     allTabs: state => state.tabs
   }
 });
+
+//
+function reorderTabs (tabs) {
+  return tabs
+    .sort((x, y) => y.pinned - x.pinned)
+    .map((t, i) => ({ ...t, position: (i + 1) }));
+  // console.log('tabs :>> ', tabs.map(t => ({ pinned: t.pinned, order: t.position, title: t.title })));
+  // return tabs;
+}

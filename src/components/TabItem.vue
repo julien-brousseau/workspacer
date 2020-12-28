@@ -6,7 +6,7 @@
     <img class="tab-icon" width="35px" height="35px" alt=" " :src="tab.favIconUrl" />
 
     <div class="tab-content">
-      <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(30) }}</h4>
+      <h4 style="margin-bottom: 0px;">[{{ tab.position }}] {{ tab.title | shorten(30) }}</h4>
       <p>{{ tab.url | shorten(35) }}</p>
     </div>
 

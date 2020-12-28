@@ -31,7 +31,7 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       return await new Tab().insertTabs(action.tabs);
     // Replace all Tabs contained in [action.tabs]
     case 'EDIT_TABS':
-      return await new Tab().updateTabs(action.tabs);
+      return await new Tab().insertTabs(action.tabs);
     // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId);
