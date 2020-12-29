@@ -32,11 +32,12 @@ export default {
     return { tab: null };
   },
   created () {
-    // If id exists, it references the id of tab to fetch
-    // Else, the param is wsId for a new tab
-    const id = this.$route.params.id || null;
-    this.tab = id
-      ? { ...this.$store.getters.allTabs.find(t => t.Id === id) }
+    // Check if the tabId param is set (alternative is wsId)
+    const tabId = this.$route.params.tabId || null;
+    this.tab = tabId
+      // If tabId exists, fetch the corresponding tab
+      ? { ...this.$store.getters.allTabs.find(t => t.tabId === tabId) }
+      // Else, set an empty tab with the current wsId for creation
       : { title: 'New Tab', url: 'http://nowhere.com', wsId: this.$route.params.wsId };
   },
   computed: {
@@ -44,12 +45,12 @@ export default {
       return { name: 'Workspace', params: { id: this.tab.wsId } };
     },
     title () {
-      return this.$route.params.id ? 'Edit tab' : 'New tab';
+      return this.$route.params.tabId ? 'Edit tab' : 'New tab';
     }
   },
   methods: {
     async submit () {
-      if (this.$route.params.id) {
+      if (this.$route.params.tabId) {
         await this.$store.dispatch('editTabs', [this.tab]);
       } else {
         await this.$store.dispatch('createTabs', { tabs: [{ ...this.tab }], wsId: this.$route.params.wsId });

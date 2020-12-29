@@ -52,13 +52,12 @@ const getModels = () => {
   const tabTable = {
     name: 'Tabs',
     columns: {
-      // Capitalized to prevent mixup with tab regular id
-      Id: {
+      // Not 'id' as PK to prevent mixup with browser tab id
+      tabId: {
         primaryKey: true,
         autoIncrement: true
       },
       wsId: {
-        // primaryKey: true,
         dataType: DATA_TYPE.Integer,
         notNull: true
       },

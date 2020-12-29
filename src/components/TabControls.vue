@@ -1,23 +1,34 @@
 <template>
   <div class="ui mini horizontal buttons">
 
-    <button @click="pinTab" class="ui mini toggle button icon basic" :class="pinned">
+    <button
+      class="ui mini toggle button icon basic"
+      :class="pinned"
+      @click="pinTab">
       <i class="pin icon"></i>
     </button>
 
-    <button :disabled="locked.up" class="ui mini secondary button icon basic" @click="moveUp">
+    <button
+      :disabled="locked.up"
+      class="ui mini secondary button icon basic"
+      @click="moveUp">
       <i class="icon caret up"></i>
     </button>
 
-    <button :disabled="locked.down" class="ui mini secondary button icon basic" @click="moveDown">
+    <button
+      :disabled="locked.down"
+      class="ui mini secondary button icon basic"
+      @click="moveDown">
       <i class="icon caret down"></i>
     </button>
 
-    <router-link :to="route" class="ui mini orange button icon basic">
+    <router-link :to="route"
+      class="ui mini orange button icon basic">
       <i class="pencil icon"></i>
     </router-link>
 
-    <button @click="removeTab" class="ui mini red button icon basic">
+    <button @click="removeTab"
+      class="ui mini red button icon basic">
       <i class="trash icon"></i>
     </button>
 
@@ -32,7 +43,7 @@ export default {
       return this.$store.getters.allTabs.filter(t => t.wsId === this.tab.wsId);
     },
     index () {
-      return this.tabs.findIndex(t => t.Id === this.tab.Id);
+      return this.tabs.findIndex(t => t.tabId === this.tab.tabId);
     },
     locked () {
       const up = this.index === 0;
@@ -40,7 +51,7 @@ export default {
       return { up, down };
     },
     route () {
-      return { name: 'Tab', params: { id: this.tab.Id } };
+      return { name: 'Tab', params: { tabId: this.tab.tabId } };
     },
     pinned () {
       return this.tab.pinned ? 'blue' : 'secondary';
@@ -71,17 +82,8 @@ export default {
     },
 
     removeTab () {
-      this.$store.dispatch('deleteTab', this.tab.Id);
+      this.$store.dispatch('deleteTab', this.tab.tabId);
     }
   }
 };
 </script>
-
-<style scoped>
-/* .btn-orange {
-  color: orange !important;
-}
-.btn-red {
-  color: red;
-} */
-</style>

@@ -11,7 +11,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ws: null, // Object
-    tabs: null // Array
+    tabs: [] // Array
   },
   mutations: {
     // Replace state.ws with [wsData]
@@ -21,10 +21,11 @@ export default new Vuex.Store({
     },
     // Replace state.tabs with [tabsData] sorted by position
     'SET_TABS' (state, tabsData) {
-      state.tabs = tabsData.sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
+      state.tabs = tabsData;// .sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
     }
   },
+
   actions: {
     // Query browser to reload all [workspaces] and [tabs], then commit to state props
     loadWS: async ({ commit }) => {
@@ -62,15 +63,22 @@ export default new Vuex.Store({
       return true;
     },
 
+    //
+    blop: async ({ commit }, data) => {
+      commit('SET_TABS', data);
+      console.log('data :>> ', data);
+    },
+
     // Create new {Tabs} in database from [tabs] argument, then reload data
     createTabs: async ({ state, dispatch }, { tabs, wsId }) => {
       // Filter properties from original Tab objects and add workspace id
-      tabs = tabs.map(t => ({ ..._.pick(t, ['Id', 'wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId }));
+      tabs = tabs.map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId }));
+      console.log('tabs before :>> ', tabs);
       // Reset the tabs positions
-      const reorderedTabs = reorderTabs([...state.tabs, ...tabs]);
+      // const reorderedTabs = reorderTabs([...state.tabs, ...tabs]);
       // Send action to browser, then reload data
-      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs: reorderedTabs })
-        .then(() => { dispatch('loadWS'); })
+      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs: tabs })
+        .then(data => dispatch('blop', data))
         .catch(e => console.log('Error > createTabs :>> ', e));
     },
     // Replace all {Tabs} in database contained in [tabs], then reload data

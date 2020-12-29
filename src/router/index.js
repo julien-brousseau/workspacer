@@ -36,7 +36,7 @@ const routes = [
     component: Tab
   },
   {
-    path: '/tab/:id',
+    path: '/tab/:tabId',
     name: 'Tab',
     component: Tab
   },

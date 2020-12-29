@@ -1,5 +1,6 @@
 import { connection } from '../jss_connexion';
 
+// Database operations
 export class Tab {
   constructor () {
     this.tableName = 'Tabs';
@@ -7,11 +8,7 @@ export class Tab {
 
   getAllTabs () {
     return connection.select({
-      from: this.tableName,
-      order: {
-        by: 'position',
-        type: 'desc'
-      }
+      from: this.tableName
     });
   }
 
@@ -53,10 +50,10 @@ export class Tab {
   // }
 
   // Remove a single tab
-  deleteTab (Id) {
+  deleteTab (tabId) {
     return connection.remove({
       from: this.tableName,
-      where: { Id }
+      where: { tabId }
     });
   }
 

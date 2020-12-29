@@ -16,9 +16,6 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Fetch all Workspaces
     case 'GET_WS':
       return await new Workspace().getWS();
-    // Fetch all Tabs
-    case 'GET_TABS':
-      return await new Tab().getAllTabs();
     // Replace Workspace in {action.ws} if its id exists in database, otherwise create a new one
     case 'CREATE_OR_UPDATE_WS':
       return await new Workspace().createOrUpdateWS(action.ws);
@@ -26,6 +23,9 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     case 'DELETE_WS':
       return await new Workspace().deleteWS(action.id);
 
+    // Fetch all Tabs
+    case 'GET_TABS':
+      return await new Tab().getAllTabs();
     // Insert all Tabs contained in [action.tabs]
     case 'CREATE_TABS':
       return await new Tab().insertTabs(action.tabs);
@@ -66,7 +66,7 @@ async function createWindow (workspace, tabs) {
       tabs.forEach(tab => {
         browser.tabs.create({
           // Remove conflicting properties
-          ..._.omit(tab, ['Id', 'position', 'wsId', 'favIconUrl']),
+          ..._.omit(tab, ['tabId', 'position', 'wsId', 'favIconUrl']),
           windowId: window.id,
           title: tab.discarded ? tab.title : null,
           discarded: !tab.pinned

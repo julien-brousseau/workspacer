@@ -14,7 +14,7 @@
 
     <!-- Tabs list -->
     <TabItem v-for="tab in tabs"
-      :key="tab.Id"
+      :key="tab.tabId"
       :tab="tab"
       :edit="null">
     </TabItem>
