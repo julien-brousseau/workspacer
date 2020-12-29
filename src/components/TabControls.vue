@@ -66,7 +66,7 @@ export default {
 
     //
     pinTab () {
-      this.$store.dispatch('reorderTabs', this.tab.wsId);
+      // this.$store.dispatch('reorderTabs', this.tab.wsId);
       // this.$store.dispatch('editTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
     },
 

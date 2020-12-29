@@ -86,3 +86,16 @@ function saveAsJSON (ws, tabs) {
   const url = URL.createObjectURL(new Blob([json], { type }));
   browser.downloads.download({ url, filename });
 }
+
+// Prepare new {tabs} obtained from browser prior to insertion into database
+// function formatNewTabs (tabsArray, wsId) {
+//   // Filter out Firefox about: tabs
+//   const tabs = tabsArray.filter(t => t.url.slice(0, 6) !== 'about:');
+//   // Print console error if invalid tabs are inserted
+//   if (tabs.length < tabsArray.length) console.log('Warning: Pages using about: protocol cannot be saved in workspaces');
+
+//   // Add the workspace ID and filter out useless properties (from browser Tab objects)
+//   return tabs
+//     .map(t => ({ ...t, wsId }))
+//     .map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']) }));
+// }

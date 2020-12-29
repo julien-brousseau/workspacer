@@ -70,7 +70,7 @@ export default new Vuex.Store({
       const reorderedTabs = reorderTabs([...state.tabs, ...tabs]);
       // Send action to browser, then reload data
       browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs: reorderedTabs })
-        .then(() => dispatch('loadWS'))
+        .then(() => { dispatch('loadWS'); })
         .catch(e => console.log('Error > createTabs :>> ', e));
     },
     // Replace all {Tabs} in database contained in [tabs], then reload data
