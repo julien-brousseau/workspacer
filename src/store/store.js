@@ -1,5 +1,3 @@
-import _ from 'lodash'; // used in createTabs > _.pick(...)
-
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -11,17 +9,17 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ws: null, // Object
-    tabs: [] // Array
+    tabs: null // Array
   },
   mutations: {
-    // Replace state.ws with [wsData]
+    // Replace state.ws with {wsData}
     'SET_WS' (state, wsData) {
       state.ws = wsData;
       if (MUTATIONS_LOG) console.log('SET_WS :>> ', state.ws);
     },
-    // Replace state.tabs with [tabsData] sorted by position
+    // Replace state.tabs with [tabsData]
     'SET_TABS' (state, tabsData) {
-      state.tabs = tabsData;// .sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1);
+      state.tabs = tabsData;
       if (MUTATIONS_LOG) console.log('SET_TABS :>> ', state.tabs);
     }
   },
@@ -63,28 +61,15 @@ export default new Vuex.Store({
       return true;
     },
 
-    //
-    blop: async ({ commit }, data) => {
-      commit('SET_TABS', data);
-      console.log('data :>> ', data);
-    },
-
     // Create new {Tabs} in database from [tabs] argument, then reload data
-    createTabs: async ({ state, dispatch }, { tabs, wsId }) => {
-      // Filter properties from original Tab objects and add workspace id
-      tabs = tabs.map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']), wsId }));
-      console.log('tabs before :>> ', tabs);
-      // Reset the tabs positions
-      // const reorderedTabs = reorderTabs([...state.tabs, ...tabs]);
-      // Send action to browser, then reload data
-      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs: tabs })
-        .then(data => dispatch('blop', data))
+    createTabs: async ({ dispatch }, { tabs, wsId }) => {
+      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs, wsId })
+        .then(data => dispatch('loadWS'))
         .catch(e => console.log('Error > createTabs :>> ', e));
     },
     // Replace all {Tabs} in database contained in [tabs], then reload data
     editTabs: async ({ dispatch }, tabs) => {
-      const reorderedTabs = reorderTabs(tabs);
-      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs: reorderedTabs })
+      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs })
         .then(() => dispatch('loadWS'))
         .catch(e => console.log('Error > editTabs :>> ', e));
     },
@@ -143,10 +128,10 @@ export default new Vuex.Store({
 });
 
 //
-function reorderTabs (tabs) {
-  return tabs
-    .sort((x, y) => y.pinned - x.pinned)
-    .map((t, i) => ({ ...t, position: (i + 1) }));
-  // console.log('tabs :>> ', tabs.map(t => ({ pinned: t.pinned, order: t.position, title: t.title })));
-  // return tabs;
-}
+// function reorderTabs (tabs) {
+//   return tabs
+//     .sort((x, y) => y.pinned - x.pinned)
+//     .map((t, i) => ({ ...t, position: (i + 1) }));
+//   // console.log('tabs :>> ', tabs.map(t => ({ pinned: t.pinned, order: t.position, title: t.title })));
+//   // return tabs;
+// }

@@ -1,4 +1,4 @@
-import _ from 'lodash'; // used in createWindow > _.omit(...)
+import _ from 'lodash';
 
 // Database models
 import { Models } from './db/models';
@@ -26,12 +26,12 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Fetch all Tabs
     case 'GET_TABS':
       return await new Tab().getAllTabs();
-    // Insert all Tabs contained in [action.tabs]
+    // Insert all Tabs contained in [action.tabs] after formatting and inserting action.wsId
     case 'CREATE_TABS':
-      return await new Tab().insertTabs(action.tabs);
+      return await new Tab().createOrEditTabs(formatNewTabs(action.tabs, action.wsId));
     // Replace all Tabs contained in [action.tabs]
     case 'EDIT_TABS':
-      return await new Tab().insertTabs(action.tabs);
+      return await new Tab().createOrEditTabs(action.tabs);
     // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId);
@@ -88,14 +88,14 @@ function saveAsJSON (ws, tabs) {
 }
 
 // Prepare new {tabs} obtained from browser prior to insertion into database
-// function formatNewTabs (tabsArray, wsId) {
-//   // Filter out Firefox about: tabs
-//   const tabs = tabsArray.filter(t => t.url.slice(0, 6) !== 'about:');
-//   // Print console error if invalid tabs are inserted
-//   if (tabs.length < tabsArray.length) console.log('Warning: Pages using about: protocol cannot be saved in workspaces');
+function formatNewTabs (tabsArray, wsId) {
+  // Filter out Firefox about: tabs
+  const tabs = tabsArray.filter(t => t.url.slice(0, 6) !== 'about:');
+  // Print console error if invalid tabs are inserted
+  if (tabs.length < tabsArray.length) console.log('Warning: Pages using about: protocol cannot be saved in workspaces');
 
-//   // Add the workspace ID and filter out useless properties (from browser Tab objects)
-//   return tabs
-//     .map(t => ({ ...t, wsId }))
-//     .map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']) }));
-// }
+  // Add the workspace ID and filter out useless properties (from browser Tab objects)
+  return tabs
+    .map(t => ({ ...t, wsId }))
+    .map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']) }));
+}
