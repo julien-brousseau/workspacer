@@ -20,10 +20,8 @@ export class Tab {
     // Fetch tabs from workspace whose tabId is not included in tabData
     const tabIds = tabData.map(t => t.tabId);
     const tabsFromWorkspace = (await this.getAllTabs()).filter(t => t.wsId === tabData[0].wsId && !tabIds.includes(t.tabId));
-    // Merge workspace tabs with new tabData
-    let values = [...tabsFromWorkspace, ...tabData];
-    console.log('values :>> ', values.map(t => ({ title: t.title, pinned: t.pinned })));
-    values = values
+    // Merge filtered workspace tabs with new tabData
+    const values = [...tabsFromWorkspace, ...tabData]
       // Sort by position and pinned status
       .sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1)
       .sort((a, b) => b.pinned - a.pinned)

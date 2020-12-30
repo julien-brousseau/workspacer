@@ -1,16 +1,16 @@
 <template>
-  <div id="List">
+  <div id="Workspaces">
 
-    <!-- App header -->
+    <!-- Section title and main controls -->
     <Header :title="'Workspaces'" :routes="routes" />
 
     <!-- No workspace message -->
-    <div v-if="!workspaces.length" class="ui basic segment empty">
+    <div v-if="!workspaces.length" class="ui basic segment">
       You have no workspaces
     </div>
 
     <!-- Workspace list -->
-    <ListItem v-else v-for="ws in workspaces"
+    <WorkspaceItem v-else v-for="ws in workspaces"
       :key="ws.id"
       :ws="ws" />
 
@@ -19,15 +19,15 @@
 
 <script>
 import Header from '@/components/Header.vue';
-import ListItem from '../components/ListItem';
+import WorkspaceItem from '../components/WorkspaceItem';
 
 export default {
-  components: { Header, ListItem },
+  components: { Header, WorkspaceItem },
   data () {
     return {
       routes: [
         { title: '', icon: 'cog', route: { name: 'Settings' } },
-        { title: 'Create workspace', icon: 'plus', route: { name: 'Create' }, color: 'primary' }
+        { title: 'Create workspace', icon: 'plus', route: { name: 'CreateWorkspace' }, color: 'primary' }
       ]
     };
   },
@@ -38,11 +38,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.empty {
-  padding-top: 15px !important;
-  padding-bottom: 20px !important;
-  border: 0px none !important;
-}
-</style>

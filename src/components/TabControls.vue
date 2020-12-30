@@ -1,5 +1,5 @@
 <template>
-  <div class="ui mini horizontal buttons">
+  <div class="ui mini horizontal basic buttons">
 
     <button
       :disabled="locked.up"
@@ -45,6 +45,7 @@ export default {
     index () {
       return this.tabs.findIndex(t => t.tabId === this.tab.tabId);
     },
+    // Check if tab shifting is allowed
     locked () {
       const { index, tabs } = this;
       const up = index === 0;
@@ -63,7 +64,7 @@ export default {
     moveUp () { if (!this.locked.up) this.moveTab('up'); },
     moveDown () { if (!this.locked.down) this.moveTab('down'); },
 
-    // Shift tab position up or down
+    // Shift tab position depending on direction ('up' or 'down')
     moveTab (direction) {
       const { index, tabs } = this;
       const mod = direction === 'down' ? 1 : -1;

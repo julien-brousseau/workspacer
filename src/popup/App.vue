@@ -1,7 +1,9 @@
 <template>
   <div id="app">
+
     <Loading v-if="loading" />
     <router-view v-else></router-view>
+
   </div>
 </template>
 
@@ -47,7 +49,7 @@ h1 {
 
 /* Other */
 .segment {
-  padding: 16px !important;
+  padding: 14px 16px 10px 16px !important;
   margin: 0px !important;
   border-bottom: 1px solid #EEE !important;
   padding-right: 25px !important;

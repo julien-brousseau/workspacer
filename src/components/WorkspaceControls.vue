@@ -3,18 +3,25 @@
 
     <sui-dropdown class="basic primary" text="Add tab" button floating>
       <sui-dropdown-menu>
-        <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item>
+        <!-- <sui-dropdown-item @click="addEmptyTabToWorkspace"><sui-icon name="square outline" />Empty tab</sui-dropdown-item> -->
         <sui-dropdown-item @click="addCurrentTabToWorkspace"><sui-icon name="window maximize outline" />Current tab</sui-dropdown-item>
         <sui-dropdown-item @click="addAllTabsFromWindow"><sui-icon name="window restore outline" />All tabs from window</sui-dropdown-item>
       </sui-dropdown-menu>
     </sui-dropdown>
 
-    <sui-button basic
+    <sui-dropdown class="basic green" text="Open" button floating>
+      <sui-dropdown-menu>
+        <sui-dropdown-item @click="openInNewWindow"><sui-icon name="external alternate" />In new window</sui-dropdown-item>
+        <sui-dropdown-item @click="openInNewWindow"><sui-icon name="external alternate" />Replace current window</sui-dropdown-item>
+      </sui-dropdown-menu>
+    </sui-dropdown>
+
+    <!-- <sui-button basic
       color="green"
       class="btn-action"
       @click="openInNewWindow"
       content="Open" icon="external alternate">
-    </sui-button>
+    </sui-button> -->
 
     <sui-button basic
       color="orange"
@@ -25,7 +32,7 @@
 
     <sui-dropdown class="basic secondary right floated btn-options" text="Options" button floating>
       <sui-dropdown-menu :style="{'margin-left': '-50px'}">
-        <router-link :to="{ name: 'Edit', params: { id: workspace.id } }" tag="sui-dropdown-item"><sui-icon name="pencil" />Rename</router-link>
+        <router-link :to="{ name: 'EditWorkspace', params: { id: workspace.id } }" tag="sui-dropdown-item"><sui-icon name="pencil" />Rename</router-link>
         <sui-dropdown-item class="btn-clear" @click="clearAllTabs"><sui-icon name="times circle outline" />Delete all tabs</sui-dropdown-item>
         <sui-dropdown-item class="btn-delete" @click="deleteWorkspace"><sui-icon name="trash" />Delete workspace</sui-dropdown-item>
       </sui-dropdown-menu>
@@ -48,9 +55,9 @@ export default {
       this.$router.push('/');
     },
     // Add an empty tab to the workspace tab list
-    addEmptyTabToWorkspace () {
-      this.$router.push({ name: 'NewTab', params: { wsId: this.workspace.id } });
-    },
+    // addEmptyTabToWorkspace () {
+    //   this.$router.push({ name: 'NewTab', params: { wsId: this.workspace.id } });
+    // },
     // Add active tab to the workspace tab list
     addCurrentTabToWorkspace () {
       this.$store.dispatch('addCurrentTabToWorkspace', this.workspace.id);

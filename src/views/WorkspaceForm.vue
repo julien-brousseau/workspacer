@@ -1,11 +1,12 @@
 <template>
-  <div id="Form">
+  <div id="WorkspaceForm">
 
-    <!-- App header -->
+    <!-- Section title and main controls -->
     <Header :title="title" :routes="[{ title: 'Back', icon: 'caret left', route }]" />
 
     <!-- Workspace form -->
     <form class="ui form basic segment" @submit.prevent="submit">
+
       <div class="field">
         <label>Workspace name</label>
         <input type="text" v-model="workspace.title" placeholder="Ex: School">
@@ -38,10 +39,10 @@ export default {
       : { title: 'New Workspace' };
   },
   computed: {
-    // Back button route - List if new || Workspace/id
+    // Back button route - Workspaces if new || Workspace/id
     route () {
       const { id } = this;
-      return id ? { name: 'Workspace', params: { id } } : { name: 'List' };
+      return id ? { name: 'Workspace', params: { id } } : { name: 'Workspaces' };
     },
     title () {
       return this.id ? 'Edit Workspace' : 'New workspace';
@@ -56,6 +57,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>

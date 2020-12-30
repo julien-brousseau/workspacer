@@ -101,8 +101,7 @@ async function createWindowWithTabs (tabs) {
 function saveAsJSON (ws, tabs) {
   const json = JSON.stringify({ ws, tabs });
   const type = 'text/json;charset=utf-8';
-  const filename = 'data.json';
-
+  const filename = 'workspacer_data_' + new Date().getTime() + '.json';
   const url = URL.createObjectURL(new Blob([json], { type }));
   browser.downloads.download({ url, filename });
 }

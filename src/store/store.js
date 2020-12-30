@@ -41,8 +41,9 @@ export default new Vuex.Store({
     createOrUpdateWorkspace: async ({ dispatch }, ws) => {
       return browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_WS', ws })
         .then(([{ id }]) => {
-          dispatch('reloadWorkspacesAndTabs');
-          return id;
+          dispatch('reloadWorkspacesAndTabs')
+            .then(() => id);
+          // return id;
         })
         .catch(e => console.log('Error > createOrUpdateWorkspace :>> ', e));
     },

@@ -1,7 +1,7 @@
 <template>
-  <div id="TabForm">
+  <div id="Tab">
 
-    <!-- App header -->
+    <!-- Section title and main controls -->
     <Header :title="title" :routes="[{ title: 'Back', icon: 'caret left', route }]" />
 
     <!-- Tab form -->
@@ -10,6 +10,7 @@
         <label for="">Name</label>
         <input type="text" placeholder="Name" v-model="tab.title">
       </div>
+
       <div class="field">
         <label for="">URL</label>
         <input type="text" placeholder="URL" v-model="tab.url">
@@ -38,7 +39,7 @@ export default {
       // If tabId exists, fetch the corresponding tab
       ? { ...this.$store.getters.allTabs.find(t => t.tabId === tabId) }
       // Else, set an empty tab with the current wsId for creation
-      : { title: 'New Tab', url: 'http://nowhere.com', wsId: this.$route.params.wsId };
+      : { title: 'New Tab', url: 'http://example.com', wsId: this.$route.params.wsId };
   },
   computed: {
     route () {

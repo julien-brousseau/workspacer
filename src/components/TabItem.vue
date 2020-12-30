@@ -3,11 +3,11 @@
 
     <TabControls :tab="tab" :class="['right floated']" />
 
-    <img class="tab-icon" width="35px" height="35px" alt=" " :src="tab.favIconUrl" />
+    <img class="tab-icon" width="20px" height="20px" alt=" " :src="tab.favIconUrl" />
 
     <div class="tab-content">
-      <h4 style="margin-bottom: 0px;">[{{ tab.position }}] {{ tab.title | shorten(30) }}</h4>
-      <p>{{ tab.url | shorten(35) }}</p>
+      <h4 style="margin-bottom: 0px;">{{ tab.title | shorten(35) }}</h4>
+      <p>{{ tab.url | shorten(40) }}</p>
     </div>
 
   </div>
@@ -30,9 +30,11 @@ export default {
   width: auto !important;
 }
 .tab-icon {
-  margin: 5px 5px 10px 0px;
+  margin: 2px 5px 10px 0px;
   float: left;
-  padding: 6px;
-  border: 1px solid #AAA;
+}
+p {
+  font-size: 90%;
+  color: #AAA;
 }
 </style>

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import List from '../views/List.vue';
-import Form from '../views/Form.vue';
+import Workspaces from '../views/Workspaces.vue';
+import WorkspaceForm from '../views/WorkspaceForm.vue';
 import Tabs from '../views/Tabs.vue';
 import Tab from '../views/Tab.vue';
 import Settings from '../views/Settings.vue';
@@ -12,8 +12,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'List',
-    component: List
+    name: 'Workspaces',
+    component: Workspaces
   },
   {
     path: '/workspace/:id',
@@ -22,13 +22,13 @@ const routes = [
   },
   {
     path: '/workspace/create',
-    name: 'Create',
-    component: Form
+    name: 'CreateWorkspace',
+    component: WorkspaceForm
   },
   {
     path: '/workspace/edit/:id',
-    name: 'Edit',
-    component: Form
+    name: 'EditWorkspace',
+    component: WorkspaceForm
   },
   {
     path: '/tab/:wsId',

@@ -1,8 +1,8 @@
 <template>
-  <div id="ws-settings">
+  <div id="Settings">
 
-    <!-- App header -->
-    <Header :title="'App settings'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'List' } }]" />
+    <!-- Section title and main controls -->
+    <Header :title="'App settings'" :routes="[{ title: 'Back', icon: 'caret left', route: { name: 'Workspaces' } }]" />
 
     <!-- Export -->
     <div class="ui basic segment">

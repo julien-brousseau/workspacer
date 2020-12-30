@@ -1,5 +1,5 @@
 <template>
-  <div class="Tabs">
+  <div id="Tabs">
 
     <!-- Section title and main controls -->
     <Header :title="this.workspace.title" :routes="[header]" />
@@ -8,7 +8,7 @@
     <Controls :workspace="workspace" />
 
     <!-- No tabs message -->
-    <div v-if="!tabs.length" class="ui basic segment empty">
+    <div v-if="!tabs.length" class="ui basic segment">
       This workspace contains no tabs
     </div>
 
@@ -30,26 +30,20 @@ import TabItem from '@/components/TabItem.vue';
 export default {
   components: { Header, Controls, TabItem },
   data () {
-    return { workspace: null };
-  },
-  created () {
-    // Set {workspace} data
-    const wsId = this.$route.params.id;
-    this.workspace = { ...this.$store.getters.allWS.find(ws => ws.id === wsId) };
+    return {
+      // Header data for link back to Workspace
+      header: { title: 'Back', icon: 'caret left', route: { name: 'Workspaces' } }
+    };
   },
   computed: {
-    // Header data for link back to Workspace
-    header () {
-      return { title: 'Back', icon: 'caret left', route: { name: 'List', params: { id: this.workspace.id } } };
+    // Current workspace object
+    workspace () {
+      return this.$store.getters.allWS.find(ws => ws.id === this.$route.params.id);
     },
     // All [tabs] for this {workspace}
     tabs () {
-      const wsId = this.workspace.id;
-      return this.$store.getters.allTabs.filter(tab => tab.wsId === wsId).sort((x, y) => y.pinned - x.pinned);
+      return this.$store.getters.allTabs.filter(tab => tab.wsId === this.workspace.id).sort((x, y) => y.pinned - x.pinned);
     }
   }
 };
 </script>
-
-<style scoped>
-</style>
