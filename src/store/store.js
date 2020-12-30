@@ -78,10 +78,20 @@ export default new Vuex.Store({
     },
 
     // Query browser to open a new window containing tabs from specified {workspace}
-    openWorkspaceInWindow: async ({ state }, workspace) => {
-      const tabs = state.tabs.filter(t => t.wsId === workspace.id);
-      if (tabs.length) browser.runtime.sendMessage({ type: 'NEW_WINDOW', workspace, tabs });
+    openWorkspaceInNewWindow: async ({ state }, wsId) => {
+      const tabs = state.tabs.filter(t => t.wsId === wsId);
+      if (!tabs.length) return false;
+      browser.runtime.sendMessage({ type: 'NEW_WINDOW', tabs })
+        .catch(e => console.log('Error > openWorkspaceInNewWindow :>> ', e));
     },
+    // Query browser to replace all tabs from current window with the workspace tabs
+    openWorkspaceInCurrentWindow: async ({ state }, wsId) => {
+      const tabs = state.tabs.filter(t => t.wsId === wsId);
+      if (!tabs.length) return false;
+      browser.runtime.sendMessage({ type: 'REPLACE_WINDOW', tabs })
+        .catch(e => console.log('Error > openWorkspaceInCurrentWindow :>> ', e));
+    },
+
     // Clear all tabs from workspace and add tabs from current window
     replaceWorkspace: async ({ dispatch }, wsId) => {
       await dispatch('deleteAllTabsFromWorkspace', wsId);

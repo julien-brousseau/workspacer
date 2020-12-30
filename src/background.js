@@ -51,9 +51,13 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
 
     // Open a new browser window with [action.tabs]
     case 'NEW_WINDOW':
-      createWindowWithTabs(action.tabs);
+      openTabsInWindow(action.tabs);
       return true;
-      // Export a json file containing [action.ws] and [action.tabs]
+    // Replace all tabs in current window with [action.tabs]
+    case 'REPLACE_WINDOW':
+      openTabsInWindow(action.tabs, true);
+      return true;
+    // Export a json file containing [action.ws] and [action.tabs]
     case 'EXPORT':
       saveAsJSON(action.ws, action.tabs);
       return true;
@@ -77,24 +81,29 @@ async function fetchAllTabsFromWindow () {
 }
 
 // Query browser to create a new window containing [tabs]
-async function createWindowWithTabs (tabs) {
-  browser.windows.create()
-    .then(window => {
-      // Create a new tabs
-      tabs.forEach(tab => {
-        browser.tabs.create({
-          // Remove properties conflicting with browser tab creation
-          ..._.omit(tab, ['tabId', 'position', 'wsId', 'favIconUrl']),
-          windowId: window.id,
-          // Force title only for undiscarded tabs
-          title: tab.discarded ? tab.title : null,
-          // Auto-discard tab if not pinned
-          discarded: !tab.pinned
-        });
-      });
-      // Remove the empty tab at position 1 (created automatically by browser)
-      browser.tabs.remove(window.tabs[0].id);
+async function openTabsInWindow (tabs, currentWindow = false) {
+  // Select the target window
+  const window = currentWindow
+    ? await browser.windows.getCurrent({ populate: true })
+    : await browser.windows.create();
+
+  // List of tabs to remove (previous tabs in current window or empty tab in new window)
+  const tabsToRemove = window.tabs.map(t => t.id);
+
+  // Create a new tabs
+  await tabs.forEach(tab => {
+    browser.tabs.create({
+      // Remove properties conflicting with browser tab creation
+      ..._.omit(tab, ['tabId', 'position', 'wsId', 'favIconUrl']),
+      windowId: window.id,
+      // Force title only for undiscarded tabs
+      title: tab.discarded ? tab.title : null,
+      // Auto-discard tab if not pinned
+      discarded: !tab.pinned
     });
+  });
+  // Clear un-needed tabs
+  browser.tabs.remove(tabsToRemove);
 }
 
 // Create a json file containing all workspaces and tabs

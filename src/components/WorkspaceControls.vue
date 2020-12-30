@@ -12,16 +12,9 @@
     <sui-dropdown class="basic green" text="Open" button floating>
       <sui-dropdown-menu>
         <sui-dropdown-item @click="openInNewWindow"><sui-icon name="external alternate" />In new window</sui-dropdown-item>
-        <sui-dropdown-item @click="openInNewWindow"><sui-icon name="external alternate" />Replace current window</sui-dropdown-item>
+        <sui-dropdown-item @click="replaceCurrentWindow"><sui-icon name="external alternate" />Replace current window</sui-dropdown-item>
       </sui-dropdown-menu>
     </sui-dropdown>
-
-    <!-- <sui-button basic
-      color="green"
-      class="btn-action"
-      @click="openInNewWindow"
-      content="Open" icon="external alternate">
-    </sui-button> -->
 
     <sui-button basic
       color="orange"
@@ -72,8 +65,11 @@ export default {
     },
     // Create new window only if workspace contains tabs
     openInNewWindow () {
-      const tabs = this.$store.getters.allTabs.filter(t => t.wsId === this.workspace.id);
-      if (tabs.length) this.$store.dispatch('openWorkspaceInWindow', this.workspace);
+      this.$store.dispatch('openWorkspaceInNewWindow', this.workspace.id);
+    },
+    // Remove all tabs from current window and open all tabs from workspace
+    replaceCurrentWindow () {
+      this.$store.dispatch('openWorkspaceInCurrentWindow', this.workspace.id);
     }
   }
 };
