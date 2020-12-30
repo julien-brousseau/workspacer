@@ -58,27 +58,23 @@ export default {
     }
   },
   methods: {
+    // Button move commands
+    moveUp () { if (!this.locked.up) this.moveTab('up'); },
+    moveDown () { if (!this.locked.down) this.moveTab('down'); },
 
-    moveUp () {
-      if (!this.locked.up) this.moveTab('up');
-    },
-    moveDown () {
-      if (!this.locked.down) this.moveTab('down');
-    },
-
-    // Reorder all {tabs} from same workspace as current tab based on the move direction (up/down)
+    //
     moveTab (direction) {
       const { index, tabs } = this;
       const mod = index + (direction === 'down' ? 1 : -1);
       [tabs[index], tabs[mod]] = [tabs[mod], tabs[index]];
-      this.$store.dispatch('editTabs', tabs);
-      // this.$store.dispatch('editTabs', tabs.map((t, i) => ({ ...t, position: (i + 1) })));
+      console.log('tabs BLOP :>> ', tabs.map(t => ({ title: t.title, position: t.position })));
+      this.$store.dispatch('createOrUpdateTabs', { tabs });
     },
 
     //
     pinTab () {
       // this.$store.dispatch('reorderTabs', this.tab.wsId);
-      // this.$store.dispatch('editTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
+      // this.$store.dispatch('createOrUpdateTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
     },
 
     removeTab () {

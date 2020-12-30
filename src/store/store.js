@@ -43,7 +43,7 @@ export default new Vuex.Store({
       ws.forEach(async (w) => {
         const id = await dispatch('createOrUpdateWS', w);
         const blop = tabs.filter(t => t.wsId === id);
-        await dispatch('createTabs', { tabs: blop, wsId: id });
+        await dispatch('createOrUpdateTabs', { tabs: blop, wsId: id });
       });
       return true;
     },
@@ -62,16 +62,12 @@ export default new Vuex.Store({
     },
 
     // Create new {Tabs} in database from [tabs] argument, then reload data
-    createTabs: async ({ dispatch }, { tabs, wsId }) => {
-      browser.runtime.sendMessage({ type: 'CREATE_TABS', tabs, wsId })
-        .then(data => dispatch('loadWS'))
-        .catch(e => console.log('Error > createTabs :>> ', e));
-    },
-    // Replace all {Tabs} in database contained in [tabs], then reload data
-    editTabs: async ({ dispatch }, tabs) => {
-      browser.runtime.sendMessage({ type: 'EDIT_TABS', tabs })
+    createOrUpdateTabs: async ({ dispatch }, { tabs, wsId = null }) => {
+      // If no workspace id is supplied, fetch the one from the first tab
+      wsId = wsId || tabs[0].wsId;
+      browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_TABS', tabs, wsId })
         .then(() => dispatch('loadWS'))
-        .catch(e => console.log('Error > editTabs :>> ', e));
+        .catch(e => console.log('Error > createOrUpdateTabs :>> ', e));
     },
     // Delete the {Tab} in database with id corresponding to tabId
     deleteTab: async ({ dispatch }, tabId) => {
@@ -103,13 +99,13 @@ export default new Vuex.Store({
     // Add the active {tab} to workspace
     addCurrentTab: async ({ dispatch }, wsId) => {
       const tab = await dispatch('getActiveTab');
-      dispatch('createTabs', { tabs: [tab], wsId });
+      dispatch('createOrUpdateTabs', { tabs: [tab], wsId });
     },
     // Fetch all current window's [tabs] and create {tabs} in specified {workspace}
     addAllTabsFromWindow: async ({ dispatch }, wsId) => {
       return browser.tabs.query({ currentWindow: true })
         .then(tabs => {
-          dispatch('createTabs', { tabs, wsId });
+          dispatch('createOrUpdateTabs', { tabs, wsId });
         })
         .catch(e => console.log('Error > getAllTabsFromWindow :>> ', e));
     },

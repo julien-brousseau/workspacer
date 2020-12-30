@@ -26,12 +26,9 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Fetch all Tabs
     case 'GET_TABS':
       return await new Tab().getAllTabs();
-    // Insert all Tabs contained in [action.tabs] after formatting and inserting action.wsId
-    case 'CREATE_TABS':
-      return await new Tab().createOrEditTabs(formatNewTabs(action.tabs, action.wsId));
-    // Replace all Tabs contained in [action.tabs]
-    case 'EDIT_TABS':
-      return await new Tab().createOrEditTabs(action.tabs);
+    // Insert or update all Tabs contained in [action.tabs] after formatting them
+    case 'CREATE_OR_UPDATE_TABS':
+      return await new Tab().createOrEditTabs(formatTabs(action.tabs, action.wsId));
     // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
       return await new Tab().deleteTab(action.tabId);
@@ -88,14 +85,13 @@ function saveAsJSON (ws, tabs) {
 }
 
 // Prepare new {tabs} obtained from browser prior to insertion into database
-function formatNewTabs (tabsArray, wsId) {
+function formatTabs (tabsArray, wsId) {
   // Filter out Firefox about: tabs
   const tabs = tabsArray.filter(t => t.url.slice(0, 6) !== 'about:');
   // Print console error if invalid tabs are inserted
   if (tabs.length < tabsArray.length) console.log('Warning: Pages using about: protocol cannot be saved in workspaces');
-
   // Add the workspace ID and filter out useless properties (from browser Tab objects)
   return tabs
-    .map(t => ({ ...t, wsId }))
-    .map(t => ({ ..._.pick(t, ['wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl']) }));
+    .map(t => ({ ..._.pick(t, ['tabId', 'wsId', 'title', 'url', 'pinned', 'discarded', 'favIconUrl', 'position']) }))
+    .map(t => ({ ...t, wsId }));
 }

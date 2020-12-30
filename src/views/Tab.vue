@@ -51,9 +51,9 @@ export default {
   methods: {
     async submit () {
       if (this.$route.params.tabId) {
-        await this.$store.dispatch('editTabs', [this.tab]);
+        await this.$store.dispatch('createOrUpdateTabs', { tabs: [this.tab] });
       } else {
-        await this.$store.dispatch('createTabs', { tabs: [{ ...this.tab }], wsId: this.$route.params.wsId });
+        await this.$store.dispatch('createOrUpdateTabs', { tabs: [{ ...this.tab }], wsId: this.$route.params.wsId });
       }
       this.$router.push(this.route);
     }
