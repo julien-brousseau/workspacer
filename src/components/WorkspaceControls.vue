@@ -53,7 +53,7 @@ export default {
     },
     // Add active tab to the workspace tab list
     addCurrentTabToWorkspace () {
-      this.$store.dispatch('addCurrentTab', this.workspace.id);
+      this.$store.dispatch('addCurrentTabToWorkspace', this.workspace.id);
     },
     // Add all current window's [tabs] to current {workspace}
     addAllTabsFromWindow () {
@@ -66,7 +66,7 @@ export default {
     // Create new window only if workspace contains tabs
     openInNewWindow () {
       const tabs = this.$store.getters.allTabs.filter(t => t.wsId === this.workspace.id);
-      if (tabs.length) this.$store.dispatch('createWindow', this.workspace);
+      if (tabs.length) this.$store.dispatch('openWorkspaceInWindow', this.workspace);
     }
   }
 };

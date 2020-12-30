@@ -15,15 +15,15 @@ export class Tab {
   }
 
   // Add tabs contained in [tabData] and/or replace them if tabId already exists.
-  // Also reset positions based on pinned status
+  // Also rebuild positions based on previous positions and pinned status
   async createOrEditTabs (tabData) {
     // Fetch tabs from workspace whose tabId is not included in tabData
     const tabIds = tabData.map(t => t.tabId);
     const tabsFromWorkspace = (await this.getAllTabs()).filter(t => t.wsId === tabData[0].wsId && !tabIds.includes(t.tabId));
     // Merge workspace tabs with new tabData
-    let allTabs = [...tabsFromWorkspace, ...tabData];
-    console.log('allTabs :>> ', allTabs);
-    allTabs = allTabs
+    let values = [...tabsFromWorkspace, ...tabData];
+    console.log('values :>> ', values.map(t => ({ title: t.title, pinned: t.pinned })));
+    values = values
       // Sort by position and pinned status
       .sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1)
       .sort((a, b) => b.pinned - a.pinned)
@@ -32,7 +32,7 @@ export class Tab {
     // Insert/update tabs
     return connection.insert({
       into: this.tableName,
-      values: allTabs,
+      values,
       upsert: true,
       return: true
     });

@@ -35,15 +35,23 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
     // Remove all tabs from workspace
     case 'CLEAR_TABS':
       return await new Tab().destroyAllTabsFromWorkspace(action.wsId);
+
     // Remove all Workspaces and Tabs from the database
-    case 'CLEAR_ALL':
+    case 'CLEAR_ALL_WORKSPACES_AND_TABS':
       await new Workspace().destroyAllWorkspaces();
       await new Tab().destroyAllTabs();
       return true;
 
-      // Open a new browser window with [action.tabs]
+    // Fetch currently active tab from browser
+    case 'GET_CURRENT_TAB':
+      return await fetchActiveTab();
+    // Fetch all Tabs from current window
+    case 'GET_CURRENT_WINDOW_TABS':
+      return await fetchAllTabsFromWindow();
+
+    // Open a new browser window with [action.tabs]
     case 'NEW_WINDOW':
-      createWindow(action.workspace, action.tabs);
+      createWindowWithTabs(action.tabs);
       return true;
       // Export a json file containing [action.ws] and [action.tabs]
     case 'EXPORT':
@@ -55,17 +63,32 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
   }
 }
 
-// Query browser to create a new window with tabs contained in [tabs] arg
-async function createWindow (workspace, tabs) {
+// Fetch the active {tab} from current window
+async function fetchActiveTab () {
+  return browser.tabs.query({ currentWindow: true, active: true })
+    .then(([tab]) => tab);
+}
+
+// Fetch all tabs from the current window
+async function fetchAllTabsFromWindow () {
+  return browser.tabs.query({ currentWindow: true })
+    .then(tabs => tabs)
+    .catch(e => console.log('Error > fetchAllTabsFromWindow :>> ', e));
+}
+
+// Query browser to create a new window containing [tabs]
+async function createWindowWithTabs (tabs) {
   browser.windows.create()
     .then(window => {
       // Create a new tabs
       tabs.forEach(tab => {
         browser.tabs.create({
-          // Remove conflicting properties
+          // Remove properties conflicting with browser tab creation
           ..._.omit(tab, ['tabId', 'position', 'wsId', 'favIconUrl']),
           windowId: window.id,
+          // Force title only for undiscarded tabs
           title: tab.discarded ? tab.title : null,
+          // Auto-discard tab if not pinned
           discarded: !tab.pinned
         });
       });

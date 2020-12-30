@@ -52,7 +52,7 @@ const getModels = () => {
   const tabTable = {
     name: 'Tabs',
     columns: {
-      // Not 'id' as PK to prevent mixup with browser tab id
+      // Not using 'id' as PK to prevent mixup with browser tab id
       tabId: {
         primaryKey: true,
         autoIncrement: true

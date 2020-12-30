@@ -53,7 +53,7 @@ export default {
     },
     // Replace workspace and tabs with parsed jsonData
     async load () {
-      await this.$store.dispatch('importfromJSON', JSON.parse(this.jsonData));
+      await this.$store.dispatch('loadJSONData', JSON.parse(this.jsonData));
       this.$router.push('/');
     },
     // Remove all workspaces and tabs

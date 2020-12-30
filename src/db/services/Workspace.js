@@ -6,14 +6,14 @@ export class Workspace {
     this.tableName = 'Workspaces';
   }
 
-  //
+  // Select
   getAllWorkspaces () {
     return connection.select({
       from: this.tableName
     });
   }
 
-  //
+  // Insert / update
   createOrUpdateWorkspace (ws) {
     return connection.insert({
       into: this.tableName,
@@ -23,7 +23,7 @@ export class Workspace {
     });
   }
 
-  //
+  // Delete
   destroyWorkspace (id) {
     return connection.remove({
       from: this.tableName,
@@ -31,7 +31,7 @@ export class Workspace {
     });
   }
 
-  //
+  // Delete all
   destroyAllWorkspaces () {
     return connection.clear(this.tableName);
   }

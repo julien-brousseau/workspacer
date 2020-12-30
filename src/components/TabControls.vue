@@ -46,8 +46,9 @@ export default {
       return this.tabs.findIndex(t => t.tabId === this.tab.tabId);
     },
     locked () {
-      const up = this.index === 0;
-      const down = this.index === this.tabs.length - 1;
+      const { index, tabs } = this;
+      const up = index === 0;
+      const down = index === tabs.length - 1;
       return { up, down };
     },
     route () {
@@ -73,8 +74,8 @@ export default {
 
     //
     pinTab () {
-      // this.$store.dispatch('reorderTabs', this.tab.wsId);
-      // this.$store.dispatch('createOrUpdateTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
+      const { tab } = this;
+      this.$store.dispatch('createOrUpdateTabs', { tabs: [{ ...tab, pinned: !tab.pinned }] });
     },
 
     //
