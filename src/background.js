@@ -15,13 +15,13 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
   switch (action.type) {
     // Fetch all Workspaces
     case 'GET_WS':
-      return await new Workspace().getWS();
+      return await new Workspace().getAllWorkspaces();
     // Replace Workspace in {action.ws} if its id exists in database, otherwise create a new one
     case 'CREATE_OR_UPDATE_WS':
-      return await new Workspace().createOrUpdateWS(action.ws);
+      return await new Workspace().createOrUpdateWorkspace(action.ws);
     // Remove selected workspace
     case 'DELETE_WS':
-      return await new Workspace().deleteWS(action.id);
+      return await new Workspace().destroyWorkspace(action.id);
 
     // Fetch all Tabs
     case 'GET_TABS':
@@ -31,14 +31,14 @@ async function handleMessageFromBackground (action, sender, sendResponse) {
       return await new Tab().createOrEditTabs(formatTabs(action.tabs, action.wsId));
     // Remove tab corresponding to "action.tabId"
     case 'DELETE_TAB':
-      return await new Tab().deleteTab(action.tabId);
+      return await new Tab().destroyTab(action.tabId);
     // Remove all tabs from workspace
     case 'CLEAR_TABS':
-      return await new Tab().clearTabsFromWorkspace(action.wsId);
+      return await new Tab().destroyAllTabsFromWorkspace(action.wsId);
     // Remove all Workspaces and Tabs from the database
     case 'CLEAR_ALL':
-      await new Workspace().clearWS();
-      await new Tab().clearTabs();
+      await new Workspace().destroyAllWorkspaces();
+      await new Tab().destroyAllTabs();
       return true;
 
       // Open a new browser window with [action.tabs]

@@ -50,7 +50,7 @@ export default {
   methods: {
     // Save {workspace} in Store and return to Workspace page
     async submit (e) {
-      await this.$store.dispatch('createOrUpdateWS', this.workspace);
+      await this.$store.dispatch('createOrUpdateWorkspace', this.workspace);
       this.$router.push(this.route);
     }
   }

@@ -39,7 +39,7 @@ export class Tab {
   }
 
   // Remove a single tab
-  deleteTab (tabId) {
+  destroyTab (tabId) {
     return connection.remove({
       from: this.tableName,
       where: { tabId }
@@ -47,7 +47,7 @@ export class Tab {
   }
 
   // Remove all tabs from specified workspace
-  clearTabsFromWorkspace (wsId) {
+  destroyAllTabsFromWorkspace (wsId) {
     return connection.remove({
       from: this.tableName,
       where: { wsId }
@@ -55,7 +55,7 @@ export class Tab {
   }
 
   // Empty database
-  clearTabs () {
+  destroyAllTabs () {
     return connection.clear(this.tableName);
   }
 }

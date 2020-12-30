@@ -40,11 +40,11 @@ export default {
   methods: {
     // Remove all tabs from workspace
     clearAllTabs () {
-      this.$store.dispatch('clearTabs', this.workspace.id);
+      this.$store.dispatch('deleteAllTabsFromWorkspace', this.workspace.id);
     },
     // Delete workspace and all its tabs
     async deleteWorkspace () {
-      await this.$store.dispatch('deleteWS', this.workspace.id);
+      await this.$store.dispatch('deleteWorkspace', this.workspace.id);
       this.$router.push('/');
     },
     // Add an empty tab to the workspace tab list

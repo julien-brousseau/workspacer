@@ -11,7 +11,7 @@ import Loading from '../components/Loading.vue';
 export default {
   components: { Loading },
   created () {
-    this.$store.dispatch('loadWS');
+    this.$store.dispatch('reloadWorkspacesAndTabs');
     this.$router.push('/');
   },
   computed: {

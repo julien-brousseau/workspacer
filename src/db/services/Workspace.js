@@ -6,13 +6,15 @@ export class Workspace {
     this.tableName = 'Workspaces';
   }
 
-  getWS () {
+  //
+  getAllWorkspaces () {
     return connection.select({
       from: this.tableName
     });
   }
 
-  createOrUpdateWS (ws) {
+  //
+  createOrUpdateWorkspace (ws) {
     return connection.insert({
       into: this.tableName,
       values: [ws],
@@ -21,23 +23,16 @@ export class Workspace {
     });
   }
 
-  deleteWS (id) {
+  //
+  destroyWorkspace (id) {
     return connection.remove({
       from: this.tableName,
       where: { id }
     });
   }
 
-  // Deprecated?
-  // updateWS ({ id, title, tabs }) {
-  //   return connection.update({
-  //     in: this.tableName,
-  //     set: { title, tabs },
-  //     where: { id }
-  //   });
-  // }
-
-  clearWS () {
+  //
+  destroyAllWorkspaces () {
     return connection.clear(this.tableName);
   }
 }

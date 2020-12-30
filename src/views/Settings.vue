@@ -58,7 +58,7 @@ export default {
     },
     // Remove all workspaces and tabs
     async clear () {
-      await this.$store.dispatch('clearWS');
+      await this.$store.dispatch('deleteAllWorkspacesAndTabs');
       this.$router.push('/');
     }
   }
