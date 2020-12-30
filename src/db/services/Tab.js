@@ -21,7 +21,9 @@ export class Tab {
     const tabIds = tabData.map(t => t.tabId);
     const tabsFromWorkspace = (await this.getAllTabs()).filter(t => t.wsId === tabData[0].wsId && !tabIds.includes(t.tabId));
     // Merge workspace tabs with new tabData
-    const allTabs = [...tabsFromWorkspace, ...tabData]
+    let allTabs = [...tabsFromWorkspace, ...tabData];
+    console.log('allTabs :>> ', allTabs);
+    allTabs = allTabs
       // Sort by position and pinned status
       .sort((a, b) => a.position === b.position ? 0 : a.position > b.position ? 1 : -1)
       .sort((a, b) => b.pinned - a.pinned)

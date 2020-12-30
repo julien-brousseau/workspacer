@@ -2,13 +2,6 @@
   <div class="ui mini horizontal buttons">
 
     <button
-      class="ui mini toggle button icon basic"
-      :class="pinned"
-      @click="pinTab">
-      <i class="pin icon"></i>
-    </button>
-
-    <button
       :disabled="locked.up"
       class="ui mini secondary button icon basic"
       @click="moveUp">
@@ -20,6 +13,13 @@
       class="ui mini secondary button icon basic"
       @click="moveDown">
       <i class="icon caret down"></i>
+    </button>
+
+    <button
+      class="ui mini toggle button icon basic"
+      :class="pinned"
+      @click="pinTab">
+      <i class="pin icon"></i>
     </button>
 
     <router-link :to="route"
@@ -62,13 +62,13 @@ export default {
     moveUp () { if (!this.locked.up) this.moveTab('up'); },
     moveDown () { if (!this.locked.down) this.moveTab('down'); },
 
-    //
+    // Shift tab position up or down
     moveTab (direction) {
       const { index, tabs } = this;
-      const mod = index + (direction === 'down' ? 1 : -1);
-      [tabs[index], tabs[mod]] = [tabs[mod], tabs[index]];
-      console.log('tabs BLOP :>> ', tabs.map(t => ({ title: t.title, position: t.position })));
-      this.$store.dispatch('createOrUpdateTabs', { tabs });
+      const mod = direction === 'down' ? 1 : -1;
+      const modTabs = [this.tab, tabs[index + mod]];
+      const reversePosArray = modTabs.map(t => t.position).reverse();
+      this.$store.dispatch('createOrUpdateTabs', { tabs: modTabs.map((t, i) => ({ ...t, position: reversePosArray[i] })) });
     },
 
     //
@@ -77,6 +77,7 @@ export default {
       // this.$store.dispatch('createOrUpdateTabs', [{ ...this.tab, pinned: !this.tab.pinned }]);
     },
 
+    //
     removeTab () {
       this.$store.dispatch('deleteTab', this.tab.tabId);
     }
