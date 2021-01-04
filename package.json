@@ -1,7 +1,9 @@
 {
   "name": "workspacer",
-  "version": "1.1.0",
+  "title": "Workspacer",
+  "version": "1.1.1",
   "private": true,
+  "author": "Julien Brousseau",
   "scripts": {
     "serve": "vue-cli-service build --mode development --watch",
     "build": "vue-cli-service build",
