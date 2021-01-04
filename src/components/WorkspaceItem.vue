@@ -42,7 +42,7 @@ export default {
     },
     // Create new window only if workspace contains tabs
     openInNewWindow () {
-      if (this.tabs.length) this.$store.dispatch('openWorkspaceInNewWindow', this.ws);
+      if (this.tabs.length) this.$store.dispatch('openWorkspaceInNewWindow', this.ws.id);
     },
     // Add active tab to the workspace tab list
     addCurrentTabToWorkspace () {
