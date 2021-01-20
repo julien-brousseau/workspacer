@@ -41,9 +41,8 @@ export default new Vuex.Store({
     createOrUpdateWorkspace: async ({ dispatch }, ws) => {
       return browser.runtime.sendMessage({ type: 'CREATE_OR_UPDATE_WS', ws })
         .then(([{ id }]) => {
-          dispatch('reloadWorkspacesAndTabs')
+          return dispatch('reloadWorkspacesAndTabs')
             .then(() => id);
-          // return id;
         })
         .catch(e => console.log('Error > createOrUpdateWorkspace :>> ', e));
     },
@@ -120,7 +119,7 @@ export default new Vuex.Store({
       });
       return true;
     },
-    // Export all data in ~/Downloads/data.json
+    // Export all data in ~/Downloads/workspacer_data_TIMESTAMP.json
     exportToJSON: async ({ state }) => {
       return browser.runtime.sendMessage({ type: 'EXPORT', ws: state.ws, tabs: state.tabs })
         .then(() => true)
